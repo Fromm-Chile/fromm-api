@@ -68,4 +68,3 @@ jobs:
           app-name: 'frommchile'
           slot-name: 'Production'
           package: .
-          
