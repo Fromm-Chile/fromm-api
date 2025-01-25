@@ -7,18 +7,20 @@ export class ProductEntity {
   name: string;
   subtitle: string;
   desc: string;
-  moreInfo: {
-    specifications: {
-      key: string;
-      value: string;
-    }[];
-    information: string;
-    downloads: {
-      name: string;
-      link: string;
-    }[];
-    videos: string[]; // url youtube JSON
-  };
+  jsonDetails: JsonDetails;
+}
+
+export interface JsonDetails {
+  specifications: {
+    key: string;
+    value: string;
+  }[];
+  information: string;
+  downloads: {
+    name: string;
+    link: string;
+  }[];
+  videos: string[];
 }
 
 export class CategoryEntity {

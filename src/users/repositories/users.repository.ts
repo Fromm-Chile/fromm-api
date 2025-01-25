@@ -9,13 +9,13 @@ export class UsersRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   create(createUserDto: CreateUserDto) {
-    return this.prisma.users.create({
+    return this.prisma.user.create({
       data: createUserDto,
     });
   }
 
   findAll() {
-    return this.prisma.users.findMany();
+    return this.prisma.user.findMany();
   }
 
   findOne(id: number) {

@@ -12,12 +12,16 @@ export class CategoriesRepository implements ICategoryRepository {
     return 'This action adds a new category';
   }
 
-  findAll() {
-    return this.prisma.categories.findMany();
+  async findAll() {
+    return await this.prisma.category.findMany();
+  }
+
+  async findAllWithChildren() {
+    return await this.prisma.category.findMany({include: {other_Categories: true}});
   }
 
   findOne(id: number) {
-    return this.prisma.categories.findUnique({
+    return this.prisma.category.findUnique({
       where: {
         id,
       },

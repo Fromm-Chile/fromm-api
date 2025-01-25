@@ -15,6 +15,11 @@ export class CategoriesService {
     return this.categoriesRepository.findAll();
   }
 
+  async findAllWithChildren() {
+    return await this.categoriesRepository.findAllWithChildren();
+  }
+
+
   findOne(id: number) {
     return this.categoriesRepository.findOne(id);
   }

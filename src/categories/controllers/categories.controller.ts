@@ -17,6 +17,11 @@ export class CategoriesController {
     return this.categoriesService.findAll();
   }
 
+  @Get('subcategories')
+  async findAllWithChildren() {
+    return await this.categoriesService.findAllWithChildren();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);

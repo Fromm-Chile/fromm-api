@@ -11,8 +11,8 @@ export class ProductsService implements IProductsService {
     return 'This action adds a new product';
   }
 
-  findAll() {
-    return this.productRepository.findAll();
+  async findAll() {
+    return await this.productRepository.findAll();
   }
 
   findOne(id: number) {

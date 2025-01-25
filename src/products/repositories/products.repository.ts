@@ -3,6 +3,7 @@ import { CreateProductDto } from '../controllers/dto/create-product.dto';
 import { UpdateProductDto } from '../controllers/dto/update-product.dto';
 import { IProductsRepository } from './interfaces/product.repository.interface';
 import { PrismaService } from 'prisma/prisma.service';
+import { JsonDetails } from './entities/product.entity';
 
 @Injectable()
 export class ProductsRepository implements IProductsRepository {
@@ -12,8 +13,13 @@ export class ProductsRepository implements IProductsRepository {
     return 'This action adds a new product';
   }
 
-  findAll() {
-    return `This action returns all products`;
+  async findAll() {
+    const products = await this.prisma.product.findMany();
+    products.map((product) => {
+      product.jsonDetails = JSON.parse(product.jsonDetails);
+      return product;
+    })
+    return products;
   }
 
   findOne(id: number) {

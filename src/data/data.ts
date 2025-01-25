@@ -1,6 +1,6 @@
 import { ProductEntity } from 'src/products/repositories/entities/product.entity';
 
-export const products: ProductEntity[] = [
+export const products = [
   {
     id: 1,
     slug: 'enzunchadoras-electricas', // unico por producto
