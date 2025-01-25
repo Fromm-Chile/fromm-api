@@ -1,17 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../controllers/dto/create-user.dto';
 import { UpdateUserDto } from '../controllers/dto/update-user.dto';
-import { UserEntity } from './entities/user.entity';
 import { IUserRepository } from './interfaces/user.repository.interface';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class UsersRepository implements IUserRepository {
+  constructor(private readonly prisma: PrismaService) {}
+
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    return this.prisma.users.create({
+      data: createUserDto,
+    });
   }
 
-  findAll(): UserEntity[] {
-    return [];
+  findAll() {
+    return this.prisma.users.findMany();
   }
 
   findOne(id: number) {

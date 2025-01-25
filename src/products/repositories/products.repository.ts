@@ -2,17 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from '../controllers/dto/create-product.dto';
 import { UpdateProductDto } from '../controllers/dto/update-product.dto';
 import { IProductsRepository } from './interfaces/product.repository.interface';
-import { products } from 'src/data/data';
-import { ProductEntity } from './entities/product.entity';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class ProductsRepository implements IProductsRepository {
+  constructor(private readonly prisma: PrismaService) {}
+
   create(createProductDto: CreateProductDto) {
     return 'This action adds a new product';
   }
 
-  findAll(): ProductEntity[] {
-    return products;
+  findAll() {
+    return `This action returns all products`;
   }
 
   findOne(id: number) {

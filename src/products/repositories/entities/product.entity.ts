@@ -1,13 +1,13 @@
 export class ProductEntity {
-    id: number;
-    slug: string;
-    srcImg: string[];
-    alt: string;
-    category: string;
-    subcategory: string;
-    name: string;
-    subtitle: string;
-    desc: string;
+  id: number;
+  slug: string;
+  srcImg: string[]; // tabla aparte
+  alt: string;
+  idCategory: number; // referencia
+  name: string;
+  subtitle: string;
+  desc: string;
+  moreInfo: {
     specifications: {
       key: string;
       value: string;
@@ -17,5 +17,12 @@ export class ProductEntity {
       name: string;
       link: string;
     }[];
-    videos: string[];
-  }
+    videos: string[]; // url youtube JSON
+  };
+}
+
+export class CategoryEntity {
+  id: number;
+  name: string;
+  parentCategory?: string;
+}

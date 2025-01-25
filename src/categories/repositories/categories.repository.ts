@@ -1,21 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from '../controllers/dto/create-category.dto';
 import { UpdateCategoryDto } from '../controllers/dto/update-category.dto';
-import { CategoryEntity } from './entities/category.entity';
 import { ICategoryRepository } from './interfaces/category.repository.interface';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class CategoriesRepository implements ICategoryRepository {
+  constructor(private prisma: PrismaService) {}
+
   create(createCategoryDto: CreateCategoryDto) {
     return 'This action adds a new category';
   }
 
-  findAll(): CategoryEntity[] {
-    return [];
+  findAll() {
+    return this.prisma.categories.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} category`;
+    return this.prisma.categories.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {

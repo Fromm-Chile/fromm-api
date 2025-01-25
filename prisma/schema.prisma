@@ -14,3 +14,11 @@ model users {
   address String? @db.VarChar(100)
   email   String? @db.VarChar(50)
 }
+
+model categories {
+  id               Int          @id(map: "PK__categori__3213E83F76BC8ACC") @default(autoincrement())
+  name             String       @db.NVarChar(255)
+  parentCategory   Int?
+  categories       categories?  @relation("categoriesTocategories", fields: [parentCategory], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__categorie__paren__6477ECF3")
+  other_categories categories[] @relation("categoriesTocategories")
+}

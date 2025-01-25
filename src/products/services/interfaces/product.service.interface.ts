@@ -6,7 +6,7 @@ import { UpdateProductDto } from '../../controllers/dto/update-product.dto';
 
 export interface IProductsService {
   create(createProductDto: CreateProductDto): string;
-  findAll(): ProductEntity[];
+  findAll(): String;
   findOne(id: number): string;
   update(id: number, updateProductDto: UpdateProductDto): string;
   remove(id: number): string;
