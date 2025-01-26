@@ -9,32 +9,86 @@ datasource db {
 }
 
 model Category {
-  id               Int        @id(map: "PK__categori__3213E83F76BC8ACC") @default(autoincrement())
-  name             String     @db.NVarChar(255)
+  id               Int        @id @default(autoincrement())
+  name             String
   parentCategory   Int?
-  Categories       Category?  @relation("CategoriesToCategories", fields: [parentCategory], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__categorie__paren__6477ECF3")
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime?  @updatedAt
+  Categories       Category?  @relation("CategoriesToCategories", fields: [parentCategory], references: [id], onDelete: NoAction, onUpdate: NoAction)
   other_Categories Category[] @relation("CategoriesToCategories")
   Product          Product[]
 }
 
 model User {
-  id      Int     @id(map: "PK__users__3213E83FE0493D4C") @default(autoincrement())
-  name    String  @db.VarChar(50)
-  phone   String  @db.VarChar(20)
-  address String? @db.VarChar(100)
-  email   String? @db.VarChar(50)
-  dni     String? @db.VarChar(20)
+  id        Int       @id @default(autoincrement())
+  name      String
+  phone     String
+  address   String?
+  email     String
+  dni       String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  invoice   Invoice[]
+  contact   Contact[]
 }
 
 model Product {
-  id          Int    @id @default(autoincrement())
-  slug        String @db.NVarChar(255)
-  alt         String @db.NVarChar(255)
+  id          Int       @id @default(autoincrement())
+  slug        String
+  alt         String
   categoryId  Int
-  name        String @db.NVarChar(255)
-  subtitle    String @db.NVarChar(255)
-  desc        String @db.NVarChar(MAX)
-  jsonDetails String @db.NVarChar(MAX)
+  name        String
+  subtitle    String
+  desc        String    @db.NVarChar(MAX)
+  jsonDetails String    @db.NVarChar(MAX)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
 
-  category Category @relation(fields: [categoryId], references: [id])
+  category      Category        @relation(fields: [categoryId], references: [id])
+  image         Image[]
+  invoiceDetail InvoiceDetail[]
+}
+
+model Image {
+  id        Int       @id @default(autoincrement())
+  productId Int
+  url       String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  product   Product   @relation(fields: [productId], references: [id])
+}
+
+model Invoice {
+  id            Int             @id @default(autoincrement())
+  userId        Int
+  status        String          @default("PENDING")
+  total         Float
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime?       @updatedAt
+  user          User            @relation(fields: [userId], references: [id])
+  InvoiceDetail InvoiceDetail[]
+}
+
+model InvoiceDetail {
+  id        Int       @id @default(autoincrement())
+  invoiceId Int
+  productId Int
+  quantity  Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  invoice   Invoice   @relation(fields: [invoiceId], references: [id])
+  product   Product   @relation(fields: [productId], references: [id])
+}
+
+model Contact {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  name      String
+  phone     String
+  email     String
+  message   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
 }

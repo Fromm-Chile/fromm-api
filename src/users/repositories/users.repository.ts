@@ -8,8 +8,8 @@ import { PrismaService } from 'prisma/prisma.service';
 export class UsersRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({
+  async create(createUserDto: CreateUserDto) {
+    return await this.prisma.user.create({
       data: createUserDto,
     });
   }
