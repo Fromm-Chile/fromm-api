@@ -3,7 +3,6 @@ import { CreateProductDto } from '../controllers/dto/create-product.dto';
 import { UpdateProductDto } from '../controllers/dto/update-product.dto';
 import { IProductsRepository } from './interfaces/product.repository.interface';
 import { PrismaService } from 'prisma/prisma.service';
-import { JsonDetails } from './entities/product.entity';
 
 @Injectable()
 export class ProductsRepository implements IProductsRepository {
@@ -14,16 +13,45 @@ export class ProductsRepository implements IProductsRepository {
   }
 
   async findAll() {
-    const products = await this.prisma.product.findMany();
+    const products = await this.prisma.product.findMany({
+      include: {
+        image: true,
+      },
+    });
     products.map((product) => {
       product.jsonDetails = JSON.parse(product.jsonDetails);
       return product;
-    })
+    });
     return products;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findAllByCategory(categoryId: number) {
+    const products = await this.prisma.product.findMany({
+      where: {
+        categoryId,
+      },
+      include: {
+        image: true,
+      },
+    });
+    products.map((product) => {
+      product.jsonDetails = JSON.parse(product.jsonDetails);
+      return product;
+    });
+    return products;
+  }
+
+  async findOne(id: number) {
+    const product = await this.prisma.product.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        image: true,
+      },
+    });
+    product.jsonDetails = JSON.parse(product.jsonDetails);
+    return product;
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
