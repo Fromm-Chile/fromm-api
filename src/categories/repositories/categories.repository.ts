@@ -17,7 +17,10 @@ export class CategoriesRepository implements ICategoryRepository {
   }
 
   async findAllWithChildren() {
-    return await this.prisma.category.findMany({include: {other_Categories: true}});
+    return await this.prisma.category.findMany({
+      where: { parentCategory: null },
+      include: { other_Categories: true },
+    });
   }
 
   findOne(id: number) {

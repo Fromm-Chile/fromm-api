@@ -1,0 +1,200 @@
+[
+  {
+    "specifications": [
+      {
+        "key": "Ancho",
+        "value": "9.0 a 19.0mm"
+      },
+      {
+        "key": "Espesores",
+        "value": "0.60 a 1.27 mm"
+      },
+      {
+        "key": "Fuerza de rotura",
+        "value": "Dependiendo del tamaño seleccionado, esta entre 2000 y 9500N"
+      },
+      {
+        "key": "Terminado",
+        "value": "Ondulado"
+      },
+      {
+        "key": "Formato Disponible",
+        "value": "Rollos entre 20 - 25 kg"
+      }
+    ],
+    "information": "<h2 className=\"text-textGray font-bold text-xl mt-10\">\n      Características del Poliéster:\n    </h2>\n    <ul className=\"flex flex-col gap-5 my-5\">\n      <li className=\"flex gap-2 items-center\">\n        <img src=\"/icons/checkList.svg\" />\n        <p>Reducción de los costes de material (hasta 50%)</p>\n      </li>\n      <li className=\"flex gap-2 items-center\">\n        <img src=\"/icons/checkList.svg\" />\n        <p>\n          No hay daños o contaminación de los productos envasados (resistente a\n          la corrosión)\n        </p>\n      </li>\n      <li className=\"flex gap-2 items-center\">\n        <img src=\"/icons/checkList.svg\" />\n        <p>\n          Alta absorción de choque en caso de impactos durante el transporte\n        </p>\n      </li>\n      <li className=\"flex gap-2 items-center\">\n        <img src=\"/icons/checkList.svg\" />\n        <p>Menor presión sobre los bordes del paquete</p>\n      </li>\n      <li className=\"flex gap-2 items-center\">\n        <img src=\"/icons/checkList.svg\" />\n        <p>Paquetes perfectos e individuales garantizados</p>\n      </li>\n      <li className=\"flex gap-2 items-center\">\n        <img src=\"/icons/checkList.svg\" />\n        <p>\n          Tensión del zuncho se mantiene debido a la memoria que posee volviendo\n          a su estado original durante el almacenamiento o el transporte\n        </p>\n      </li>\n      <li className=\"flex gap-2 items-center\">\n        <img src=\"/icons/checkList.svg\" />\n        <p>\n          Sustitución de los zunchos de acero por de poliéster STARstrap ™\n          permite el uso de un zuncho con menos fuerza de ruptura\n        </p>\n      </li>\n      <li className=\"flex gap-2 items-center\">\n        <img src=\"/icons/checkList.svg\" />\n        <p>Menos riesgos de lesiones en caso de roturas de zuncho</p>\n      </li>\n      <li className=\"flex gap-2 items-center\">\n        <img src=\"/icons/checkList.svg\" />\n        <p>Un manejo sencillo y limpio en comparación con flejes de acero</p>\n      </li>\n    </ul>",
+    "downloads": [],
+    "videos": []
+  },
+
+  {
+    "specifications": [
+        {
+            "key": "Dimensiones de la máquina:",
+            "value": "Largo 351 x Ancho 134 x Alto 143 mm"
+        },
+        {
+            "key": "Fuerza de tensión:",
+            "value": "250 - 2.600 N (infinitamente variable)"
+        },
+        {
+            "key": "Adecuada para:",
+            "value": "Fleje de PP y PET en anchos de 12,0 - 16,0 mm y espesores de 0,40 - 1,05 mm"
+        },
+        {
+            "key": "Velocidad de expansión:",
+            "value": "67 - 124 mm/sec."
+        },
+        {
+            "key": "Calidad media de la soldadura",
+            "value": "Aproximadamente el 75 %, dependiendo de la calidad del neumático."
+        },
+        {
+            "key": "Corriente",
+            "value": "Batería 18V / 4.0Ah Li-ion"
+        },
+        {
+            "key": "Peso:",
+            "value": "4.3 kg (incl. 4.0 Ah battery)"
+        }
+    ],
+    "information": "<p className=\"my-3\">\n          Herramienta flejadora a batería para fleje de PET y fleje de PP para\n          las aplicaciones más comunes.\n        </p>\n        <p className=\"my-3\">\n          Con la P328 podrá flejar fácilmente todos los tamaños de flejes de\n          polipropileno (PP) y poliéster (PET) de hasta 16 mm.\n        </p>\n        <h2 className=\"text-textGray font-bold text-xl mt-10\">\n          Beneficios P328\n        </h2>\n        <ul className=\"flex flex-col gap-5 my-5\">\n          <li className=\"flex gap-2 items-center\">\n            <img src=\"/icons/checkList.svg\" />\n            <p>Carcasa resistente</p>\n          </li>\n          <li className=\"flex gap-2 items-center\">\n            <img src=\"/icons/checkList.svg\" />\n            <p>Muy poco mantenimiento</p>\n          </li>\n          <li className=\"flex gap-2 items-center\">\n            <img src=\"/icons/checkList.svg\" />\n            <p>Larga vida útil</p>\n          </li>\n          <li className=\"flex gap-2 items-center\">\n            <img src=\"/icons/checkList.svg\" />\n            <p>Ligero de usar gracias a su diseño inteligente</p>\n          </li>\n          <li className=\"flex gap-2 items-center\">\n            <img src=\"/icons/checkList.svg\" />\n            <p>Contador de flejado integrado</p>\n          </li>\n        </ul>\n        <h2 className=\"text-textGray font-bold text-xl mt-10\">Adecuado para</h2>\n        <p>\n          Fleje de poliéster (PET) liso y ondulado FROMM STARstrap TM Fleje de\n          polipropileno (PP)\n        </p>\n        <ul className=\"flex flex-col gap-5 my-5\">\n          <li className=\"flex gap-2 items-center\">\n            <img src=\"/icons/checkList.svg\" />\n            <p>Anchos 10 – 16 mm</p>\n          </li>\n          <li className=\"flex gap-2 items-center\">\n            <img src=\"/icons/checkList.svg\" />\n            <p>Espesores 0,40 – 1,05 mm</p>\n          </li>\n        </ul>\n        <h2 className=\"text-textGray font-bold text-xl mt-10\">Adentro</h2>\n        <p className=\"my-3\">\n          El interior de los nuevos equipos FROMM contiene innovaciones\n          prácticas. Por ejemplo, los motores son sin escobillas y están\n          equipados con protección contra sobrecargas, lo que significa que\n          estos dispositivos requieren menos mantenimiento y ofrecen una vida\n          útil más larga. Un contador de flejes integrado permite leer el número\n          de flejes realizados con un lector disponible opcionalmente.\n        </p>\n        <h2 className=\"text-textGray font-bold text-xl mt-10\">Diseño</h2>\n        <p className=\"my-3\">\n          Con la reconocida fiabilidad suiza, hemos realizado modificaciones en\n          la carcasa. Como resultado, el equipo no solo es más cómodo de usar,\n          sino que también se ha mejorado aún más la resistencia a las caídas.\n          FROMM también ha tenido en cuenta expresamente el trabajo en entornos\n          de trabajo húmedos y polvorientos.\n        </p>\n        <h2 className=\"text-textGray font-bold text-xl mt-10\">\n          Trabaje con menos peso, incluso en paquetes grandes, pequeños y\n          redondos.\n        </h2>\n        <p className=\"my-3\">\n          Para facilitar su uso, FROMM ha mejorado su equipamiento con nuevas\n          técnicas y ha trabajado de forma eficaz en el diseño de la placa base.\n          Ahora se necesita menos fuerza para retirar el dispositivo de debajo\n          del fleje tensado. Esto también se aplica al flejado de paquetes\n          pequeños y redondos. En la mayoría de los casos de flejado\n          imaginables, el fleje permanece intacto.\n        </p>",
+    "downloads": [
+        {
+            "name": "Ficha Técnica",
+            "link": "https://fromm.com.mx"
+        },
+        {
+            "name": "Manual de Usuario",
+            "link": "https://fromm.com.mx"
+        },
+        {
+            "name": "Certificado de Calidad",
+            "link": "https://fromm.com.mx"
+        }
+    ],
+    "videos": [
+        "https://pub-873e7884cc3b416fa7c9d881d5d16822.r2.dev/s-series.mp4"
+    ]
+},
+
+  {
+    "specifications": [
+        {
+            "key": "Calidades de los zuchos de acero:",
+            "value": "Zunchos de acero FROMM Uni- y Ultraflex™"
+        },
+        {
+            "key": "Anchos de fuego:",
+            "value": "9.5 - 20.0 mm"
+        },
+        {
+            "key": "Espesores de neumáticos:",
+            "value": "0.38 - 0.63 mm"
+        },
+        {
+            "key": "Peso:",
+            "value": "Versión estándar: 4,45 kg, versión TW: 4,7 kg"
+        },
+        {
+            "key": "Cierre sin precinto:",
+            "value": "FROMM MicroLock™"
+        },
+        {
+            "key": "Valor medio de cierre:",
+            "value": "80%"
+        },
+        {
+            "key": "Versión TW (opcional)",
+            "value": "TW = Llave dinamométrica / limitador de tensión ajustable"
+        },
+        {
+            "key": "Suspensión (opcional):",
+            "value": "Sistema de suspensión para condiciones de uso verticales y horizontales"
+        }
+    ],
+    "information": "<h2 className=\"text-textGray font-bold text-xl mt-10\">FROMM A337</h2>\n<p className=\"my-5\">\n  El A337 es un dispositivo manual mecánico sin precinto para flejes de\n  acero. Este dispositivo se utiliza para procesar flejes de acero FROMM\n  Uniflex™ y Ultraflex™.\n</p>\n<h2 className=\"text-textGray font-bold text-xl mt-10\">Ventajas</h2>\n<ul className=\"flex flex-col gap-5 my-5\">\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Proporciona potencia adicional con 1 giro de palanca</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Cierre seguro que no se soltará, gracias a MicroLock™.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>\n      Puede tensar flejes de acero de hasta un grosor de 0,64 mm con poco\n      esfuerzo.\n    </p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>\n      El sistema de tensado inteligentemente diseñado del A337 evita la\n      pérdida de tensión antes de realizar el cierre.\n    </p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Profundidad de corte y sellado fácilmente ajustable.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>\n      Fácil de usar y aplicable en muchas industrias, como la industria de\n      la madera.\n    </p>\n  </li>\n</ul>\n<h2 className=\"text-textGray font-light text-xl mt-10\">Calidad</h2>\n<p className=\"my-5\">\n  Las herramientas manuales FROMM están diseñadas con precisión y fiabilidad\n  suizas. Esto significa que trabaja con equipos casi indestructibles que\n  también requieren poco mantenimiento. Nos atrevemos a decirlo, porque\n  vemos todos los días que nuestros clientes utilizan sus herramientas\n  manuales FROMM durante mucho tiempo.\n</p>\n<h2 className=\"text-textGray font-light text-xl mt-10\">\n  Cierre sin precinto MicroLock™\n</h2>\n<p className=\"my-5\">\n  La FROMM A337 está equipada con el sistema de cierre MicroLock™. Se trata\n  de un sistema de cierre sin precinto patentado por FROMM que es más\n  fiable que otros sistemas de cierre sin precinto. Mientras que un cierre\n  sin precinto \"normal\" se afloja cuando el fleje de acero pierde tensión,\n  el cierre MicroLock permanece sujeto. Esto se debe a que el sello está\n  diseñado de tal manera que bloquea el fleje de acero en ambas direcciones\n  durante el cierre. Esto mantiene sus mercancías aún más firmemente sujetas\n  con fleje de acero durante el transporte y el almacenamiento. Además, sus\n  colegas de transporte y almacenamiento trabajan con mayor seguridad porque\n  la posibilidad de que el fleje de acero se suelte se reduce al mínimo.\n</p>\n<h2 className=\"text-textGray font-light text-xl mt-10\">\n  Llave dinamométrica\n</h2>\n<p className=\"my-5\">\n  Con la llave dinamométrica limita la tensión del dispositivo de flejado.\n  Elija un dispositivo FROMM con llave dinamométrica cuando quiera estar\n  seguro de que sus cargas están sujetas con la tensión correcta. Ideal\n  cuando tiene mercancías que pueden dañarse fácilmente (o abollarse) si\n  usted o su colega las amarran con demasiada fuerza.\n</p>",
+    "downloads": [],
+    "videos": [
+        "https://www.youtube.com/watch?v=7PlQksND2bE"
+    ]
+},
+
+
+  {
+    "specifications": [
+        {
+            "key": "Máxima altura de Carga",
+            "value": "Carga máxima 1350 Kg"
+        },
+        {
+            "key": "Máxima superfice de pallet",
+            "value": "Altura de mástil 2200mm"
+        },
+        {
+            "key": "Máximo peso de carga",
+            "value": "Carga máxima 1350 Kg"
+        },
+        {
+            "key": "Rampa",
+            "value": "67 - 124 mm/sec."
+        },
+        {
+            "key": "Energía requerida",
+            "value": "1 fase 230V 50/60Hz"
+        }
+    ],    
+    "information": "<h2 className=\"text-textGray font-bold text-xl mt-10\">Características:</h2>\n<ul className=\"flex flex-col gap-5 my-5\">\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Arranque y parada progresivos.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Sensor de libre mantenimiento.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Señal sonora al inicio del ciclo.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Célula fotoeléctrica de detección de altura del palet.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Vueltas inferiores ajustables al nivel de la plataforma.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Panel de Operaciones 1: Retardo de la célula fotoeléctrica para la superposición del film en la parte superior.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Lista de códigos de error.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Programas: Envoltura cruzada de abajo a arriba y al revés/ Solo vueltas hacia arriba.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Carro 16.8660 El film es tensado entre el carro y el palet.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Tensión entre 0 y 50% dependiendo de la calidad del film.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Disponible para palets de 150 a 2000 Kg.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Kit absorbe choques, que garantiza la funcionalidad del motor y caja de engranajes tras absorber un choque importante. Esto puede suceder al cargar o descargar mal una mercancía en la plataforma.</p>\n  </li>\n</ul>",
+    "downloads": [],
+    "videos": [
+        "https://www.youtube.com/watch?v=DdoFS32wmqQ&t=2s"
+    ]
+},
+
+
+  {
+    "specifications": [
+        {
+            "key": "Ejecución:",
+            "value": "Modelo de carretilla de mano con contenedor y freno."
+        },
+        {
+            "key": "Adecuado para:",
+            "value": "Adecuado para flejes de PET, flejes de PP y flejes de acero en bobinado americano."
+        },
+        {
+            "key": "Diámetro del núcleo de la banda de fleje:",
+            "value": "406mm"
+        },
+        {
+            "key": "Peso:",
+            "value": "30kg"
+        }
+    ],    
+    "information": "",
+    "downloads": [],
+    "videos": []
+},
+
+  {
+    "specifications": [],    
+    "information": "",
+    "downloads": [],
+    "videos": [
+        "https://www.youtube.com/watch?v=jBHPWw7a1wM"
+    ]
+},
+
+
+  {
+    "specifications": [],    
+    "information": "<h2 className=\"text-textGray font-bold text-xl mt-10\">Dimensiones:</h2>\n<ul className=\"flex flex-col gap-5 my-5\">\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Ancho de banda de 35/24 a 19 mm</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Versión para trabajo pesado 50/24 hasta 19 mm de ancho de neumático.</p>\n  </li>\n  <li className=\"flex gap-2 items-center\">\n    <img src=\"/icons/checkList.svg\" />\n    <p>Ancho de banda de 40/30 a 25 mm</p>\n  </li>\n</ul>\n<h2 className=\"text-textGray font-light text-xl mt-10\">Ancho de banda de 50/30 a 32 mm</h2>",
+    "downloads": [],
+    "videos": [
+        "https://www.youtube.com/watch?v=DdoFS32wmqQ&t=2s"
+    ]
+}
+
+]
+
+  

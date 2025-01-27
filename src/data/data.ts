@@ -9,7 +9,7 @@ export const products = [
       'https://pub-873e7884cc3b416fa7c9d881d5d16822.r2.dev/enzunchadora.jpg',
     ],
     alt: 'enzunchadora-electrica',
-    idCategory: 1,
+    categoryId: 1,
     name: 'Enzunchadora a Batería P328/P329',
     subtitle: 'Enzunchadoras eléctricas',
     desc: `<p className="my-5">
@@ -42,7 +42,7 @@ export const products = [
               <p>Más ligero de usar gracias a su diseño inteligente</p>
             </li>
           </ul>`,
-    moreInfo: {
+    jsonDetails: {
       specifications: [
         {
           key: 'Dimensiones de la máquina:',
@@ -75,8 +75,83 @@ export const products = [
           value: '4.3 kg (incl. 4.0 Ah battery)',
         },
       ],
-      information:
-        '<p className="my-3">\n          Herramienta flejadora a batería para fleje de PET y fleje de PP para\n          las aplicaciones más comunes.\n        </p>\n        <p className="my-3">\n          Con la P328 podrá flejar fácilmente todos los tamaños de flejes de\n          polipropileno (PP) y poliéster (PET) de hasta 16 mm.\n        </p>\n        <h2 className="text-textGray font-bold text-xl mt-10">\n          Beneficios P328\n        </h2>\n        <ul className="flex flex-col gap-5 my-5">\n          <li className="flex gap-2 items-center">\n            <img src="/icons/checkList.svg" />\n            <p>Carcasa resistente</p>\n          </li>\n          <li className="flex gap-2 items-center">\n            <img src="/icons/checkList.svg" />\n            <p>Muy poco mantenimiento</p>\n          </li>\n          <li className="flex gap-2 items-center">\n            <img src="/icons/checkList.svg" />\n            <p>Larga vida útil</p>\n          </li>\n          <li className="flex gap-2 items-center">\n            <img src="/icons/checkList.svg" />\n            <p>Ligero de usar gracias a su diseño inteligente</p>\n          </li>\n          <li className="flex gap-2 items-center">\n            <img src="/icons/checkList.svg" />\n            <p>Contador de flejado integrado</p>\n          </li>\n        </ul>\n        <h2 className="text-textGray font-bold text-xl mt-10">Adecuado para</h2>\n        <p>\n          Fleje de poliéster (PET) liso y ondulado FROMM STARstrap TM Fleje de\n          polipropileno (PP)\n        </p>\n        <ul className="flex flex-col gap-5 my-5">\n          <li className="flex gap-2 items-center">\n            <img src="/icons/checkList.svg" />\n            <p>Anchos 10 – 16 mm</p>\n          </li>\n          <li className="flex gap-2 items-center">\n            <img src="/icons/checkList.svg" />\n            <p>Espesores 0,40 – 1,05 mm</p>\n          </li>\n        </ul>\n        <h2 className="text-textGray font-bold text-xl mt-10">Adentro</h2>\n        <p className="my-3">\n          El interior de los nuevos equipos FROMM contiene innovaciones\n          prácticas. Por ejemplo, los motores son sin escobillas y están\n          equipados con protección contra sobrecargas, lo que significa que\n          estos dispositivos requieren menos mantenimiento y ofrecen una vida\n          útil más larga. Un contador de flejes integrado permite leer el número\n          de flejes realizados con un lector disponible opcionalmente.\n        </p>\n        <h2 className="text-textGray font-bold text-xl mt-10">Diseño</h2>\n        <p className="my-3">\n          Con la reconocida fiabilidad suiza, hemos realizado modificaciones en\n          la carcasa. Como resultado, el equipo no solo es más cómodo de usar,\n          sino que también se ha mejorado aún más la resistencia a las caídas.\n          FROMM también ha tenido en cuenta expresamente el trabajo en entornos\n          de trabajo húmedos y polvorientos.\n        </p>\n        <h2 className="text-textGray font-bold text-xl mt-10">\n          Trabaje con menos peso, incluso en paquetes grandes, pequeños y\n          redondos.\n        </h2>\n        <p className="my-3">\n          Para facilitar su uso, FROMM ha mejorado su equipamiento con nuevas\n          técnicas y ha trabajado de forma eficaz en el diseño de la placa base.\n          Ahora se necesita menos fuerza para retirar el dispositivo de debajo\n          del fleje tensado. Esto también se aplica al flejado de paquetes\n          pequeños y redondos. En la mayoría de los casos de flejado\n          imaginables, el fleje permanece intacto.\n        </p>',
+      information: `<p className="my-3">
+          Herramienta flejadora a batería para fleje de PET y fleje de PP para
+          las aplicaciones más comunes.
+        </p>
+        <p className="my-3">
+          Con la P328 podrá flejar fácilmente todos los tamaños de flejes de
+          polipropileno (PP) y poliéster (PET) de hasta 16 mm.
+        </p>
+        <h2 className="text-textGray font-bold text-xl mt-10">
+          Beneficios P328
+        </h2>
+        <ul className="flex flex-col gap-5 my-5">
+          <li className="flex gap-2 items-center">
+            <img src="/icons/checkList.svg" />
+            <p>Carcasa resistente</p>
+          </li>
+          <li className="flex gap-2 items-center">
+            <img src="/icons/checkList.svg" />
+            <p>Muy poco mantenimiento</p>
+          </li>
+          <li className="flex gap-2 items-center">
+            <img src="/icons/checkList.svg" />
+            <p>Larga vida útil</p>
+          </li>
+          <li className="flex gap-2 items-center">
+            <img src="/icons/checkList.svg" />
+            <p>Ligero de usar gracias a su diseño inteligente</p>
+          </li>
+          <li className="flex gap-2 items-center">
+            <img src="/icons/checkList.svg" />
+            <p>Contador de flejado integrado</p>
+          </li>
+        </ul>
+        <h2 className="text-textGray font-bold text-xl mt-10">Adecuado para</h2>
+        <p>
+          Fleje de poliéster (PET) liso y ondulado FROMM STARstrap TM Fleje de
+          polipropileno (PP)
+        </p>
+        <ul className="flex flex-col gap-5 my-5">
+          <li className="flex gap-2 items-center">
+            <img src="/icons/checkList.svg" />
+            <p>Anchos 10 – 16 mm</p>
+          </li>
+          <li className="flex gap-2 items-center">
+            <img src="/icons/checkList.svg" />
+            <p>Espesores 0,40 – 1,05 mm</p>
+          </li>
+        </ul>
+        <h2 className="text-textGray font-bold text-xl mt-10">Adentro</h2>
+        <p className="my-3">
+          El interior de los nuevos equipos FROMM contiene innovaciones
+          prácticas. Por ejemplo, los motores son sin escobillas y están
+          equipados con protección contra sobrecargas, lo que significa que
+          estos dispositivos requieren menos mantenimiento y ofrecen una vida
+          útil más larga. Un contador de flejes integrado permite leer el número
+          de flejes realizados con un lector disponible opcionalmente.
+        </p>
+        <h2 className="text-textGray font-bold text-xl mt-10">Diseño</h2>
+        <p className="my-3">
+          Con la reconocida fiabilidad suiza, hemos realizado modificaciones en
+          la carcasa. Como resultado, el equipo no solo es más cómodo de usar,
+          sino que también se ha mejorado aún más la resistencia a las caídas.
+          FROMM también ha tenido en cuenta expresamente el trabajo en entornos
+          de trabajo húmedos y polvorientos.
+        </p>
+        <h2 className="text-textGray font-bold text-xl mt-10">
+          Trabaje con menos peso, incluso en paquetes grandes, pequeños y
+          redondos.
+        </h2>
+        <p className="my-3">
+          Para facilitar su uso, FROMM ha mejorado su equipamiento con nuevas
+          técnicas y ha trabajado de forma eficaz en el diseño de la placa base.
+          Ahora se necesita menos fuerza para retirar el dispositivo de debajo
+          del fleje tensado. Esto también se aplica al flejado de paquetes
+          pequeños y redondos. En la mayoría de los casos de flejado
+          imaginables, el fleje permanece intacto.
+        </p>`,
       downloads: [
         {
           name: 'Ficha Técnica',
