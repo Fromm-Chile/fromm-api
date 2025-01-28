@@ -3,6 +3,7 @@ import { CreateProductDto } from '../controllers/dto/create-product.dto';
 import { UpdateProductDto } from '../controllers/dto/update-product.dto';
 import { IProductsService } from './interfaces/product.service.interface';
 import { ProductsRepository } from '../repositories/products.repository';
+import { FilterProductsDto } from '../controllers/dto/filter-product.dto';
 
 @Injectable()
 export class ProductsService implements IProductsService {
@@ -11,8 +12,9 @@ export class ProductsService implements IProductsService {
     return 'This action adds a new product';
   }
 
-  async findAll() {
-    const products = await this.productRepository.findAll();
+  async findAll(filter: FilterProductsDto) {
+    console.log("filter", filter);
+    const products = await this.productRepository.findAll(filter);
     const productObject = products.map((product) => {
       return {
         id: product.id,

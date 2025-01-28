@@ -1,5 +1,6 @@
 // filepath: /Users/rexguzman/fromm/fromm-api/src/products/services/interfaces/product.service.interface.ts
 
+import { FilterProductsDto } from 'src/products/controllers/dto/filter-product.dto';
 import { CreateProductDto } from '../../controllers/dto/create-product.dto';
 import { UpdateProductDto } from '../../controllers/dto/update-product.dto';
 
@@ -17,7 +18,7 @@ type ProductType = {
 
 export interface IProductsService {
   create(createProductDto: CreateProductDto): string;
-  findAll(): Promise<ProductType[]>;
+  findAll(filter: FilterProductsDto): Promise<ProductType[]>;
   findOne(id: number): Promise<ProductType>;
   update(id: number, updateProductDto: UpdateProductDto): string;
   remove(id: number): string;

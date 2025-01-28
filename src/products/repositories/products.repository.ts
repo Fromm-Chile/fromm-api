@@ -3,6 +3,7 @@ import { CreateProductDto } from '../controllers/dto/create-product.dto';
 import { UpdateProductDto } from '../controllers/dto/update-product.dto';
 import { IProductsRepository } from './interfaces/product.repository.interface';
 import { PrismaService } from 'prisma/prisma.service';
+import { FilterProductsDto } from '../controllers/dto/filter-product.dto';
 
 @Injectable()
 export class ProductsRepository implements IProductsRepository {
@@ -12,12 +13,15 @@ export class ProductsRepository implements IProductsRepository {
     return 'This action adds a new product';
   }
 
-  async findAll() {
+  async findAll(filter: FilterProductsDto) {
+    console.log("category", filter.categoryId);
     const products = await this.prisma.product.findMany({
+      where: { categoryId: filter.categoryId && +filter.categoryId },
       include: {
         image: true,
       },
     });
+    console.log(products.forEach((product) => console.log(product.id)));
     products.map((product) => {
       product.jsonDetails = JSON.parse(product.jsonDetails);
       return product;
