@@ -24,8 +24,7 @@ export class ProductsController {
 
   @Get()
   async findAll(@Query('categoryId') categoryId?: number) {
-    console.log(categoryId)
-    return await this.productsService.findAll({categoryId});
+    return await this.productsService.findAll({ categoryId });
   }
 
   // @Get('/category/:categoryId')

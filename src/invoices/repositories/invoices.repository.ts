@@ -1,24 +1,33 @@
-import { Injectable } from "@nestjs/common";
-import { CreateInvoiceDto } from "../controllers/dto/create-invoice.dto";
-import { UpdateInvoiceDto } from "../controllers/dto/update-invoice.dto";
-import { InvoiceEntity } from "./entities/invoice.entity";
-import { IInvoiceRepository } from "./interfaces/invoice.repository.interface";
+import { Injectable } from '@nestjs/common';
+import { IInvoiceRepository } from './interfaces/invoice.repository.interface';
+import { PrismaService } from 'prisma/prisma.service';
+import { Prisma, Invoice } from '@prisma/client';
 
 @Injectable()
 export class InvoicesRepository implements IInvoiceRepository {
-  create(createInvoiceDto: CreateInvoiceDto) {
-    return 'This action adds a new invoice';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(
+    invoice: Prisma.InvoiceCreateWithoutUserInput,
+    userId: number,
+  ): Promise<Invoice> {
+    return await this.prisma.invoice.create({
+      data: {
+        userId,
+        invoiceDetails: invoice.invoiceDetails,
+      },
+    });
   }
 
-  findAll(): InvoiceEntity[] {
-    return 
+  findAll() {
+    return 'This action returns all invoices';
   }
 
   findOne(id: number) {
     return `This action returns a #${id} invoice`;
   }
 
-  update(id: number, updateInvoiceDto: UpdateInvoiceDto) {
+  update(id: number) {
     return `This action updates a #${id} invoice`;
   }
 

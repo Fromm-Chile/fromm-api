@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
@@ -15,22 +15,21 @@ model Category {
   parentCategory   Int?
   createdAt        DateTime   @default(now())
   updatedAt        DateTime?  @updatedAt
-  Categories       Category?  @relation("CategoriesToCategories", fields: [parentCategory], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  categories       Category?  @relation("CategoriesToCategories", fields: [parentCategory], references: [id], onDelete: NoAction, onUpdate: NoAction)
   other_Categories Category[] @relation("CategoriesToCategories")
-  Product          Product[]
+  products         Product[]
 }
 
 model User {
   id        Int       @id @default(autoincrement())
   name      String
-  phone     String
-  address   String?
+  phone     String?
   email     String
-  dni       String
+  company   String?
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   invoice   Invoice[]
-  contact   Contact[]
+  contacts  Contact[]
 }
 
 model Product {
@@ -45,9 +44,9 @@ model Product {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
 
-  category      Category        @relation(fields: [categoryId], references: [id])
-  image         Image[]
-  invoiceDetail InvoiceDetail[]
+  category       Category        @relation(fields: [categoryId], references: [id])
+  images         Image[]
+  invoiceDetails InvoiceDetail[]
 }
 
 model Image {
@@ -56,24 +55,24 @@ model Image {
   url       String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
-  product   Product   @relation(fields: [productId], references: [id])
+  products  Product   @relation(fields: [productId], references: [id])
 }
 
 model Invoice {
-  id            Int             @id @default(autoincrement())
-  userId        Int
-  status        String          @default("PENDING")
-  total         Float
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime?       @updatedAt
-  user          User            @relation(fields: [userId], references: [id])
-  InvoiceDetail InvoiceDetail[]
+  id             Int             @id @default(autoincrement())
+  userId         Int
+  status         String          @default("PENDING")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime?       @updatedAt
+  user           User            @relation(fields: [userId], references: [id])
+  invoiceDetails InvoiceDetail[]
 }
 
 model InvoiceDetail {
   id        Int       @id @default(autoincrement())
   invoiceId Int
   productId Int
+  name      String    @default("")
   quantity  Int
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
@@ -82,14 +81,17 @@ model InvoiceDetail {
 }
 
 model Contact {
-  id        Int       @id @default(autoincrement())
-  userId    Int
-  name      String
-  phone     String
-  email     String
-  message   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  name        String
+  phone       String?
+  email       String
+  company     String?
+  equipment   String?
+  contactType String    @default("CONTACT")
+  message     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
 
   user User @relation(fields: [userId], references: [id])
 }

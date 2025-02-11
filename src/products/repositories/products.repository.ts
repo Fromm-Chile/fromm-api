@@ -14,14 +14,12 @@ export class ProductsRepository implements IProductsRepository {
   }
 
   async findAll(filter: FilterProductsDto) {
-    console.log("category", filter.categoryId);
     const products = await this.prisma.product.findMany({
       where: { categoryId: filter.categoryId && +filter.categoryId },
       include: {
-        image: true,
+        images: true,
       },
     });
-    console.log(products.forEach((product) => console.log(product.id)));
     products.map((product) => {
       product.jsonDetails = JSON.parse(product.jsonDetails);
       return product;
@@ -35,7 +33,7 @@ export class ProductsRepository implements IProductsRepository {
         categoryId,
       },
       include: {
-        image: true,
+        images: true,
       },
     });
     products.map((product) => {
@@ -51,11 +49,22 @@ export class ProductsRepository implements IProductsRepository {
         id,
       },
       include: {
-        image: true,
+        images: true,
       },
     });
     product.jsonDetails = JSON.parse(product.jsonDetails);
     return product;
+  }
+
+  async findMany(ids: number[]) {
+    const products = await this.prisma.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+    return products;
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {

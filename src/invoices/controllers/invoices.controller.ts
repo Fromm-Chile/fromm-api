@@ -1,10 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { InvoicesService } from '../services/invoices.service';
 
-
-@Controller('products')
+@Controller('invoices')
 export class InvoicesController {
   constructor(private readonly invoicesService: InvoicesService) {}
 
@@ -14,7 +21,8 @@ export class InvoicesController {
   }
 
   @Get()
-  findAll() {3
+  findAll() {
+    3;
     return this.invoicesService.findAll();
   }
 

@@ -1,11 +1,9 @@
-import { CreateInvoiceDto } from "src/invoices/controllers/dto/create-invoice.dto";
-import { UpdateInvoiceDto } from "src/invoices/controllers/dto/update-invoice.dto";
-import { InvoiceEntity } from "../entities/invoice.entity";
+import { Invoice, Prisma } from '@prisma/client';
 
 export interface IInvoiceRepository {
-  create(createInvoiceDto: CreateInvoiceDto): string;
-  findAll(): InvoiceEntity[];
+  create(invoice: Prisma.InvoiceCreateInput, userId: number): Promise<Invoice>;
+  findAll(): string;
   findOne(id: number): string;
-  update(id: number, updateInvoiceDto: UpdateInvoiceDto): string;
+  update(id: number): string;
   remove(id: number): string;
 }
