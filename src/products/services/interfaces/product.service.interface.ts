@@ -18,7 +18,9 @@ type ProductType = {
 
 export interface IProductsService {
   create(createProductDto: CreateProductDto): string;
-  findAll(filter: FilterProductsDto): Promise<ProductType[]>;
+  findAll(
+    filter: FilterProductsDto,
+  ): Promise<{ products: ProductType[]; totalPages: number }>;
   findOne(id: number): Promise<ProductType>;
   update(id: number, updateProductDto: UpdateProductDto): string;
   remove(id: number): string;

@@ -28,7 +28,9 @@ export class ProductsService implements IProductsService {
       };
     });
 
-    return productObject;
+    const totalPages = await this.productRepository.findCountPages(filter);
+
+    return { products: productObject, totalPages };
   }
 
   async findAllByCategory(categoryId: number) {

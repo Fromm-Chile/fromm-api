@@ -11,7 +11,6 @@ import {
 import { ProductsService } from '../services/products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { FilterProductsDto } from './dto/filter-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -23,8 +22,12 @@ export class ProductsController {
   }
 
   @Get()
-  async findAll(@Query('categoryId') categoryId?: number) {
-    return await this.productsService.findAll({ categoryId });
+  async findAll(
+    @Query('categoryId') categoryId?: number,
+    @Query('name') name?: string,
+    @Query('page') page?: number,
+  ) {
+    return await this.productsService.findAll({ categoryId, name, page });
   }
 
   // @Get('/category/:categoryId')

@@ -1,3 +1,5 @@
 export class FilterProductsDto {
-    categoryId?: number;
+  categoryId?: number;
+  name?: string;
+  page?: number;
 }

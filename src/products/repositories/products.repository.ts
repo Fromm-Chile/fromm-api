@@ -15,7 +15,14 @@ export class ProductsRepository implements IProductsRepository {
 
   async findAll(filter: FilterProductsDto) {
     const products = await this.prisma.product.findMany({
-      where: { categoryId: filter.categoryId && +filter.categoryId },
+      skip: filter.page * 9 || 0,
+      take: 9,
+      where: {
+        categoryId: filter.categoryId && +filter.categoryId,
+        name: {
+          contains: filter.name,
+        },
+      },
       include: {
         images: true,
       },
@@ -25,6 +32,19 @@ export class ProductsRepository implements IProductsRepository {
       return product;
     });
     return products;
+  }
+
+  async findCountPages(filter: FilterProductsDto) {
+    const count = await this.prisma.product.count({
+      where: {
+        categoryId: filter.categoryId && +filter.categoryId,
+        name: {
+          contains: filter.name,
+        },
+      },
+    });
+
+    return Math.ceil(count / 9);
   }
 
   async findAllByCategory(categoryId: number) {
@@ -44,7 +64,7 @@ export class ProductsRepository implements IProductsRepository {
   }
 
   async findOne(id: number) {
-    const product = await this.prisma.product.findFirst({
+    const product = await this.prisma.product.findUnique({
       where: {
         id,
       },
