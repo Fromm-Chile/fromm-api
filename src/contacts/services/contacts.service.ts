@@ -24,15 +24,16 @@ export class ContactsService {
         company: createContactDto.company,
       });
     }
-    await this.emailService.sendConfirmationUser(user);
-    await this.emailService.sendContactEmail({
-      recipients: ['guzman.tech.cl@gmail.com'],
-      contactDto: createContactDto,
-    });
-    return await this.contactsRepository.create({
+    const newContact = await this.contactsRepository.create({
       ...createContactDto,
       userId: user.id,
     });
+
+    await this.emailService.sendContactEmail(createContactDto, newContact.id);
+
+    await this.emailService.sendContactConfirmationUser(user, newContact.id);
+
+    return newContact;
   }
 
   findAll() {

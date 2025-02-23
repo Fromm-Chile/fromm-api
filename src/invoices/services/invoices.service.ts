@@ -26,9 +26,7 @@ export class InvoicesService implements IInvoicesService {
       });
     }
 
-    await this.emailService.sendInvoiceDetails(createInvoiceDto);
-
-    return await this.invoiceRepository.create(
+    const newInvoice = await this.invoiceRepository.create(
       {
         invoiceDetails: {
           create: createInvoiceDto.invoiceDetails,
@@ -36,6 +34,16 @@ export class InvoicesService implements IInvoicesService {
       },
       user.id,
     );
+
+    await this.emailService.sendInvoiceConfirmationUser(
+      user,
+      createInvoiceDto,
+      newInvoice.id,
+    );
+
+    await this.emailService.sendInvoiceDetails(createInvoiceDto, newInvoice.id);
+
+    return newInvoice;
   }
 
   findAll() {

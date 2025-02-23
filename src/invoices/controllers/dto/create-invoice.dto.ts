@@ -6,6 +6,7 @@ import {
   ArrayMinSize,
   IsString,
   IsOptional,
+  IsNumber,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -37,6 +38,10 @@ export class CreateInvoiceDto {
   @IsOptional()
   @IsString()
   readonly company: string;
+
+  @IsOptional()
+  @IsString()
+  readonly message: string;
 
   @IsArray()
   @ArrayMinSize(1)

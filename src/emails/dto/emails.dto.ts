@@ -1,5 +1,4 @@
 import { IsString, IsOptional, IsEmail } from 'class-validator';
-import { CreateContactDto } from 'src/contacts/controllers/dto/create-dto';
 
 export class SendEmailDto {
   @IsEmail({}, { each: true })
@@ -14,10 +13,4 @@ export class SendEmailDto {
   @IsOptional()
   @IsString()
   text?: string;
-}
-
-export class SendContactEmailDto {
-  @IsEmail({}, { each: true })
-  recipients: string[];
-  contactDto: CreateContactDto;
 }
