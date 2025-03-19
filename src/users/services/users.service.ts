@@ -8,7 +8,10 @@ export class UsersService {
   constructor(private userRepository: UsersRepository) {}
 
   create(createUserDto: CreateUserDto) {
-    return `This action adds a new user`;
+    return this.userRepository.create({
+      name: createUserDto.name,
+      email: createUserDto.email,
+    });
   }
 
   findAll() {
@@ -17,6 +20,10 @@ export class UsersService {
 
   findOne(id: number) {
     return `This action returns a user with id ${id}`;
+  }
+
+  async findOneByEmail(email: string) {
+    return await this.userRepository.findOneByEmail(email);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

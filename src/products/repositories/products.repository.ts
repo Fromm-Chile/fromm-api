@@ -3,6 +3,7 @@ import { CreateProductDto } from '../controllers/dto/create-product.dto';
 import { UpdateProductDto } from '../controllers/dto/update-product.dto';
 import { IProductsRepository } from './interfaces/product.repository.interface';
 import { PrismaService } from 'prisma/prisma.service';
+import { FilterProductsDto } from '../controllers/dto/filter-product.dto';
 
 @Injectable()
 export class ProductsRepository implements IProductsRepository {
@@ -12,10 +13,18 @@ export class ProductsRepository implements IProductsRepository {
     return 'This action adds a new product';
   }
 
-  async findAll() {
+  async findAll(filter: FilterProductsDto) {
     const products = await this.prisma.product.findMany({
+      skip: filter.page * 9 || 0,
+      take: 9,
+      where: {
+        categoryId: filter.categoryId && +filter.categoryId,
+        name: {
+          contains: filter.name,
+        },
+      },
       include: {
-        image: true,
+        images: true,
       },
     });
     products.map((product) => {
@@ -25,13 +34,26 @@ export class ProductsRepository implements IProductsRepository {
     return products;
   }
 
+  async findCountPages(filter: FilterProductsDto) {
+    const count = await this.prisma.product.count({
+      where: {
+        categoryId: filter.categoryId && +filter.categoryId,
+        name: {
+          contains: filter.name,
+        },
+      },
+    });
+
+    return Math.ceil(count / 9);
+  }
+
   async findAllByCategory(categoryId: number) {
     const products = await this.prisma.product.findMany({
       where: {
         categoryId,
       },
       include: {
-        image: true,
+        images: true,
       },
     });
     products.map((product) => {
@@ -42,16 +64,27 @@ export class ProductsRepository implements IProductsRepository {
   }
 
   async findOne(id: number) {
-    const product = await this.prisma.product.findFirst({
+    const product = await this.prisma.product.findUnique({
       where: {
         id,
       },
       include: {
-        image: true,
+        images: true,
       },
     });
     product.jsonDetails = JSON.parse(product.jsonDetails);
     return product;
+  }
+
+  async findMany(ids: number[]) {
+    const products = await this.prisma.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+    return products;
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
