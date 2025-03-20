@@ -21,15 +21,13 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '18.x'
 
       - name: npm install, build, and test
         run: |
-          npm install -g @nestjs/cli
           npm install
-          npx prisma generate
           npm run build --if-present
-          # npm run test --if-present
+          npm run test --if-present
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -62,9 +60,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_ED8ED8A2200D496692DDB2C4B305EE35 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_69B63BADD7574C43A85DCCCAE7291E43 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8278C81795BE4EDC8B485DA941AB6E27 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_BD7A37E892124D858BD71AA962104EB4 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_01447ED88D934BFDB9D8B2712AE1EF8B }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D9F271E02248450BB964175A875173C2 }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
