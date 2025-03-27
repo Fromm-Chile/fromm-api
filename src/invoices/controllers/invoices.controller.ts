@@ -21,14 +21,13 @@ export class InvoicesController {
   }
 
   @Get()
-  findAll() {
-    3;
-    return this.invoicesService.findAll();
+  getInvoices() {
+    return this.invoicesService.getInvoices();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.invoicesService.findOne(+id);
+  getOneInvoice(@Param('id') id: string) {
+    return this.invoicesService.getOneInvoice(+id);
   }
 
   @Patch(':id')

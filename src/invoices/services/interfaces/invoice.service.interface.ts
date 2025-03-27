@@ -4,8 +4,8 @@ import { UpdateInvoiceDto } from 'src/invoices/controllers/dto/update-invoice.dt
 
 export interface IInvoicesService {
   create(createInvoiceDto: CreateInvoiceDto): Promise<Invoice>;
-  findAll(): string;
-  findOne(id: number): string;
+  getInvoices(): Promise<Invoice[]>;
+  getOneInvoice(id: number): Promise<Invoice>;
   update(id: number, updateInvoiceDto: UpdateInvoiceDto): string;
   remove(id: number): string;
 }

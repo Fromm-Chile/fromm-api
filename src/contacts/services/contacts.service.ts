@@ -36,12 +36,16 @@ export class ContactsService {
     return newContact;
   }
 
-  findAll() {
-    return this.contactsRepository.findAll();
+  getAllContacts() {
+    return this.contactsRepository.findAllContacts();
   }
 
-  findOne(id: number) {
-    return this.contactsRepository.findOne(id);
+  getAllServices() {
+    return this.contactsRepository.findAllServices();
+  }
+
+  findOneContact(id: number) {
+    return this.contactsRepository.findOneContact(id);
   }
 
   update(id: number, updateContactDto: UpdateContactDto) {

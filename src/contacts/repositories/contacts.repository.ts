@@ -14,11 +14,27 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  findAll() {
-    return this.prisma.contact.findMany();
+  findAllContacts() {
+    return this.prisma.contact.findMany({
+      where: {
+        contactType: {
+          not: 'SERVICE',
+        },
+      },
+    });
   }
 
-  findOne(id: number) {
+  findAllServices() {
+    return this.prisma.contact.findMany({
+      where: {
+        contactType: {
+          not: 'CONTACT',
+        },
+      },
+    });
+  }
+
+  findOneContact(id: number) {
     return this.prisma.contact.findUnique({
       where: { id },
     });

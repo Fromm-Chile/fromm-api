@@ -6,6 +6,7 @@ import { InvoicesRepository } from '../repositories/invoices.repository';
 import { UsersService } from 'src/users/services/users.service';
 import { EmailService } from 'src/emails/emails.service';
 import { ProductsService } from 'src/products/services/products.service';
+import { Invoice } from '@prisma/client';
 
 @Injectable()
 export class InvoicesService implements IInvoicesService {
@@ -46,12 +47,12 @@ export class InvoicesService implements IInvoicesService {
     return newInvoice;
   }
 
-  findAll() {
-    return 'This action returns all invoices';
+  async getInvoices(): Promise<Invoice[]> {
+    return await this.invoiceRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} invoice`;
+  getOneInvoice(id: number) {
+    return this.invoiceRepository.findOne(id);
   }
 
   update(id: number, updateProductDto: UpdateInvoiceDto) {
