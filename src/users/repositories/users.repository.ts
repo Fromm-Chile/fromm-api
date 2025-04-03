@@ -13,6 +13,7 @@ export class UsersRepository implements IUserRepository {
       data: {
         name: user.name,
         email: user.email,
+        country: user.country,
       },
     });
   }

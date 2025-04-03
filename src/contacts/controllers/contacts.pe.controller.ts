@@ -12,15 +12,15 @@ import { CreateContactDto } from './dto/create-dto';
 import { UpdateContactDto } from './dto/update-dto';
 import { Country } from 'src/assets/enums';
 
-@Controller('contacts')
-export class ContactsController {
+@Controller('pe/contacts')
+export class ContactsControllerPeru {
   constructor(private readonly contactsService: ContactsService) {}
 
   @Post()
   create(@Body() createContactDto: CreateContactDto) {
     return this.contactsService.create({
       ...createContactDto,
-      countryId: Country.CL,
+      countryId: Country.PE,
     });
   }
 

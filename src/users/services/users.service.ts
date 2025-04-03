@@ -2,15 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../controllers/dto/create-user.dto';
 import { UpdateUserDto } from '../controllers/dto/update-user.dto';
 import { UsersRepository } from '../repositories/users.repository';
+import { CreateUserByCountryDto } from '../repositories/interfaces/user.repository.interface';
 
 @Injectable()
 export class UsersService {
   constructor(private userRepository: UsersRepository) {}
 
-  create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserByCountryDto) {
     return this.userRepository.create({
       name: createUserDto.name,
       email: createUserDto.email,
+      country: {
+        connect: {
+          id: createUserDto.countryId,
+        },
+      },
     });
   }
 

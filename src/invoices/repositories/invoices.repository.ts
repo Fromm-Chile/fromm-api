@@ -22,7 +22,11 @@ export class InvoicesRepository implements IInvoiceRepository {
   async findAll(): Promise<Invoice[]> {
     return await this.prisma.invoice.findMany({
       include: {
-        user: true,
+        user: {
+          include: {
+            country: true,
+          },
+        },
       },
     });
   }
@@ -33,7 +37,11 @@ export class InvoicesRepository implements IInvoiceRepository {
         id,
       },
       include: {
-        user: true,
+        user: {
+          include: {
+            country: true,
+          },
+        },
         invoiceDetails: true,
       },
     });

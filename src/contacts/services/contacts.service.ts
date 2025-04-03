@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ContactsRepository } from '../repositories/contacts.repository';
-import { CreateContactDto } from '../controllers/dto/create-dto';
 import { UpdateContactDto } from '../controllers/dto/update-dto';
 import { UsersService } from '../../users/services/users.service';
 import { EmailService } from 'src/emails/emails.service';
+import { CreateContactByCountryDto } from '../repositories/interfaces/contact.repository.interfaces';
 
 @Injectable()
 export class ContactsService {
@@ -13,7 +13,8 @@ export class ContactsService {
     private readonly emailService: EmailService,
   ) {}
 
-  async create(createContactDto: CreateContactDto) {
+  async create(createContactDto: CreateContactByCountryDto) {
+    const { countryId, ...contactData } = createContactDto;
     let user = await this.usersService.findOneByEmail(createContactDto.email);
 
     if (!user) {
@@ -22,12 +23,13 @@ export class ContactsService {
         name: createContactDto.name,
         phone: createContactDto.phone,
         company: createContactDto.company,
+        countryId: createContactDto.countryId,
       });
     }
-    const newContact = await this.contactsRepository.create({
-      ...createContactDto,
-      userId: user.id,
-    });
+    const newContact = await this.contactsRepository.create(
+      contactData,
+      user.id,
+    );
 
     await this.emailService.sendContactEmail(createContactDto, newContact.id);
 

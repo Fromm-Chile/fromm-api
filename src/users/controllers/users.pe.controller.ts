@@ -16,15 +16,15 @@ enum Country {
   CL = 1,
 }
 
-@Controller('users')
-export class UsersController {
+@Controller('pe/users')
+export class UsersControllerPeru {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create({
       ...createUserDto,
-      countryId: Country.CL,
+      countryId: Country.PE,
     });
   }
 

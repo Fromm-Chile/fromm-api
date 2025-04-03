@@ -12,15 +12,15 @@ import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { InvoicesService } from '../services/invoices.service';
 import { Country } from 'src/assets/enums';
 
-@Controller('invoices')
-export class InvoicesController {
+@Controller('pe/invoices')
+export class InvoicesControllerPeru {
   constructor(private readonly invoicesService: InvoicesService) {}
 
   @Post()
   create(@Body() createInvoiceDto: CreateInvoiceDto) {
     return this.invoicesService.create({
       ...createInvoiceDto,
-      countryId: Country.CL,
+      countryId: Country.PE,
     });
   }
 
