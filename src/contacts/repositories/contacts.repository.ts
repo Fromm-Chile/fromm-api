@@ -1,24 +1,50 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
-import { IContactsRepository } from './interfaces/contact.repository.interfaces';
+import {
+  CreateContactByCountryDto,
+  IContactsRepository,
+} from './interfaces/contact.repository.interfaces';
 import { CreateContactDto } from '../controllers/dto/create-dto';
 import { UpdateContactDto } from '../controllers/dto/update-dto';
+import { Contact, Prisma } from '@prisma/client';
 
 @Injectable()
 export class ContactsRepository implements IContactsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createContactDto: CreateContactDto) {
+  async create(
+    contact: Prisma.ContactCreateWithoutUserInput,
+    userId: number,
+  ): Promise<Contact> {
     return await this.prisma.contact.create({
-      data: createContactDto,
+      data: {
+        ...contact,
+        userId,
+      },
     });
   }
 
-  findAll() {
-    return this.prisma.contact.findMany();
+  findAllContacts() {
+    return this.prisma.contact.findMany({
+      where: {
+        contactType: {
+          not: 'SERVICE',
+        },
+      },
+    });
   }
 
-  findOne(id: number) {
+  findAllServices() {
+    return this.prisma.contact.findMany({
+      where: {
+        contactType: {
+          not: 'CONTACT',
+        },
+      },
+    });
+  }
+
+  findOneContact(id: number) {
     return this.prisma.contact.findUnique({
       where: { id },
     });

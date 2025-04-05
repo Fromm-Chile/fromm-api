@@ -7,6 +7,8 @@ import { PrismaModule } from 'prisma/prisma.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmailModule } from './emails/emails.module';
+import { AuthModule } from './auth/auth.module';
+import config from 'config/config';
 
 @Module({
   imports: [
@@ -17,7 +19,9 @@ import { EmailModule } from './emails/emails.module';
     PrismaModule,
     ContactsModule,
     EmailModule,
+    AuthModule,
     ConfigModule.forRoot({
+      load: [config],
       isGlobal: true,
     }),
   ],

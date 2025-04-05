@@ -10,6 +10,7 @@ import {
 import { ContactsService } from '../services/contacts.service';
 import { CreateContactDto } from './dto/create-dto';
 import { UpdateContactDto } from './dto/update-dto';
+import { Country } from 'src/assets/enums';
 
 @Controller('contacts')
 export class ContactsController {
@@ -17,17 +18,25 @@ export class ContactsController {
 
   @Post()
   create(@Body() createContactDto: CreateContactDto) {
-    return this.contactsService.create(createContactDto);
+    return this.contactsService.create({
+      ...createContactDto,
+      countryId: Country.CL,
+    });
   }
 
-  @Get()
-  findAll() {
-    return this.contactsService.findAll();
+  @Get('/messages')
+  getContacts() {
+    return this.contactsService.getAllContacts();
+  }
+
+  @Get('/services')
+  getServices() {
+    return this.contactsService.getAllServices();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.contactsService.findOne(+id);
+  findOneContact(@Param('id') id: string) {
+    return this.contactsService.findOneContact(+id);
   }
 
   @Patch(':id')

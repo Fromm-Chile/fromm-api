@@ -1,7 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+
+enum Country {
+  PE = 2,
+  CL = 1,
+}
 
 @Controller('users')
 export class UsersController {
@@ -9,12 +22,15 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.create({
+      ...createUserDto,
+      countryId: Country.CL,
+    });
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  getUsers() {
+    return this.usersService.getUsers();
   }
 
   @Get(':id')

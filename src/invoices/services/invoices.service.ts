@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateInvoiceDto } from '../controllers/dto/create-invoice.dto';
 import { UpdateInvoiceDto } from '../controllers/dto/update-invoice.dto';
-import { IInvoicesService } from './interfaces/invoice.service.interface';
+import {
+  CreateInvoiceByCountryDto,
+  IInvoicesService,
+} from './interfaces/invoice.service.interface';
 import { InvoicesRepository } from '../repositories/invoices.repository';
 import { UsersService } from 'src/users/services/users.service';
 import { EmailService } from 'src/emails/emails.service';
 import { ProductsService } from 'src/products/services/products.service';
+import { Invoice } from '@prisma/client';
 
 @Injectable()
 export class InvoicesService implements IInvoicesService {
@@ -16,13 +20,17 @@ export class InvoicesService implements IInvoicesService {
     private readonly productsService: ProductsService,
   ) {}
 
-  async create(createInvoiceDto: CreateInvoiceDto) {
-    let user = await this.usersService.findOneByEmail(createInvoiceDto.email);
+  async create(createInvoiceDto: CreateInvoiceByCountryDto) {
+    let user = await this.usersService.findOneByEmail(
+      createInvoiceDto.email,
+      createInvoiceDto.countryId,
+    );
 
     if (!user) {
       user = await this.usersService.create({
         name: createInvoiceDto.name,
         email: createInvoiceDto.email,
+        countryId: createInvoiceDto.countryId,
       });
     }
 
@@ -46,12 +54,12 @@ export class InvoicesService implements IInvoicesService {
     return newInvoice;
   }
 
-  findAll() {
-    return 'This action returns all invoices';
+  async getInvoices(): Promise<Invoice[]> {
+    return await this.invoiceRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} invoice`;
+  getOneInvoice(id: number) {
+    return this.invoiceRepository.findOne(id);
   }
 
   update(id: number, updateProductDto: UpdateInvoiceDto) {

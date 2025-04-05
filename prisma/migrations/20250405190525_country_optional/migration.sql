@@ -1,0 +1,25 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- DropForeignKey
+ALTER TABLE [dbo].[User] DROP CONSTRAINT [User_countryId_fkey];
+
+-- AlterTable
+ALTER TABLE [dbo].[User] ALTER COLUMN [countryId] INT NULL;
+
+-- AddForeignKey
+ALTER TABLE [dbo].[User] ADD CONSTRAINT [User_countryId_fkey] FOREIGN KEY ([countryId]) REFERENCES [dbo].[Country]([id]) ON DELETE SET NULL ON UPDATE CASCADE;
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH

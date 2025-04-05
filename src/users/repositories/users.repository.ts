@@ -13,21 +13,22 @@ export class UsersRepository implements IUserRepository {
       data: {
         name: user.name,
         email: user.email,
+        country: user.country,
       },
     });
   }
 
-  findAll() {
-    return this.prisma.user.findMany();
+  async findAll() {
+    return await this.prisma.user.findMany();
   }
 
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }
 
-  findOneByEmail(email: string) {
+  findOneByEmail(email: string, countryId: number) {
     return this.prisma.user.findFirst({
-      where: { email },
+      where: { email, countryId },
     });
   }
 

@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEmail } from 'class-validator';
+import { IsString, IsOptional, IsEmail, IsNumber } from 'class-validator';
 
 export class SendEmailDto {
   @IsEmail({}, { each: true })
@@ -13,4 +13,9 @@ export class SendEmailDto {
   @IsOptional()
   @IsString()
   text?: string;
+}
+
+export class SendEmailDtoByCountry extends SendEmailDto {
+  @IsNumber()
+  countryId: number;
 }

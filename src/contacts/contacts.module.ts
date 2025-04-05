@@ -4,9 +4,10 @@ import { ContactsController } from './controllers/contacts.controller';
 import { ContactsRepository } from './repositories/contacts.repository';
 import { UsersModule } from 'src/users/users.module';
 import { EmailModule } from 'src/emails/emails.module';
+import { ContactsControllerPeru } from './controllers/contacts.pe.controller';
 
 @Module({
-  controllers: [ContactsController],
+  controllers: [ContactsController, ContactsControllerPeru],
   providers: [ContactsService, ContactsRepository],
   imports: [UsersModule, EmailModule],
 })

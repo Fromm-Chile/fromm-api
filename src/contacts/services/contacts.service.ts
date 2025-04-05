@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ContactsRepository } from '../repositories/contacts.repository';
-import { CreateContactDto } from '../controllers/dto/create-dto';
 import { UpdateContactDto } from '../controllers/dto/update-dto';
 import { UsersService } from '../../users/services/users.service';
 import { EmailService } from 'src/emails/emails.service';
+import { CreateContactByCountryDto } from '../repositories/interfaces/contact.repository.interfaces';
 
 @Injectable()
 export class ContactsService {
@@ -13,8 +13,12 @@ export class ContactsService {
     private readonly emailService: EmailService,
   ) {}
 
-  async create(createContactDto: CreateContactDto) {
-    let user = await this.usersService.findOneByEmail(createContactDto.email);
+  async create(createContactDto: CreateContactByCountryDto) {
+    const { countryId, ...contactData } = createContactDto;
+    let user = await this.usersService.findOneByEmail(
+      createContactDto.email,
+      countryId,
+    );
 
     if (!user) {
       user = await this.usersService.create({
@@ -22,12 +26,13 @@ export class ContactsService {
         name: createContactDto.name,
         phone: createContactDto.phone,
         company: createContactDto.company,
+        countryId: createContactDto.countryId,
       });
     }
-    const newContact = await this.contactsRepository.create({
-      ...createContactDto,
-      userId: user.id,
-    });
+    const newContact = await this.contactsRepository.create(
+      contactData,
+      user.id,
+    );
 
     await this.emailService.sendContactEmail(createContactDto, newContact.id);
 
@@ -36,12 +41,16 @@ export class ContactsService {
     return newContact;
   }
 
-  findAll() {
-    return this.contactsRepository.findAll();
+  getAllContacts() {
+    return this.contactsRepository.findAllContacts();
   }
 
-  findOne(id: number) {
-    return this.contactsRepository.findOne(id);
+  getAllServices() {
+    return this.contactsRepository.findAllServices();
+  }
+
+  findOneContact(id: number) {
+    return this.contactsRepository.findOneContact(id);
   }
 
   update(id: number, updateContactDto: UpdateContactDto) {

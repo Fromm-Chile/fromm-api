@@ -19,12 +19,32 @@ export class InvoicesRepository implements IInvoiceRepository {
     });
   }
 
-  findAll() {
-    return 'This action returns all invoices';
+  async findAll(): Promise<Invoice[]> {
+    return await this.prisma.invoice.findMany({
+      include: {
+        user: {
+          include: {
+            country: true,
+          },
+        },
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} invoice`;
+  async findOne(id: number) {
+    return await this.prisma.invoice.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user: {
+          include: {
+            country: true,
+          },
+        },
+        invoiceDetails: true,
+      },
+    });
   }
 
   update(id: number) {

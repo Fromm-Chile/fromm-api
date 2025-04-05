@@ -20,16 +20,58 @@ model Category {
   products         Product[]
 }
 
+model Country {
+  id        Int       @id @default(autoincrement())
+  name      String
+  code      String    @unique
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  users     User[]
+}
+
 model User {
   id        Int       @id @default(autoincrement())
   name      String
   phone     String?
+  countryId Int?
+  country   Country?  @relation(fields: [countryId], references: [id])
   email     String
   company   String?
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   invoice   Invoice[]
   contacts  Contact[]
+}
+
+model Roles {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime?     @updatedAt
+  userAdmin   UserAdmin[]
+  permissions Permissions[]
+}
+
+model Permissions {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  roleId    Int
+  role      Roles     @relation(fields: [roleId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model UserAdmin {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  roleId    Int
+  role      Roles     @relation(fields: [roleId], references: [id])
+  isActive  Boolean   @default(true)
 }
 
 model Product {

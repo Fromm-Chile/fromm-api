@@ -10,6 +10,7 @@ import {
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { InvoicesService } from '../services/invoices.service';
+import { Country } from 'src/assets/enums';
 
 @Controller('invoices')
 export class InvoicesController {
@@ -17,18 +18,20 @@ export class InvoicesController {
 
   @Post()
   create(@Body() createInvoiceDto: CreateInvoiceDto) {
-    return this.invoicesService.create(createInvoiceDto);
+    return this.invoicesService.create({
+      ...createInvoiceDto,
+      countryId: Country.CL,
+    });
   }
 
   @Get()
-  findAll() {
-    3;
-    return this.invoicesService.findAll();
+  getInvoices() {
+    return this.invoicesService.getInvoices();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.invoicesService.findOne(+id);
+  getOneInvoice(@Param('id') id: string) {
+    return this.invoicesService.getOneInvoice(+id);
   }
 
   @Patch(':id')
