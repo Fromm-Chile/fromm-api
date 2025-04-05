@@ -26,9 +26,9 @@ export class UsersRepository implements IUserRepository {
     return `This action returns a #${id} user`;
   }
 
-  findOneByEmail(email: string) {
+  findOneByEmail(email: string, countryId: number) {
     return this.prisma.user.findFirst({
-      where: { email },
+      where: { email, countryId },
     });
   }
 

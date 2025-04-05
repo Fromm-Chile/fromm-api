@@ -34,8 +34,8 @@ model User {
   id        Int       @id @default(autoincrement())
   name      String
   phone     String?
-  countryId Int
-  country   Country   @relation(fields: [countryId], references: [id])
+  countryId Int?
+  country   Country?  @relation(fields: [countryId], references: [id])
   email     String
   company   String?
   createdAt DateTime  @default(now())
