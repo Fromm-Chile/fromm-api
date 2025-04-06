@@ -30,6 +30,8 @@ export class InvoicesService implements IInvoicesService {
       user = await this.usersService.create({
         name: createInvoiceDto.name,
         email: createInvoiceDto.email,
+        phone: createInvoiceDto.phone,
+        company: createInvoiceDto.company,
         countryId: createInvoiceDto.countryId,
       });
     }

@@ -10,8 +10,7 @@ export class UsersService {
 
   create(createUserDto: CreateUserByCountryDto) {
     return this.userRepository.create({
-      name: createUserDto.name,
-      email: createUserDto.email,
+      ...createUserDto,
       country: {
         connect: {
           id: createUserDto.countryId,
