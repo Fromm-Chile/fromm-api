@@ -59,9 +59,9 @@ export class EmailService {
     } = dto;
     const html = `<div style="font-size: 18px;"><p><strong>Nombre:</strong> ${name}</p>
       <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Telefono:</strong> ${phone}</p>
+      <p><strong>Telefono:</strong> ${phone || 'No incluido.'}</p>
       <p><strong>Empresa:</strong> ${company}</p>
-        <p><strong>Equipo:</strong> ${equipment || 'NO APLICA.'}</p>
+       ${contactType === 'SERVICE' ? `<p><strong>Equipo:</strong> ${equipment}</p>` : ``} 
       <p><strong>Mensaje:</strong> ${message}</p></div>`;
 
     await this.sendEmail(
