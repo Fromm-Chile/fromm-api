@@ -17,7 +17,6 @@ export class InvoicesService implements IInvoicesService {
     private readonly invoiceRepository: InvoicesRepository,
     private readonly usersService: UsersService,
     private readonly emailService: EmailService,
-    private readonly productsService: ProductsService,
   ) {}
 
   async create(createInvoiceDto: CreateInvoiceByCountryDto) {
@@ -41,6 +40,7 @@ export class InvoicesService implements IInvoicesService {
         invoiceDetails: {
           create: createInvoiceDto.invoiceDetails,
         },
+        message: createInvoiceDto.message,
       },
       user.id,
     );

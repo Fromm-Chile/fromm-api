@@ -15,6 +15,7 @@ export class InvoicesRepository implements IInvoiceRepository {
       data: {
         userId,
         invoiceDetails: invoice.invoiceDetails,
+        message: invoice.message,
       },
     });
   }
