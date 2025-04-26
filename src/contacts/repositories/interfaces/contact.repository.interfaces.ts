@@ -11,8 +11,7 @@ export interface IContactsRepository {
     contact: Prisma.ContactCreateWithoutUserInput,
     userId: number,
   ): Promise<Contact>;
-  findAllContacts(): Promise<Contact[]>;
-  findAllServices(): Promise<Contact[]>;
+  findAllContacts(contactType: string, code: string): Promise<Contact[]>;
   findOneContact(id: number): Promise<Contact>;
   update(id: number, updateContactDto: UpdateContactDto): Promise<Contact>;
   remove(id: number): Promise<Contact>;

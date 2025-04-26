@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { CreateUserAdminDto } from '../controllers/dto/create-userAdmin.dto';
 import { UpdateUserAdminDto } from '../controllers/dto/update-userAdmin.dto';
 import { UsersAdminRepository } from '../repositories/usersAdmin.repository';
+import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 
+@UseGuards(LocalAuthGuard)
 @Injectable()
 export class UsersAdminService {
   constructor(private usersAdminRepository: UsersAdminRepository) {}

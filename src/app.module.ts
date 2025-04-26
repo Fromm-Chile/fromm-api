@@ -9,12 +9,14 @@ import { ConfigModule } from '@nestjs/config';
 import { EmailModule } from './emails/emails.module';
 import { AuthModule } from './auth/auth.module';
 import config from 'config/config';
+import { UsersAdminModule } from './usersAdmin/usersAdmin.module';
 
 @Module({
   imports: [
     ProductsModule,
     InvoicesModule,
     UsersModule,
+    UsersAdminModule,
     CategoriesModule,
     PrismaModule,
     ContactsModule,

@@ -6,10 +6,25 @@ import { UsersModule } from 'src/users/users.module';
 import { EmailModule } from 'src/emails/emails.module';
 import { ProductsModule } from 'src/products/products.module';
 import { InvoicesControllerPeru } from './controllers/invoices.pe.controller';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from 'src/auth/auth.module';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { InvoicesAdminController } from './controllers/invoices.admin.controller';
 
 @Module({
-  controllers: [InvoicesController, InvoicesControllerPeru],
-  providers: [InvoicesService, InvoicesRepository],
-  imports: [UsersModule, EmailModule, ProductsModule],
+  controllers: [
+    InvoicesController,
+    InvoicesControllerPeru,
+    InvoicesAdminController,
+  ],
+  providers: [
+    InvoicesService,
+    InvoicesRepository,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
+  imports: [UsersModule, EmailModule, ProductsModule, AuthModule],
 })
 export class InvoicesModule {}

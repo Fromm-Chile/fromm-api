@@ -13,7 +13,6 @@ export class EmailService {
   constructor(private readonly configService: ConfigService) {}
 
   emailTransport(countryId: number) {
-    console.log(countryId);
     const transporter = nodemailer.createTransport({
       host: this.configService.get<string>(`EMAIL_HOST_${countryId}`),
       port: this.configService.get<number>(`EMAIL_PORT_${countryId}`),

@@ -10,6 +10,7 @@ import { UsersService } from 'src/users/services/users.service';
 import { EmailService } from 'src/emails/emails.service';
 import { ProductsService } from 'src/products/services/products.service';
 import { Invoice } from '@prisma/client';
+import { FilterInvoicesDto } from '../controllers/dto/filter-invoice.dto';
 
 @Injectable()
 export class InvoicesService implements IInvoicesService {
@@ -56,8 +57,58 @@ export class InvoicesService implements IInvoicesService {
     return newInvoice;
   }
 
-  async getInvoices(): Promise<Invoice[]> {
-    return await this.invoiceRepository.findAll();
+  async createByAdmin(createInvoiceDto: CreateInvoiceByCountryDto) {
+    let user = await this.usersService.findOneByEmail(
+      createInvoiceDto.email,
+      createInvoiceDto.countryId,
+    );
+
+    if (!user) {
+      user = await this.usersService.create({
+        name: createInvoiceDto.name,
+        email: createInvoiceDto.email,
+        phone: createInvoiceDto.phone,
+        company: createInvoiceDto.company,
+        countryId: createInvoiceDto.countryId,
+      });
+    }
+
+    const newInvoice = await this.invoiceRepository.createByAdmin(
+      {
+        message: createInvoiceDto.message,
+      },
+      user.id,
+    );
+
+    return newInvoice;
+  }
+
+  async getInvoices(code: string): Promise<any> {
+    const invoices = await this.invoiceRepository.findAll(code);
+    const totalInvoices = invoices.length;
+    const pendingInvoices = invoices.filter(
+      (invoice) => invoice.statusR.name === 'PENDIENTE',
+    ).length;
+    const soldInvoices = invoices.filter(
+      (invoice) => invoice.statusR.name === 'VENDIDO',
+    ).length;
+
+    return {
+      totalInvoices,
+      pendingInvoices,
+      soldInvoices,
+    };
+  }
+
+  async getInvoicesAdmin(filter: FilterInvoicesDto): Promise<{
+    cotizaciones: Invoice[];
+    totalPages: number;
+  }> {
+    const invoices = await this.invoiceRepository.findAllAdmin(filter);
+
+    const totalPages = await this.invoiceRepository.findCountPages(filter);
+
+    return { cotizaciones: invoices, totalPages };
   }
 
   getOneInvoice(id: number) {

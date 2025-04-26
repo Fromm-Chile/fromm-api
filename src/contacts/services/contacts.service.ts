@@ -41,12 +41,8 @@ export class ContactsService {
     return newContact;
   }
 
-  getAllContacts() {
-    return this.contactsRepository.findAllContacts();
-  }
-
-  getAllServices() {
-    return this.contactsRepository.findAllServices();
+  getAllContacts(contactType: string, code: string) {
+    return this.contactsRepository.findAllContacts(contactType, code);
   }
 
   findOneContact(id: number) {

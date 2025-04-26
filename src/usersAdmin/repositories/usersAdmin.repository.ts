@@ -3,6 +3,7 @@ import { PrismaService } from 'prisma/prisma.service';
 import { CreateUserAdminDto } from '../controllers/dto/create-userAdmin.dto';
 import { UpdateUserAdminDto } from '../controllers/dto/update-userAdmin.dto';
 import { IUserAdminRepository } from './interfaces/userAdmin.repository.interface';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersAdminRepository implements IUserAdminRepository {
@@ -10,7 +11,10 @@ export class UsersAdminRepository implements IUserAdminRepository {
 
   async create(createUserAdminDto: CreateUserAdminDto) {
     return await this.prisma.userAdmin.create({
-      data: createUserAdminDto,
+      data: {
+        ...createUserAdminDto,
+        password: await bcrypt.hash(createUserAdminDto.password, 10),
+      },
     });
   }
 

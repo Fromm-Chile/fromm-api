@@ -3,6 +3,7 @@ import { UpdateUserDto } from '../controllers/dto/update-user.dto';
 import { IUserRepository } from './interfaces/user.repository.interface';
 import { PrismaService } from 'prisma/prisma.service';
 import { User, Prisma } from '@prisma/client';
+import { FilterUserDto } from '../controllers/dto/filter-user.dto';
 
 @Injectable()
 export class UsersRepository implements IUserRepository {
@@ -20,17 +21,34 @@ export class UsersRepository implements IUserRepository {
     });
   }
 
-  async findAll() {
-    return await this.prisma.user.findMany();
+  async findAll(code: string): Promise<User[]> {
+    return await this.prisma.user.findMany({
+      where: {
+        country: {
+          code,
+        },
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  findOneByEmail(email: string, countryId: number) {
-    return this.prisma.user.findFirst({
+  async findOneByEmail(email: string, countryId: number) {
+    return await this.prisma.user.findFirst({
       where: { email, countryId },
+    });
+  }
+
+  async findManyByEmail(filter: FilterUserDto) {
+    return await this.prisma.user.findMany({
+      where: {
+        email: {
+          contains: filter.email,
+        },
+        country: {
+          code: filter.countryCode,
+        },
+      },
+      take: 5,
+      skip: 0,
     });
   }
 
