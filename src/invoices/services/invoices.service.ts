@@ -11,6 +11,7 @@ import { EmailService } from 'src/emails/emails.service';
 import { ProductsService } from 'src/products/services/products.service';
 import { Invoice } from '@prisma/client';
 import { FilterInvoicesDto } from '../controllers/dto/filter-invoice.dto';
+import { InvoiceHistoryService } from 'src/invoiceHistory/services/invoiceHistory.service';
 
 @Injectable()
 export class InvoicesService implements IInvoicesService {
@@ -18,6 +19,7 @@ export class InvoicesService implements IInvoicesService {
     private readonly invoiceRepository: InvoicesRepository,
     private readonly usersService: UsersService,
     private readonly emailService: EmailService,
+    private readonly invoiceHistoryService: InvoiceHistoryService,
   ) {}
 
   async create(createInvoiceDto: CreateInvoiceByCountryDto) {
@@ -46,6 +48,13 @@ export class InvoicesService implements IInvoicesService {
       user.id,
     );
 
+    await this.invoiceHistoryService.create({
+      invoiceId: newInvoice.id,
+      adminUserId: null,
+      status: 'PENDIENTE',
+      comment: 'Cotización creada por el usuario',
+    });
+
     await this.emailService.sendInvoiceConfirmationUser(
       user,
       createInvoiceDto,
@@ -57,7 +66,10 @@ export class InvoicesService implements IInvoicesService {
     return newInvoice;
   }
 
-  async createByAdmin(createInvoiceDto: CreateInvoiceByCountryDto) {
+  async createByAdmin(
+    createInvoiceDto: CreateInvoiceByCountryDto,
+    adminUserId: number,
+  ) {
     let user = await this.usersService.findOneByEmail(
       createInvoiceDto.email,
       createInvoiceDto.countryId,
@@ -80,21 +92,28 @@ export class InvoicesService implements IInvoicesService {
       user.id,
     );
 
+    await this.invoiceHistoryService.create({
+      invoiceId: newInvoice.id,
+      adminUserId,
+      status: 'PENDIENTE',
+      comment: 'Cotización creada por el administrador',
+    });
+
     return newInvoice;
   }
 
   async getInvoices(code: string): Promise<any> {
-    const invoices = await this.invoiceRepository.findAll(code);
-    const totalInvoices = invoices.length;
-    const pendingInvoices = invoices.filter(
-      (invoice) => invoice.statusR.name === 'PENDIENTE',
-    ).length;
-    const soldInvoices = invoices.filter(
-      (invoice) => invoice.statusR.name === 'VENDIDO',
-    ).length;
-
+    const totalCount = await this.invoiceRepository.totalCount(code);
+    const pendingInvoices = await this.invoiceRepository.statusCount(
+      code,
+      'PENDIENTE',
+    );
+    const soldInvoices = await this.invoiceRepository.statusCount(
+      code,
+      'VENDIDO',
+    );
     return {
-      totalInvoices,
+      totalCount,
       pendingInvoices,
       soldInvoices,
     };
@@ -111,12 +130,12 @@ export class InvoicesService implements IInvoicesService {
     return { cotizaciones: invoices, totalPages };
   }
 
-  getOneInvoice(id: number) {
-    return this.invoiceRepository.findOne(id);
+  async getOneInvoice(id: number) {
+    return await this.invoiceRepository.findOne(id);
   }
 
-  update(id: number, updateProductDto: UpdateInvoiceDto) {
-    return `This action updates a #${id} invoice`;
+  async updateStatus(updateInvoiceDto: UpdateInvoiceDto, id: number) {
+    return await this.invoiceRepository.updateStatus(updateInvoiceDto, id);
   }
 
   remove(id: number) {

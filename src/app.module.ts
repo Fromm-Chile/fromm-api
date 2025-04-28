@@ -10,6 +10,7 @@ import { EmailModule } from './emails/emails.module';
 import { AuthModule } from './auth/auth.module';
 import config from 'config/config';
 import { UsersAdminModule } from './usersAdmin/usersAdmin.module';
+import { InvoiceHistoryModule } from './invoiceHistory/invoiceHistory.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UsersAdminModule } from './usersAdmin/usersAdmin.module';
     ContactsModule,
     EmailModule,
     AuthModule,
+    InvoiceHistoryModule,
     ConfigModule.forRoot({
       load: [config],
       isGlobal: true,

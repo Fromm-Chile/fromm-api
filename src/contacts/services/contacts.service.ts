@@ -4,6 +4,7 @@ import { UpdateContactDto } from '../controllers/dto/update-dto';
 import { UsersService } from '../../users/services/users.service';
 import { EmailService } from 'src/emails/emails.service';
 import { CreateContactByCountryDto } from '../repositories/interfaces/contact.repository.interfaces';
+import { FilterContactDto } from '../controllers/dto/filter-contact-dto';
 
 @Injectable()
 export class ContactsService {
@@ -41,12 +42,41 @@ export class ContactsService {
     return newContact;
   }
 
-  getAllContacts(contactType: string, code: string) {
-    return this.contactsRepository.findAllContacts(contactType, code);
+  async getContactCount(code: string, connectType: string) {
+    const totalCount = await this.contactsRepository.totalCount(
+      code,
+      connectType,
+    );
+    const pendingContacts = await this.contactsRepository.statusCount(
+      code,
+      'PENDIENTE',
+      connectType,
+    );
+    const invoiceContacts = await this.contactsRepository.statusCount(
+      code,
+      'COTIZADO',
+      connectType,
+    );
+    return {
+      totalCount,
+      pendingContacts,
+      invoiceContacts,
+    };
   }
 
-  findOneContact(id: number) {
-    return this.contactsRepository.findOneContact(id);
+  async getAllContacts(filter: FilterContactDto) {
+    const contactos = await this.contactsRepository.findAllContacts(filter);
+
+    const totalPages = await this.contactsRepository.findCountPages(filter);
+
+    return {
+      contactos,
+      totalPages,
+    };
+  }
+
+  async findOneContact(id: number) {
+    return await this.contactsRepository.findOneContact(id);
   }
 
   update(id: number, updateContactDto: UpdateContactDto) {

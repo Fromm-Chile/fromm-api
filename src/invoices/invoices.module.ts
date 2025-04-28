@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from 'src/auth/auth.module';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { InvoicesAdminController } from './controllers/invoices.admin.controller';
+import { InvoiceHistoryModule } from 'src/invoiceHistory/invoiceHistory.module';
 
 @Module({
   controllers: [
@@ -25,6 +26,12 @@ import { InvoicesAdminController } from './controllers/invoices.admin.controller
       useClass: AuthGuard,
     },
   ],
-  imports: [UsersModule, EmailModule, ProductsModule, AuthModule],
+  imports: [
+    UsersModule,
+    EmailModule,
+    ProductsModule,
+    AuthModule,
+    InvoiceHistoryModule,
+  ],
 })
 export class InvoicesModule {}

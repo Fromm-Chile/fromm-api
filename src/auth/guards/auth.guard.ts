@@ -44,6 +44,7 @@ export class AuthGuard implements CanActivate {
       });
 
       const user = payload;
+      request.user = user;
       const userRole = await this.prisma.userAdmin.findUnique({
         where: { id: user.sub },
         include: {

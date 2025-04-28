@@ -15,6 +15,9 @@ export interface IInvoicesService {
     totalPages: number;
   }>;
   getOneInvoice(id: number): Promise<Invoice>;
-  update(id: number, updateInvoiceDto: UpdateInvoiceDto): string;
+  updateStatus(
+    updateInvoiceDto: UpdateInvoiceDto,
+    id: number,
+  ): Promise<Invoice>;
   remove(id: number): string;
 }

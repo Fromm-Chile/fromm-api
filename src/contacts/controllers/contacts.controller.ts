@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ContactsService } from '../services/contacts.service';
 import { CreateContactDto } from './dto/create-dto';
