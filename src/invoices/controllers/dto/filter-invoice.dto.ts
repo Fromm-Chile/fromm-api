@@ -4,4 +4,5 @@ export class FilterInvoicesDto {
   name?: string;
   code?: string;
   limit?: number;
+  idOrder?: string;
 }

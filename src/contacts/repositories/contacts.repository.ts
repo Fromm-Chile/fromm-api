@@ -3,6 +3,7 @@ import { PrismaService } from 'prisma/prisma.service';
 import { IContactsRepository } from './interfaces/contact.repository.interfaces';
 import { UpdateContactDto } from '../controllers/dto/update-dto';
 import { Contact, Prisma } from '@prisma/client';
+import { FilterContactDto } from '../controllers/dto/filter-contact-dto';
 
 @Injectable()
 export class ContactsRepository implements IContactsRepository {
@@ -29,8 +30,28 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  findAllContacts(contactType: string, code: string) {
-    return this.prisma.contact.findMany({
+  async statusCount(
+    code: string,
+    status: string,
+    contactType: string,
+  ): Promise<number> {
+    return await this.prisma.contact.count({
+      where: {
+        contactType,
+        user: {
+          country: {
+            code,
+          },
+        },
+        status: {
+          name: status,
+        },
+      },
+    });
+  }
+
+  async totalCount(code: string, contactType: string): Promise<number> {
+    return await this.prisma.contact.count({
       where: {
         contactType,
         user: {
@@ -39,10 +60,53 @@ export class ContactsRepository implements IContactsRepository {
           },
         },
       },
+    });
+  }
+
+  async findAllContacts(filter: FilterContactDto): Promise<Contact[]> {
+    return await this.prisma.contact.findMany({
+      skip: filter.page * 10 || 0,
+      take: Number(filter.limit) || 10,
+      orderBy: {
+        id: (filter.idOrder as Prisma.SortOrder) || 'desc',
+      },
+      where: {
+        contactType: filter.contactType,
+        status: {
+          name: filter.status,
+        },
+        user: {
+          country: {
+            code: filter.code,
+          },
+          name: {
+            contains: filter.name,
+          },
+        },
+      },
       include: {
         status: true,
       },
     });
+  }
+
+  async findCountPages(filter: FilterContactDto): Promise<number> {
+    const count = await this.prisma.contact.count({
+      where: {
+        status: {
+          name: filter.status,
+        },
+        user: {
+          country: {
+            code: filter.code,
+          },
+          name: {
+            contains: filter.name,
+          },
+        },
+      },
+    });
+    return Math.ceil(count / 10);
   }
 
   findOneContact(id: number) {

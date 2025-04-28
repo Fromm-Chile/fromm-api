@@ -3,6 +3,7 @@ import { IInvoiceRepository } from './interfaces/invoice.repository.interface';
 import { PrismaService } from 'prisma/prisma.service';
 import { Prisma, Invoice } from '@prisma/client';
 import { FilterInvoicesDto } from '../controllers/dto/filter-invoice.dto';
+import { UpdateInvoiceDto } from '../controllers/dto/update-invoice.dto';
 
 @Injectable()
 export class InvoicesRepository implements IInvoiceRepository {
@@ -35,8 +36,8 @@ export class InvoicesRepository implements IInvoiceRepository {
     });
   }
 
-  async findAll(code: string): Promise<any[]> {
-    return await this.prisma.invoice.findMany({
+  async totalCount(code: string): Promise<number> {
+    return await this.prisma.invoice.count({
       where: {
         user: {
           country: {
@@ -44,16 +45,19 @@ export class InvoicesRepository implements IInvoiceRepository {
           },
         },
       },
-      include: {
+    });
+  }
+
+  async statusCount(code: string, status: string): Promise<number> {
+    return await this.prisma.invoice.count({
+      where: {
         user: {
-          include: {
-            country: true,
+          country: {
+            code,
           },
         },
         statusR: {
-          select: {
-            name: true,
-          },
+          name: status,
         },
       },
     });
@@ -63,6 +67,9 @@ export class InvoicesRepository implements IInvoiceRepository {
     return await this.prisma.invoice.findMany({
       skip: filter.page * 10 || 0,
       take: Number(filter.limit) || 10,
+      orderBy: {
+        id: (filter.idOrder as Prisma.SortOrder) || 'desc',
+      },
       where: {
         statusR: {
           name: filter.status,
@@ -124,12 +131,30 @@ export class InvoicesRepository implements IInvoiceRepository {
             name: true,
           },
         },
+        invoiceEvents: {
+          include: {
+            adminUser: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
   }
 
-  update(id: number) {
-    return `This action updates a #${id} invoice`;
+  async updateStatus(dto: UpdateInvoiceDto, id: number): Promise<Invoice> {
+    return await this.prisma.invoice.update({
+      where: {
+        id,
+      },
+      data: {
+        invoiceURL: dto.invoiceUrl,
+        totalAmount: dto.totalAmount,
+        statusId: dto.statusId,
+      },
+    });
   }
 
   remove(id: number) {
