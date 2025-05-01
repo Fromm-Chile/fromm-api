@@ -7,13 +7,16 @@ import {
   Put,
   Query,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { InvoicesService } from '../services/invoices.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Country } from 'src/assets/enums';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(AuthGuard)
 @Controller('admin/invoices')
@@ -61,18 +64,70 @@ export class InvoicesAdminController {
     );
   }
 
-  @Put()
+  @Put('upload')
+  @UseInterceptors(FileInterceptor('file'))
   updateStatusEnviado(
-    @Body() updateInvoiceDto: UpdateInvoiceDto,
-    @Param('id') id: number,
+    @UploadedFile() file: Express.Multer.File,
+    @Body('id') id: number,
+    @Req() req: any,
+    @Body('comment') comment: string,
   ) {
-    return this.invoicesService.updateStatus(
-      {
-        invoiceUrl: updateInvoiceDto.invoiceUrl,
-        totalAmount: null,
-        statusId: 2,
-      },
-      id,
+    const adminUserId = req.user.sub;
+    return this.invoicesService.updateStatusEnviada(
+      file,
+      +id,
+      adminUserId,
+      comment,
     );
+  }
+
+  @Put('seguimiento')
+  updateStatusSeguimiento(
+    @Body('id') id: number,
+    @Req() req: any,
+    @Body('comment') comment: string,
+  ) {
+    const adminUserId = req.user.sub;
+    return this.invoicesService.updateStatusSeguimiento(
+      +id,
+      adminUserId,
+      comment,
+    );
+  }
+
+  @Put('vendido')
+  updateStatusVendido(
+    @Body('id') id: number,
+    @Req() req: any,
+    @Body('comment') comment: string,
+    @Body('totalAmount') totalAmount: number,
+  ) {
+    const adminUserId = req.user.sub;
+    return this.invoicesService.updateStatusVendido(
+      +id,
+      adminUserId,
+      comment,
+      totalAmount,
+    );
+  }
+
+  @Put('derivado')
+  updateStatusDerivado(
+    @Body('id') id: number,
+    @Req() req: any,
+    @Body('comment') comment: string,
+  ) {
+    const adminUserId = req.user.sub;
+    return this.invoicesService.updateStatusDerivado(+id, adminUserId, comment);
+  }
+
+  @Put('perdido')
+  updateStatusPerdido(
+    @Body('id') id: number,
+    @Req() req: any,
+    @Body('comment') comment: string,
+  ) {
+    const adminUserId = req.user.sub;
+    return this.invoicesService.updateStatusPerdido(+id, adminUserId, comment);
   }
 }

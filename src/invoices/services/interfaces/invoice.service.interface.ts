@@ -15,9 +15,11 @@ export interface IInvoicesService {
     totalPages: number;
   }>;
   getOneInvoice(id: number): Promise<Invoice>;
-  updateStatus(
-    updateInvoiceDto: UpdateInvoiceDto,
+  updateStatusEnviada(
+    file: Express.Multer.File,
     id: number,
+    adminUserId: number,
+    comment: string,
   ): Promise<Invoice>;
   remove(id: number): string;
 }

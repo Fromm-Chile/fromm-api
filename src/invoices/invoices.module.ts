@@ -11,6 +11,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { InvoicesAdminController } from './controllers/invoices.admin.controller';
 import { InvoiceHistoryModule } from 'src/invoiceHistory/invoiceHistory.module';
+import { FilesModule } from 'src/files/files.module';
 
 @Module({
   controllers: [
@@ -32,6 +33,7 @@ import { InvoiceHistoryModule } from 'src/invoiceHistory/invoiceHistory.module';
     ProductsModule,
     AuthModule,
     InvoiceHistoryModule,
+    FilesModule,
   ],
 })
 export class InvoicesModule {}
