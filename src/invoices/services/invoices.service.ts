@@ -12,6 +12,7 @@ import { ProductsService } from 'src/products/services/products.service';
 import { Invoice } from '@prisma/client';
 import { FilterInvoicesDto } from '../controllers/dto/filter-invoice.dto';
 import { InvoiceHistoryService } from 'src/invoiceHistory/services/invoiceHistory.service';
+import { FilesService } from 'src/files/files.service';
 
 @Injectable()
 export class InvoicesService implements IInvoicesService {
@@ -20,6 +21,7 @@ export class InvoicesService implements IInvoicesService {
     private readonly usersService: UsersService,
     private readonly emailService: EmailService,
     private readonly invoiceHistoryService: InvoiceHistoryService,
+    private readonly filesService: FilesService,
   ) {}
 
   async create(createInvoiceDto: CreateInvoiceByCountryDto) {
@@ -134,8 +136,70 @@ export class InvoicesService implements IInvoicesService {
     return await this.invoiceRepository.findOne(id);
   }
 
-  async updateStatus(updateInvoiceDto: UpdateInvoiceDto, id: number) {
-    return await this.invoiceRepository.updateStatus(updateInvoiceDto, id);
+  async updateStatusEnviada(
+    file: Express.Multer.File,
+    id: number,
+    adminUserId: number,
+    comment: string,
+  ) {
+    const invoiceUrl = await this.filesService.uploadFile(file, id);
+    await this.invoiceHistoryService.create({
+      invoiceId: id,
+      adminUserId,
+      status: 'ENVIADA',
+      comment: comment || 'Cotización enviada por el administrador',
+    });
+    return await this.invoiceRepository.updateStatusEviada(invoiceUrl.url, id);
+  }
+
+  async updateStatusSeguimiento(
+    id: number,
+    adminUserId: number,
+    comment: string,
+  ) {
+    await this.invoiceHistoryService.create({
+      invoiceId: id,
+      adminUserId,
+      status: 'SEGUIMIENTO',
+      comment: comment,
+    });
+    return await this.invoiceRepository.updateOtherStatus(id, 3);
+  }
+  async updateStatusVendido(
+    id: number,
+    adminUserId: number,
+    comment: string,
+    totalAmount: number,
+  ) {
+    await this.invoiceHistoryService.create({
+      invoiceId: id,
+      adminUserId,
+      status: 'VENDIDO',
+      comment: comment || 'Cotización vendida por el administrador',
+    });
+    return await this.invoiceRepository.updateOtherStatusVendido(
+      id,
+      totalAmount,
+    );
+  }
+  async updateStatusPerdido(id: number, adminUserId: number, comment: string) {
+    await this.invoiceHistoryService.create({
+      invoiceId: id,
+      adminUserId,
+      status: 'PERDIDO',
+      comment: comment,
+    });
+    return await this.invoiceRepository.updateOtherStatus(id, 6);
+  }
+
+  async updateStatusDerivado(id: number, adminUserId: number, comment: string) {
+    await this.invoiceHistoryService.create({
+      invoiceId: id,
+      adminUserId,
+      status: 'DERIVADO',
+      comment: comment || 'Cotización derivada a la Gerencia Comercial',
+    });
+    return await this.invoiceRepository.updateOtherStatus(id, 5);
   }
 
   remove(id: number) {

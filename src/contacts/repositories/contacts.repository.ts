@@ -112,6 +112,9 @@ export class ContactsRepository implements IContactsRepository {
   findOneContact(id: number) {
     return this.prisma.contact.findUnique({
       where: { id },
+      include: {
+        status: true,
+      },
     });
   }
 

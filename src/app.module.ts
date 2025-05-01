@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import config from 'config/config';
 import { UsersAdminModule } from './usersAdmin/usersAdmin.module';
 import { InvoiceHistoryModule } from './invoiceHistory/invoiceHistory.module';
+// import { AppController } from './app.controller';
 
 @Module({
   imports: [

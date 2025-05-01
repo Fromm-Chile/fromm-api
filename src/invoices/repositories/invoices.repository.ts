@@ -144,15 +144,43 @@ export class InvoicesRepository implements IInvoiceRepository {
     });
   }
 
-  async updateStatus(dto: UpdateInvoiceDto, id: number): Promise<Invoice> {
+  async updateStatusEviada(invoiceURL: string, id: number): Promise<Invoice> {
     return await this.prisma.invoice.update({
       where: {
         id,
       },
       data: {
-        invoiceURL: dto.invoiceUrl,
-        totalAmount: dto.totalAmount,
-        statusId: dto.statusId,
+        invoiceURL,
+        statusId: 2,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  async updateOtherStatus(id: number, statusId: number): Promise<Invoice> {
+    return await this.prisma.invoice.update({
+      where: {
+        id,
+      },
+      data: {
+        statusId,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  async updateOtherStatusVendido(
+    id: number,
+    totalAmount: number,
+  ): Promise<Invoice> {
+    return await this.prisma.invoice.update({
+      where: {
+        id,
+      },
+      data: {
+        statusId: 4,
+        totalAmount,
+        updatedAt: new Date(),
       },
     });
   }

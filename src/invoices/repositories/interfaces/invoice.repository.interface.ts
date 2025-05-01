@@ -8,6 +8,6 @@ export interface IInvoiceRepository {
   statusCount(code: string, status: string): Promise<number>;
   findAllAdmin(filter: FilterInvoicesDto): Promise<Invoice[]>;
   findOne(id: number): Promise<Invoice>;
-  updateStatus(dto: UpdateInvoiceDto, id: number): Promise<Invoice>;
+  updateStatusEviada(invoiceURL: string, id: number): Promise<Invoice>;
   remove(id: number): string;
 }
