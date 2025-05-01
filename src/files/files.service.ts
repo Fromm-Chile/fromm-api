@@ -1,3 +1,4 @@
+import { Express } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable, UploadedFile } from '@nestjs/common';
