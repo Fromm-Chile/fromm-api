@@ -24,7 +24,6 @@ export class RolesGuard implements CanActivate {
     }
     const request = context.switchToHttp().getRequest<Request>();
     const user = request.user as PayloadToken;
-    console.log(user, request);
     const userRole = await this.prisma.user.findUnique({
       where: { id: user.sub },
       select: { name: true },
