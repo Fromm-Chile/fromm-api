@@ -13,6 +13,7 @@ import { Invoice } from '@prisma/client';
 import { FilterInvoicesDto } from '../controllers/dto/filter-invoice.dto';
 import { InvoiceHistoryService } from 'src/invoiceHistory/services/invoiceHistory.service';
 import { FilesService } from 'src/files/files.service';
+import { ContactsService } from 'src/contacts/services/contacts.service';
 
 @Injectable()
 export class InvoicesService implements IInvoicesService {
@@ -22,6 +23,7 @@ export class InvoicesService implements IInvoicesService {
     private readonly emailService: EmailService,
     private readonly invoiceHistoryService: InvoiceHistoryService,
     private readonly filesService: FilesService,
+    private readonly contactsService: ContactsService,
   ) {}
 
   async create(createInvoiceDto: CreateInvoiceByCountryDto) {
@@ -104,20 +106,59 @@ export class InvoicesService implements IInvoicesService {
     return newInvoice;
   }
 
+  async createInvoiceFromContact(
+    createInvoiceDto: CreateInvoiceByCountryDto,
+    contactId: number,
+    adminUserId: number,
+  ) {
+    let user = await this.usersService.findOneByEmail(
+      createInvoiceDto.email,
+      createInvoiceDto.countryId,
+    );
+
+    if (!user) {
+      user = await this.usersService.create({
+        name: createInvoiceDto.name,
+        email: createInvoiceDto.email,
+        phone: createInvoiceDto.phone,
+        company: createInvoiceDto.company,
+        countryId: createInvoiceDto.countryId,
+      });
+    }
+
+    const newInvoice = await this.invoiceRepository.create(
+      {
+        message: createInvoiceDto.message,
+      },
+      user.id,
+    );
+
+    await this.contactsService.updateStatus(contactId, 7);
+
+    await this.invoiceHistoryService.create({
+      invoiceId: newInvoice.id,
+      adminUserId,
+      status: 'PENDIENTE',
+      comment: 'Cotización creada por el administrador',
+    });
+
+    return newInvoice;
+  }
+
   async getInvoices(code: string): Promise<any> {
     const totalCount = await this.invoiceRepository.totalCount(code);
     const pendingInvoices = await this.invoiceRepository.statusCount(
       code,
       'PENDIENTE',
     );
-    const soldInvoices = await this.invoiceRepository.statusCount(
+    const sendInvoices = await this.invoiceRepository.statusCount(
       code,
-      'VENDIDO',
+      'ENVIADA',
     );
     return {
       totalCount,
       pendingInvoices,
-      soldInvoices,
+      sendInvoices,
     };
   }
 
@@ -130,6 +171,15 @@ export class InvoicesService implements IInvoicesService {
     const totalPages = await this.invoiceRepository.findCountPages(filter);
 
     return { cotizaciones: invoices, totalPages };
+  }
+
+  async getInvoicesByUserId(id: number, code: string) {
+    const invoices = await this.invoiceRepository.findAllByUser(+id, code);
+    const contacts = await this.contactsService.getAllContactsByUserId(
+      +id,
+      code,
+    );
+    return { invoices, contacts };
   }
 
   async getOneInvoice(id: number) {

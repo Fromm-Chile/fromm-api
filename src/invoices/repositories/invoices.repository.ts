@@ -94,6 +94,32 @@ export class InvoicesRepository implements IInvoiceRepository {
     });
   }
 
+  async findAllByUser(userId: number, code: string): Promise<Invoice[]> {
+    return await this.prisma.invoice.findMany({
+      where: {
+        userId,
+        user: {
+          country: {
+            code,
+          },
+        },
+      },
+      include: {
+        user: true,
+        statusR: {
+          select: {
+            name: true,
+          },
+        },
+        invoiceEvents: {
+          orderBy: {
+            id: 'desc',
+          },
+        },
+      },
+    });
+  }
+
   async findCountPages(filter: FilterInvoicesDto): Promise<number> {
     const count = await this.prisma.invoice.count({
       where: {

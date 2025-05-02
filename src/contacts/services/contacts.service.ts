@@ -38,6 +38,11 @@ export class ContactsService {
     await this.emailService.sendContactEmail(createContactDto, newContact.id);
 
     await this.emailService.sendContactConfirmationUser(user, newContact.id);
+    // await this.emailService.sendEmailTest(
+    //   'davidguzman1500@gmail.com',
+    //   'Prueba',
+    //   'Hola, esto es una prueba de envio de correo desde el backend',
+    // );
 
     return newContact;
   }
@@ -54,13 +59,19 @@ export class ContactsService {
     );
     const invoiceContacts = await this.contactsRepository.statusCount(
       code,
-      'COTIZADO',
+      'COTIZACIÓN',
+      connectType,
+    );
+    const endedContacts = await this.contactsRepository.statusCount(
+      code,
+      'FINALIZADO',
       connectType,
     );
     return {
       totalCount,
       pendingContacts,
       invoiceContacts,
+      endedContacts,
     };
   }
 
@@ -75,12 +86,37 @@ export class ContactsService {
     };
   }
 
+  async getAllContactsByUserId(id: number, code: string) {
+    const messages = await this.contactsRepository.findContactsByUserId(
+      +id,
+      code,
+    );
+    return messages;
+  }
+
   async findOneContact(id: number) {
     return await this.contactsRepository.findOneContact(id);
   }
 
-  update(id: number, updateContactDto: UpdateContactDto) {
-    return this.contactsRepository.update(id, updateContactDto);
+  async update(id: number, updateContactDto: UpdateContactDto) {
+    return await this.contactsRepository.update(id, updateContactDto);
+  }
+
+  async updateStatus(id: number, statusId: number) {
+    return await this.contactsRepository.updateStatus(id, statusId);
+  }
+
+  async updateContactType(id: number) {
+    return await this.contactsRepository.updateContactType(+id);
+  }
+
+  async updateStatusDerivado(id: number, department: string) {
+    const contact = await this.contactsRepository.findOneContact(id);
+    const departmentMessage = `${contact.message} - Derivado a ${department}`;
+    return await this.contactsRepository.updateStatusDerivado(
+      id,
+      departmentMessage,
+    );
   }
 
   remove(id: number) {

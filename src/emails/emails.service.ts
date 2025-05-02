@@ -26,11 +26,50 @@ export class EmailService {
     return transporter;
   }
 
+  // private async createTransporter() {
+  //   const variables = {
+  //     host: this.configService.get<string>('EMAIL_HOST'),
+  //     port: this.configService.get<number>('EMAIL_PORT'),
+  //     secure: false,
+  //     auth: {
+  //       type: 'OAuth2',
+  //       user: 'davidguzman1500_gmail.com#EXT#@davidguzman1500gmail.onmicrosoft.com',
+  //       pass: 'M8HSfGFzNrM7grW',
+  //       clientId: this.configService.get<string>('OAUTH_CLIENT_ID'),
+  //       clientSecret: this.configService.get<string>('OAUTH_CLIENT_SECRET'),
+  //       refreshToken: this.configService.get<string>('OAUTH_REFRESH_TOKEN'),
+  //       accessToken: this.configService.get<string>('OAUTH_ACCESS_TOKEN'),
+  //       expires: 1746157327,
+  //     },
+  //   };
+  //   const transporter = nodemailer.createTransport(variables);
+  //   console.log(variables);
+  //   return transporter;
+  // }
+
+  // async sendEmailTest(to: string, subject: string, html: string) {
+  //   const transporter = await this.createTransporter();
+
+  //   const mailOptions: nodemailer.SendMailOptions = {
+  //     from: this.configService.get<string>('EMAIL_USER'),
+  //     to,
+  //     subject,
+  //     html,
+  //   };
+
+  //   try {
+  //     const result = await transporter.sendMail(mailOptions);
+  //     console.log('Email sent successfully:', result);
+  //     return result;
+  //   } catch (error) {
+  //     console.error('Error sending email:', error);
+  //     throw new Error('Failed to send email');
+  //   }
+  // }
+
   async sendEmail(dto: SendEmailDto, countryId: number) {
     const { recipients, subject, html } = dto;
-
     const transport = this.emailTransport(countryId);
-
     const options: nodemailer.SendMailOptions = {
       from: this.configService.get<string>(`EMAIL_USER_${countryId}`),
       to: recipients,
@@ -60,7 +99,7 @@ export class EmailService {
       <p><strong>Email:</strong> ${email}</p>
       <p><strong>Telefono:</strong> ${phone || 'No incluido.'}</p>
       <p><strong>Empresa:</strong> ${company}</p>
-       ${contactType === 'SERVICE' ? `<p><strong>Equipo:</strong> ${equipment}</p>` : ``} 
+       ${contactType === 'SERVICE' ? `<p><strong>Equipo:</strong> ${equipment}</p>` : ``}
       <p><strong>Mensaje:</strong> ${message}</p></div>`;
 
     await this.sendEmail(

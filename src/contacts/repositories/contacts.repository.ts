@@ -109,19 +109,87 @@ export class ContactsRepository implements IContactsRepository {
     return Math.ceil(count / 10);
   }
 
-  findOneContact(id: number) {
-    return this.prisma.contact.findUnique({
+  async findOneContact(id: number) {
+    return await this.prisma.contact.findUnique({
       where: { id },
       include: {
         status: true,
+        user: {
+          include: {
+            country: true,
+          },
+        },
       },
     });
   }
 
-  update(id: number, updateContactDto: UpdateContactDto) {
-    return this.prisma.contact.update({
+  async findContactsByUserId(userId: number, code: string): Promise<Contact[]> {
+    return await this.prisma.contact.findMany({
+      where: {
+        userId,
+        user: {
+          country: {
+            code,
+          },
+        },
+      },
+      include: {
+        status: true,
+        user: {
+          include: {
+            country: true,
+          },
+        },
+      },
+    });
+  }
+
+  async update(id: number, updateContactDto: UpdateContactDto) {
+    return await this.prisma.contact.update({
       where: { id },
-      data: updateContactDto,
+      data: {
+        ...updateContactDto,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  async updateStatus(id: number, statusId: number) {
+    return await this.prisma.contact.update({
+      where: { id },
+      data: {
+        status: {
+          connect: {
+            id: statusId,
+          },
+        },
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  async updateContactType(id: number) {
+    return await this.prisma.contact.update({
+      where: { id },
+      data: {
+        contactType: 'SERVICE',
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  async updateStatusDerivado(id: number, message: string) {
+    return await this.prisma.contact.update({
+      where: { id },
+      data: {
+        status: {
+          connect: {
+            id: 5,
+          },
+        },
+        message,
+        updatedAt: new Date(),
+      },
     });
   }
 

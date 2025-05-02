@@ -31,6 +31,41 @@ export class UsersRepository implements IUserRepository {
     });
   }
 
+  async findAllAdmin(filter: FilterUserDto): Promise<User[]> {
+    return await this.prisma.user.findMany({
+      skip: filter.page * 10 || 0,
+      take: Number(filter.limit) || 10,
+      orderBy: {
+        id: (filter.idOrder as Prisma.SortOrder) || 'desc',
+      },
+      where: {
+        country: {
+          code: filter.code,
+        },
+        name: {
+          contains: filter.name,
+        },
+      },
+    });
+  }
+
+  async findCountPages(filter: FilterUserDto): Promise<number> {
+    const count = await this.prisma.user.count({
+      where: {
+        country: {
+          code: filter.code,
+        },
+        name: {
+          contains: filter.name,
+        },
+        email: {
+          contains: filter.email,
+        },
+      },
+    });
+    return Math.ceil(count / 10);
+  }
+
   async findOneByEmail(email: string, countryId: number) {
     return await this.prisma.user.findFirst({
       where: { email, countryId },
@@ -44,7 +79,7 @@ export class UsersRepository implements IUserRepository {
           contains: filter.email,
         },
         country: {
-          code: filter.countryCode,
+          code: filter.code,
         },
       },
       take: 5,
