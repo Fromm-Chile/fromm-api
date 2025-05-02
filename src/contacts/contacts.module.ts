@@ -25,5 +25,6 @@ import { ContactsAdminController } from './controllers/contacts.admin.controller
     },
   ],
   imports: [UsersModule, EmailModule, AuthModule],
+  exports: [ContactsService],
 })
 export class ContactsModule {}

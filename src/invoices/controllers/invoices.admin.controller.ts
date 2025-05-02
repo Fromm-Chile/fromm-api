@@ -17,6 +17,7 @@ import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Country } from 'src/assets/enums';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateInvoiceByCountryDto } from '../services/interfaces/invoice.service.interface';
 
 @UseGuards(AuthGuard)
 @Controller('admin/invoices')
@@ -47,6 +48,11 @@ export class InvoicesAdminController {
     return this.invoicesService.getOneInvoice(+id);
   }
 
+  @Get('user/:id')
+  getUserInvoices(@Param('id') id: string, @Query('countryCode') code: string) {
+    return this.invoicesService.getInvoicesByUserId(+id, code);
+  }
+
   @Get('datos/numeros')
   getData(@Query('countryCode') code: string) {
     return this.invoicesService.getInvoices(code);
@@ -60,6 +66,20 @@ export class InvoicesAdminController {
         ...createInvoiceDto,
         countryId: Country.CL,
       },
+      adminUserId,
+    );
+  }
+
+  @Post('invoice-from-contact')
+  createFromInvoice(
+    @Body('data') data: CreateInvoiceByCountryDto,
+    @Body('contactId') contactId: number,
+    @Req() req: any,
+  ) {
+    const adminUserId = req.user.sub;
+    return this.invoicesService.createInvoiceFromContact(
+      data,
+      contactId,
       adminUserId,
     );
   }
