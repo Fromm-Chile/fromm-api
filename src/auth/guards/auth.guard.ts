@@ -65,8 +65,9 @@ export class AuthGuard implements CanActivate {
       }
 
       const isAuth = roles?.some((role) => {
-        return role === userRole.role.name;
+        return role.includes(userRole.role.name);
       });
+
       if (!isAuth) {
         throw new UnauthorizedException('You are not authorized');
       }

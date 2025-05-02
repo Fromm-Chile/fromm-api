@@ -1,12 +1,14 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @UseGuards(AuthGuard)
 @Controller('admin/users')
 export class UsersAdminController {
   constructor(private usersService: UsersService) {}
 
+  @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
   @Get()
   getUsers(
     @Query('countryCode') code: string,
@@ -24,6 +26,7 @@ export class UsersAdminController {
     });
   }
 
+  @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
   @Get('email')
   findManyByEmail(
     @Query('email') email: string,

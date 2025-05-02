@@ -18,22 +18,34 @@ export class RolesGuard implements CanActivate {
     private prisma: PrismaService,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const roles = this.reflector.get<Roles[]>(ROLES_KEY, context.getHandler());
+    const roles = this.reflector.get<string[]>(ROLES_KEY, context.getHandler());
+    console.log(roles);
     if (!roles) {
       return true;
     }
     const request = context.switchToHttp().getRequest<Request>();
     const user = request.user as PayloadToken;
-    const userRole = await this.prisma.user.findUnique({
+    const userRole = await this.prisma.userAdmin.findUnique({
       where: { id: user.sub },
-      select: { name: true },
+      include: {
+        role: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
+
+    console.log(userRole.role.name);
 
     if (!userRole) {
       throw new UnauthorizedException('Role not found');
     }
 
-    const isAuth = roles.map((role) => role.name).includes(userRole.name);
+    const isAuth = roles.some((role) => {
+      return role.includes(userRole.role.name);
+    });
+    console.log(isAuth);
     if (!isAuth) {
       throw new UnauthorizedException('You are not authorized');
     }

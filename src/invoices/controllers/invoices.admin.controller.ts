@@ -15,15 +15,16 @@ import { InvoicesService } from '../services/invoices.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Country } from 'src/assets/enums';
-import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateInvoiceByCountryDto } from '../services/interfaces/invoice.service.interface';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @UseGuards(AuthGuard)
 @Controller('admin/invoices')
 export class InvoicesAdminController {
   constructor(private readonly invoicesService: InvoicesService) {}
 
+  @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
   @Get()
   getInvoices(
     @Query('countryCode') code: string,
@@ -43,21 +44,25 @@ export class InvoicesAdminController {
     });
   }
 
+  @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
   @Get(':id')
   getOneInvoice(@Param('id') id: string) {
     return this.invoicesService.getOneInvoice(+id);
   }
 
+  @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
   @Get('user/:id')
   getUserInvoices(@Param('id') id: string, @Query('countryCode') code: string) {
     return this.invoicesService.getInvoicesByUserId(+id, code);
   }
 
+  @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
   @Get('datos/numeros')
   getData(@Query('countryCode') code: string) {
     return this.invoicesService.getInvoices(code);
   }
 
+  @Roles('AdminChile', 'AdminPeru')
   @Post()
   create(@Body() createInvoiceDto: CreateInvoiceDto, @Req() req: any) {
     const adminUserId = req.user.sub;
@@ -70,6 +75,7 @@ export class InvoicesAdminController {
     );
   }
 
+  @Roles('AdminChile', 'AdminPeru')
   @Post('invoice-from-contact')
   createFromInvoice(
     @Body('data') data: CreateInvoiceByCountryDto,
@@ -84,6 +90,7 @@ export class InvoicesAdminController {
     );
   }
 
+  @Roles('AdminChile', 'AdminPeru')
   @Put('upload')
   @UseInterceptors(FileInterceptor('file'))
   updateStatusEnviado(
@@ -101,6 +108,7 @@ export class InvoicesAdminController {
     );
   }
 
+  @Roles('AdminChile', 'AdminPeru')
   @Put('seguimiento')
   updateStatusSeguimiento(
     @Body('id') id: number,
@@ -115,6 +123,7 @@ export class InvoicesAdminController {
     );
   }
 
+  @Roles('AdminChile', 'AdminPeru')
   @Put('vendido')
   updateStatusVendido(
     @Body('id') id: number,
@@ -131,6 +140,7 @@ export class InvoicesAdminController {
     );
   }
 
+  @Roles('AdminChile', 'AdminPeru')
   @Put('derivado')
   updateStatusDerivado(
     @Body('id') id: number,
@@ -141,6 +151,7 @@ export class InvoicesAdminController {
     return this.invoicesService.updateStatusDerivado(+id, adminUserId, comment);
   }
 
+  @Roles('AdminChile', 'AdminPeru')
   @Put('perdido')
   updateStatusPerdido(
     @Body('id') id: number,
