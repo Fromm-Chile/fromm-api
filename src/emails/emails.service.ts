@@ -105,8 +105,15 @@ export class EmailService {
     await this.sendEmail(
       {
         html,
-        recipients: [this.configService.get<string>(`RECIPIENTS_${countryId}`)],
-        // recipients: ['contacto@fromm-pack.cl'],
+        recipients:
+          contactType === 'SERVICE'
+            ? [
+                this.configService.get<string>(
+                  `SERVICE_RECIPIENTS_1_${countryId}`,
+                ),
+              ]
+            : [this.configService.get<string>(`RECIPIENTS_${countryId}`)],
+
         subject: `Solicitud de ${contactType === 'CONTACT' ? 'Contacto' : 'Servicio Técnico'} nro. ${id}`,
       },
       countryId,
