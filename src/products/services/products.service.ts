@@ -9,6 +9,7 @@ import { Product } from '@prisma/client';
 @Injectable()
 export class ProductsService implements IProductsService {
   constructor(private readonly productRepository: ProductsRepository) {}
+
   create(createProductDto: CreateProductDto) {
     return 'This action adds a new product';
   }

@@ -6,15 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersAdminService } from '../services/usersAdmin.service';
 import { CreateUserAdminDto } from './dto/create-userAdmin.dto';
 import { UpdateUserAdminDto } from './dto/update-userAdmin.dto';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('users-admin')
 export class UsersAdminController {
   constructor(private readonly usersAdminService: UsersAdminService) {}
 
+  @Public()
   @Post()
   create(@Body() createUserAdminDto: CreateUserAdminDto) {
     return this.usersAdminService.create(createUserAdminDto);

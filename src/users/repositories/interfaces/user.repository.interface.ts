@@ -7,8 +7,7 @@ export class CreateUserByCountryDto extends CreateUserDto {
 }
 export interface IUserRepository {
   create(createUserDto: CreateUserDto): Promise<User>;
-  findAll(): Promise<User[]>;
-  findOne(id: number): string;
+  findAll(code: string): Promise<User[]>;
   update(id: number, updateUserDto: UpdateUserDto): string;
   remove(id: number): string;
 }

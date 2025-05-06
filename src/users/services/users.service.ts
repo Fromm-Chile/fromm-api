@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../controllers/dto/create-user.dto';
 import { UpdateUserDto } from '../controllers/dto/update-user.dto';
 import { UsersRepository } from '../repositories/users.repository';
 import { CreateUserByCountryDto } from '../repositories/interfaces/user.repository.interface';
+import { FilterUserDto } from '../controllers/dto/filter-user.dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -19,8 +20,19 @@ export class UsersService {
     });
   }
 
-  async getUsers() {
-    return await this.userRepository.findAll();
+  async getUsers(countryCode: string) {
+    return await this.userRepository.findAll(countryCode);
+  }
+
+  async getUsersAdmin(filter: FilterUserDto): Promise<{
+    users: User[];
+    totalPages: number;
+  }> {
+    const users = await this.userRepository.findAllAdmin(filter);
+
+    const totalPages = await this.userRepository.findCountPages(filter);
+
+    return { users, totalPages };
   }
 
   findOne(id: number) {
@@ -29,6 +41,10 @@ export class UsersService {
 
   async findOneByEmail(email: string, countryId: number) {
     return await this.userRepository.findOneByEmail(email, countryId);
+  }
+
+  async findManyByEmail(filter: FilterUserDto) {
+    return await this.userRepository.findManyByEmail(filter);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -9,17 +9,22 @@ import { ConfigModule } from '@nestjs/config';
 import { EmailModule } from './emails/emails.module';
 import { AuthModule } from './auth/auth.module';
 import config from 'config/config';
+import { UsersAdminModule } from './usersAdmin/usersAdmin.module';
+import { InvoiceHistoryModule } from './invoiceHistory/invoiceHistory.module';
+// import { AppController } from './app.controller';
 
 @Module({
   imports: [
     ProductsModule,
     InvoicesModule,
     UsersModule,
+    UsersAdminModule,
     CategoriesModule,
     PrismaModule,
     ContactsModule,
     EmailModule,
     AuthModule,
+    InvoiceHistoryModule,
     ConfigModule.forRoot({
       load: [config],
       isGlobal: true,

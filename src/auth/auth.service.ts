@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 // import { EmailService } from 'src/emails/emails.service';
 import { UserAdmin } from '@prisma/client';
 import { UsersAdminService } from 'src/usersAdmin/services/usersAdmin.service';
+import { PayloadToken } from './models/token.model';
 
 @Injectable()
 export class AuthService {
@@ -18,18 +19,19 @@ export class AuthService {
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password);
       if (isMatch) {
-        return user;
+        const { password, ...userData } = user;
+        return userData;
       }
     }
     return null;
   }
 
   async loginToken(user: UserAdmin) {
-    const payload: { role: number; sub: number } = {
+    const payload: PayloadToken = {
       role: user.roleId,
       sub: user.id,
     };
-    const { name, email, isActive } = user;
+    const { name, email, isActive, roleId } = user;
 
     if (isActive === false) {
       throw new BadRequestException('Tu cuenta no esta activada');
@@ -38,6 +40,8 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
       name,
       email,
+      isActive,
+      roleId,
     };
   }
 
