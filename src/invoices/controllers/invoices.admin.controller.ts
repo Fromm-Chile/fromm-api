@@ -161,4 +161,20 @@ export class InvoicesAdminController {
     const adminUserId = req.user.sub;
     return this.invoicesService.updateStatusPerdido(+id, adminUserId, comment);
   }
+
+  @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
+  @Get('resultados/cotizaciones')
+  getResults(
+    @Query('countryCode') code: string,
+    @Query('status') status: string,
+    @Query('startDate') startDate: Date,
+    @Query('endDate') endDate: Date,
+  ) {
+    return this.invoicesService.invoceResultCount(
+      code,
+      status,
+      startDate,
+      endDate,
+    );
+  }
 }

@@ -108,7 +108,7 @@ model Invoice {
   statusId       Int?
   message        String?
   invoiceURL     String?
-  totalAmount    Int?
+  totalAmount    Float?
   createdAt      DateTime              @default(now())
   updatedAt      DateTime?             @updatedAt
   user           User                  @relation(fields: [userId], references: [id])

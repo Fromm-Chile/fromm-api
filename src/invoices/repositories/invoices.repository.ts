@@ -211,6 +211,33 @@ export class InvoicesRepository implements IInvoiceRepository {
     });
   }
 
+  async invoiceResultCount(
+    code: string,
+    status: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<any> {
+    return await this.prisma.invoice.findMany({
+      where: {
+        user: {
+          country: {
+            code,
+          },
+        },
+        statusR: {
+          name: status,
+        },
+        createdAt: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      select: {
+        totalAmount: true,
+      },
+    });
+  }
+
   remove(id: number) {
     return `This action removes a #${id} invoice`;
   }

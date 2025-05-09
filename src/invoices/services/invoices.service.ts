@@ -252,6 +252,37 @@ export class InvoicesService implements IInvoicesService {
     return await this.invoiceRepository.updateOtherStatus(id, 5);
   }
 
+  async invoceResultCount(
+    code: string,
+    status: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<any> {
+    const invoices = await this.invoiceRepository.invoiceResultCount(
+      code,
+      status,
+      startDate,
+      endDate,
+    );
+
+    const totalCount = invoices.length;
+
+    const totalAmount = invoices.reduce(
+      (acc: number, invoice: { totalAmount: number }): number => {
+        if (status === 'VENDIDO') {
+          return acc + invoice.totalAmount;
+        }
+        return acc;
+      },
+      0,
+    );
+
+    return {
+      totalCount,
+      totalAmount,
+    };
+  }
+
   remove(id: number) {
     return `This action removes a #${id} invoice`;
   }
