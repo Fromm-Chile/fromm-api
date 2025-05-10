@@ -263,7 +263,7 @@ export class InvoicesService implements IInvoicesService {
       endDate,
     );
 
-    const contizacionesTotales = invoices.reduce(
+    const cotizacionesTotales = invoices.reduce(
       (acc: number, invoice: { totalCount: number }) =>
         acc + invoice.totalCount,
       0,
@@ -276,7 +276,7 @@ export class InvoicesService implements IInvoicesService {
     );
     return {
       invoices,
-      contizacionesTotales,
+      cotizacionesTotales,
       montoTotal,
     };
   }
@@ -285,23 +285,20 @@ export class InvoicesService implements IInvoicesService {
     code: string,
     startDate: Date,
     endDate: Date,
-  ): Promise<any> {
+  ): Promise<number> {
     const invoices = await this.invoiceRepository.totalInvoiceVendidoByDate(
       code,
       startDate,
       endDate,
     );
 
-    const contizacionesVendidas = invoices.reduce(
+    const cotizacionesVendidas = invoices.reduce(
       (acc: number, invoice: { totalCount: number }) =>
         acc + invoice.totalCount,
       0,
     );
 
-    return {
-      invoices,
-      contizacionesVendidas,
-    };
+    return cotizacionesVendidas;
   }
 
   remove(id: number) {
