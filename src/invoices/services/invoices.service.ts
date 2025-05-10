@@ -252,6 +252,55 @@ export class InvoicesService implements IInvoicesService {
     return await this.invoiceRepository.updateOtherStatus(id, 5);
   }
 
+  async invoceGruopByDate(
+    code: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<any> {
+    const invoices = await this.invoiceRepository.invoiceGruopByDate(
+      code,
+      startDate,
+      endDate,
+    );
+
+    const cotizacionesTotales = invoices.reduce(
+      (acc: number, invoice: { totalCount: number }) =>
+        acc + invoice.totalCount,
+      0,
+    );
+
+    const montoTotal = invoices.reduce(
+      (acc: number, invoice: { totalAmountSum: number }) =>
+        acc + invoice.totalAmountSum,
+      0,
+    );
+    return {
+      invoices,
+      cotizacionesTotales,
+      montoTotal,
+    };
+  }
+
+  async totalInvoiceVendidoByDate(
+    code: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<number> {
+    const invoices = await this.invoiceRepository.totalInvoiceVendidoByDate(
+      code,
+      startDate,
+      endDate,
+    );
+
+    const cotizacionesVendidas = invoices.reduce(
+      (acc: number, invoice: { totalCount: number }) =>
+        acc + invoice.totalCount,
+      0,
+    );
+
+    return cotizacionesVendidas;
+  }
+
   remove(id: number) {
     return `This action removes a #${id} invoice`;
   }
