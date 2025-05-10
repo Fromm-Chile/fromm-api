@@ -252,34 +252,55 @@ export class InvoicesService implements IInvoicesService {
     return await this.invoiceRepository.updateOtherStatus(id, 5);
   }
 
-  async invoceResultCount(
+  async invoceGruopByDate(
     code: string,
-    status: string,
     startDate: Date,
     endDate: Date,
   ): Promise<any> {
-    const invoices = await this.invoiceRepository.invoiceResultCount(
+    const invoices = await this.invoiceRepository.invoiceGruopByDate(
       code,
-      status,
       startDate,
       endDate,
     );
 
-    const totalCount = invoices.length;
+    const contizacionesTotales = invoices.reduce(
+      (acc: number, invoice: { totalCount: number }) =>
+        acc + invoice.totalCount,
+      0,
+    );
 
-    const totalAmount = invoices.reduce(
-      (acc: number, invoice: { totalAmount: number }): number => {
-        if (status === 'VENDIDO') {
-          return acc + invoice.totalAmount;
-        }
-        return acc;
-      },
+    const montoTotal = invoices.reduce(
+      (acc: number, invoice: { totalAmountSum: number }) =>
+        acc + invoice.totalAmountSum,
+      0,
+    );
+    return {
+      invoices,
+      contizacionesTotales,
+      montoTotal,
+    };
+  }
+
+  async totalInvoiceVendidoByDate(
+    code: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<any> {
+    const invoices = await this.invoiceRepository.totalInvoiceVendidoByDate(
+      code,
+      startDate,
+      endDate,
+    );
+
+    const contizacionesVendidas = invoices.reduce(
+      (acc: number, invoice: { totalCount: number }) =>
+        acc + invoice.totalCount,
       0,
     );
 
     return {
-      totalCount,
-      totalAmount,
+      invoices,
+      contizacionesVendidas,
     };
   }
 

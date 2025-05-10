@@ -163,16 +163,24 @@ export class InvoicesAdminController {
   }
 
   @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
-  @Get('resultados/cotizaciones')
+  @Get('montos/fechas')
   getResults(
     @Query('countryCode') code: string,
-    @Query('status') status: string,
     @Query('startDate') startDate: Date,
     @Query('endDate') endDate: Date,
   ) {
-    return this.invoicesService.invoceResultCount(
+    return this.invoicesService.invoceGruopByDate(code, startDate, endDate);
+  }
+
+  @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
+  @Get('ventas/fechas')
+  getResultsTotal(
+    @Query('countryCode') code: string,
+    @Query('startDate') startDate: Date,
+    @Query('endDate') endDate: Date,
+  ) {
+    return this.invoicesService.totalInvoiceVendidoByDate(
       code,
-      status,
       startDate,
       endDate,
     );
