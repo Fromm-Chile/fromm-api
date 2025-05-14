@@ -1,10 +1,8 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserAdminDto } from '../controllers/dto/create-userAdmin.dto';
 import { UpdateUserAdminDto } from '../controllers/dto/update-userAdmin.dto';
 import { UsersAdminRepository } from '../repositories/usersAdmin.repository';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 
-@UseGuards(LocalAuthGuard)
 @Injectable()
 export class UsersAdminService {
   constructor(private usersAdminRepository: UsersAdminRepository) {}
@@ -13,20 +11,26 @@ export class UsersAdminService {
     return this.usersAdminRepository.create(createUserAdminDto);
   }
 
-  findAll() {
-    return this.usersAdminRepository.findAll();
+  async findAll(userId: number) {
+    const adminUsers = await this.usersAdminRepository.findAll();
+    const filterUsers = adminUsers.filter((user) => user.id !== userId);
+    return filterUsers;
   }
 
-  findOne(id: number) {
-    return this.usersAdminRepository.findOne(id);
+  async findOne(id: number) {
+    return await this.usersAdminRepository.findOne(id);
   }
 
-  getOneByEmail(email: string) {
-    return this.usersAdminRepository.findOneByEmail(email);
+  async getOneByEmail(email: string) {
+    return await this.usersAdminRepository.findOneByEmail(email);
   }
 
-  update(id: number, updateUserAdminDto: UpdateUserAdminDto) {
-    return this.usersAdminRepository.update(id, updateUserAdminDto);
+  async update(id: number, updateUserAdminDto: UpdateUserAdminDto) {
+    return await this.usersAdminRepository.update(id, updateUserAdminDto);
+  }
+
+  async enableOrDisable(id: number, isActive: boolean) {
+    return await this.usersAdminRepository.enableUser(id, isActive);
   }
 
   // remove(id: number) {
