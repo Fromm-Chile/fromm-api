@@ -14,17 +14,37 @@ export class UsersAdminRepository implements IUserAdminRepository {
       data: {
         ...createUserAdminDto,
         password: await bcrypt.hash(createUserAdminDto.password, 10),
+        role: {
+          connect: {
+            name: createUserAdminDto.role,
+          },
+        },
       },
     });
   }
 
   async findAll() {
-    return await this.prisma.userAdmin.findMany();
+    return await this.prisma.userAdmin.findMany({
+      include: {
+        role: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
   }
 
   async findOne(id: number) {
     return await this.prisma.userAdmin.findUnique({
       where: { id },
+      include: {
+        role: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
   }
 
@@ -37,10 +57,28 @@ export class UsersAdminRepository implements IUserAdminRepository {
   async update(id: number, updateUserAdminDto: UpdateUserAdminDto) {
     return await this.prisma.userAdmin.update({
       where: { id },
-      data: updateUserAdminDto,
+      data: {
+        ...updateUserAdminDto,
+        password: await bcrypt.hash(updateUserAdminDto.password, 10),
+        role: {
+          connect: {
+            name: updateUserAdminDto.role,
+          },
+        },
+        updatedAt: new Date(),
+      },
     });
   }
 
+  async enableUser(id: number, isActive: boolean) {
+    return await this.prisma.userAdmin.update({
+      where: { id },
+      data: {
+        isActive,
+        updatedAt: new Date(),
+      },
+    });
+  }
   // async remove(id: number) {
   //   return await this.prisma.userAdmin.delete({
   //     where: { id },
