@@ -161,4 +161,28 @@ export class InvoicesAdminController {
     const adminUserId = req.user.sub;
     return this.invoicesService.updateStatusPerdido(+id, adminUserId, comment);
   }
+
+  @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
+  @Get('montos/fechas')
+  getResults(
+    @Query('countryCode') code: string,
+    @Query('startDate') startDate: Date,
+    @Query('endDate') endDate: Date,
+  ) {
+    return this.invoicesService.invoceGruopByDate(code, startDate, endDate);
+  }
+
+  @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
+  @Get('ventas/fechas')
+  getResultsTotal(
+    @Query('countryCode') code: string,
+    @Query('startDate') startDate: Date,
+    @Query('endDate') endDate: Date,
+  ) {
+    return this.invoicesService.totalInvoiceVendidoByDate(
+      code,
+      startDate,
+      endDate,
+    );
+  }
 }
