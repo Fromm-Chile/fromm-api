@@ -1,7 +1,3 @@
-Here’s a simple and detailed documentation template you can use for your README:
-
----
-
 # Fromm API
 
 ## Technologies Used
