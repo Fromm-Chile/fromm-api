@@ -1,99 +1,108 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Fromm API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Technologies Used
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- **Node.js** (v20 recommended): JavaScript runtime for server-side code.
+- **NestJS**: Framework for building scalable Node.js server-side applications.
+- **TypeScript**: Strongly typed programming language that builds on JavaScript.
+- **Prisma ORM**: Database toolkit for TypeScript and Node.js.
+- **SQL Server**: Main database used for development and production.
+- **Multer**: Middleware for handling file uploads.
+- **bcrypt**: Library for hashing passwords.
+- **Nodemailer**: Library for sending emails.
+- **Docker** (optional): For containerized deployments.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## How to Run the Project Locally
 
-## Project setup
+### 1. Clone the Repository
+
+Open your terminal and run:
 
 ```bash
-$ npm install
+git clone https://github.com/your-username/fromm-api.git
+cd fromm-api
 ```
 
-## Compile and run the project
+### 2. Install Dependencies
+
+Make sure you have [Node.js](https://nodejs.org/) (version 20 or higher) and [npm](https://www.npmjs.com/) installed.
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+### 3. Set Up Environment Variables
+
+Create a .env file in the root directory. You can copy the example below and fill in your own values:
+
+```properties
+# Database connection
+DATABASE_URL="sqlserver://<host>;database=<db>;user=<user>;password=<password>;encrypt=true;poolTimeout=0"
+SHADOW_DATABASE_URL="sqlserver://localhost:1433;database=master;user=sa;password=<password>;encrypt=true;trustServerCertificate=true"
+
+# Email configuration for notifications
+EMAIL_HOST_1=mail.fromm-pack.cl
+EMAIL_PORT_1=587
+EMAIL_USER_1=notificaciones@fromm-pack.cl
+EMAIL_PASSWORD_1=your-email-password
+
+EMAIL_HOST_2=mail.fromm-pack.cl
+EMAIL_PORT_2=587
+EMAIL_USER_2=notificaciones@fromm-pack.cl
+EMAIL_PASSWORD_2=your-email-password
+
+# Add any other environment variables your project needs
+```
+
+> **Note:** Never commit your .env file to version control.
+
+### 4. Generate Prisma Client
+
+After setting up your .env, run:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npx prisma generate
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 5. Run the Application
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The API should now be running at `http://localhost:3000`.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## Environmental Variables
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Here are the main environment variables used in this project:
 
-## Support
+| Variable             | Description                                 |
+|----------------------|---------------------------------------------|
+| DATABASE_URL         | Connection string for the main database     |
+| SHADOW_DATABASE_URL  | Connection string for Prisma shadow DB      |
+| EMAIL_HOST_1         | SMTP host for email notifications           |
+| EMAIL_PORT_1         | SMTP port                                   |
+| EMAIL_USER_1         | Email user                                  |
+| EMAIL_PASSWORD_1     | Email password                              |
+| EMAIL_HOST_2         | (Optional) Second SMTP host                 |
+| EMAIL_PORT_2         | (Optional) Second SMTP port                 |
+| EMAIL_USER_2         | (Optional) Second email user                |
+| EMAIL_PASSWORD_2     | (Optional) Second email password            |
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+You may need to add more variables depending on your deployment or features.
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Additional Notes
 
-## License
+- For file uploads, only certain file types and sizes are allowed (see `FileTypeValidationPipe` and `FileSizeValidationPipe`).
+- Make sure your database is running and accessible before starting the API.
+- If you use Docker, check the provided Dockerfile and adjust as needed.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+Feel free to copy and adapt this for your README!

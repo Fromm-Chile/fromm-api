@@ -18,6 +18,8 @@ import { Country } from 'src/assets/enums';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateInvoiceByCountryDto } from '../services/interfaces/invoice.service.interface';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { FileSizeValidationPipe } from 'src/files/pipes/fileSizeValidationPipe';
+import { FileTypeValidationPipe } from 'src/files/pipes/fileTypeValidationPipe';
 
 @UseGuards(AuthGuard)
 @Controller('admin/invoices')
@@ -94,7 +96,26 @@ export class InvoicesAdminController {
   @Put('upload')
   @UseInterceptors(FileInterceptor('file'))
   updateStatusEnviado(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      new FileSizeValidationPipe(),
+      new FileTypeValidationPipe([
+        // Documents
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        // Images
+        'image/png',
+        'image/jpeg',
+        'image/gif',
+        'image/bmp',
+        'image/webp',
+        // Accept all images
+        'image/*',
+      ]),
+    )
+    file: Express.Multer.File,
     @Body('id') id: number,
     @Req() req: any,
     @Body('comment') comment: string,
