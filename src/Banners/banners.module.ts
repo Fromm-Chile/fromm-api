@@ -5,13 +5,11 @@ import { BannerRepository } from './repositories/banners.repository';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { AuthModule } from 'src/auth/auth.module';
-import { PrismaService } from 'prisma/prisma.service';
 
 @Module({
   imports: [AuthModule],
   controllers: [BannersController],
   providers: [
-    PrismaService,
     BannersService,
     BannerRepository,
     {
