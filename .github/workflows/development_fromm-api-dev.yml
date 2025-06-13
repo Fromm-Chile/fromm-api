@@ -29,16 +29,31 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: npm install, build, and test
+      - name: npm install and check Prisma setup
         run: |
           npm install -g @nestjs/cli
           npm install
+
+          # --- Start of Added Diagnostic Steps ---
+          echo "--- Verifying Prisma setup ---"
+          # List contents of the 'prisma' directory to ensure schema.prisma is present
+          echo "Listing contents of the 'prisma' directory:"
+          ls -l prisma/ || { echo "ERROR: Prisma directory or schema.prisma not found. Ensure it's at ./prisma/schema.prisma"; exit 1; }
+
+          # Validate the Prisma schema for syntax errors
+          echo "Validating Prisma schema (npx prisma validate):"
+          npx prisma validate || { echo "ERROR: Prisma schema validation failed. Check schema.prisma for errors."; exit 1; }
+          echo "--- Prisma setup verification complete ---"
+          # --- End of Added Diagnostic Steps ---
+
+          # Generate Prisma client
           npx prisma generate
+
           npm run build --if-present
           # npm run test --if-present
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip dist package.json .env prisma
+        run: zip -r release.zip dist package.json .env
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
