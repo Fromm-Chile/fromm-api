@@ -11,7 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import config from 'config/config';
 import { UsersAdminModule } from './usersAdmin/usersAdmin.module';
 import { InvoiceHistoryModule } from './invoiceHistory/invoiceHistory.module';
-// import { AppController } from './app.controller';
+import { BannersModule } from './Banners/banners.module';
 
 @Module({
   imports: [
@@ -24,6 +24,7 @@ import { InvoiceHistoryModule } from './invoiceHistory/invoiceHistory.module';
     ContactsModule,
     EmailModule,
     AuthModule,
+    BannersModule,
     InvoiceHistoryModule,
     ConfigModule.forRoot({
       load: [config],

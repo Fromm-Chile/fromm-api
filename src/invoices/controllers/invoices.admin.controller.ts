@@ -20,6 +20,8 @@ import { CreateInvoiceByCountryDto } from '../services/interfaces/invoice.servic
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { FileSizeValidationPipe } from 'src/files/pipes/fileSizeValidationPipe';
 import { FileTypeValidationPipe } from 'src/files/pipes/fileTypeValidationPipe';
+import { GetInvoicesResponseDto } from './dto/response.dto';
+import { instanceToPlain } from 'class-transformer';
 
 @UseGuards(AuthGuard)
 @Controller('admin/invoices')
@@ -28,15 +30,15 @@ export class InvoicesAdminController {
 
   @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
   @Get()
-  getInvoices(
+  async getInvoices(
     @Query('countryCode') code: string,
     @Query('page') page: number,
     @Query('status') status: string,
     @Query('name') name: string,
     @Query('limit') limit: number,
     @Query('idOrder') idOrder: string,
-  ) {
-    return this.invoicesService.getInvoicesAdmin({
+  ): Promise<{ cotizaciones: GetInvoicesResponseDto[]; totalCount: number }> {
+    const result = await this.invoicesService.getInvoicesAdmin({
       code,
       page,
       status,
@@ -44,6 +46,16 @@ export class InvoicesAdminController {
       limit,
       idOrder,
     });
+
+    return {
+      cotizaciones: instanceToPlain(
+        result.cotizaciones.map((item) => new GetInvoicesResponseDto(item)),
+        {
+          excludeExtraneousValues: true,
+        },
+      ) as GetInvoicesResponseDto[],
+      totalCount: result.totalPages,
+    };
   }
 
   @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
