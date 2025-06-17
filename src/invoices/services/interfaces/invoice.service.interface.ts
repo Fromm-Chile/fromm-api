@@ -1,8 +1,6 @@
 import { Invoice } from '@prisma/client';
 import { CreateInvoiceDto } from 'src/invoices/controllers/dto/create-invoice.dto';
 import { FilterInvoicesDto } from 'src/invoices/controllers/dto/filter-invoice.dto';
-import { GetInvoicesResponseDto } from 'src/invoices/controllers/dto/response.dto';
-import { UpdateInvoiceDto } from 'src/invoices/controllers/dto/update-invoice.dto';
 
 export class CreateInvoiceByCountryDto extends CreateInvoiceDto {
   countryId: number;
@@ -10,6 +8,10 @@ export class CreateInvoiceByCountryDto extends CreateInvoiceDto {
 
 export interface IInvoicesService {
   create(createInvoiceDto: CreateInvoiceDto): Promise<Invoice>;
+  createByAdmin(
+    createInvoiceDto: CreateInvoiceByCountryDto,
+    adminUserId: number,
+  ): Promise<Invoice>;
   getInvoices(code: string): Promise<any>;
   getInvoicesAdmin(filter: FilterInvoicesDto): Promise<{
     cotizaciones: Invoice[];

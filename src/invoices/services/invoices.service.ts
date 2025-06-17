@@ -23,7 +23,7 @@ export class InvoicesService implements IInvoicesService {
     private readonly contactsService: ContactsService,
   ) {}
 
-  async create(createInvoiceDto: CreateInvoiceByCountryDto) {
+  async create(createInvoiceDto: CreateInvoiceByCountryDto): Promise<Invoice> {
     let user = await this.usersService.findOneByEmail(
       createInvoiceDto.email,
       createInvoiceDto.countryId,
