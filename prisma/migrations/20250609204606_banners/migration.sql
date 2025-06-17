@@ -1,0 +1,28 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- CreateTable
+CREATE TABLE [dbo].[Banners] (
+    [id] INT NOT NULL IDENTITY(1,1),
+    [name] NVARCHAR(1000) NOT NULL,
+    [url] NVARCHAR(1000) NOT NULL,
+    [order] INT NOT NULL,
+    [isActive] BIT NOT NULL CONSTRAINT [Banners_isActive_df] DEFAULT 1,
+    [createdAt] DATETIME2 NOT NULL CONSTRAINT [Banners_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    [updatedAt] DATETIME2,
+    CONSTRAINT [Banners_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH
