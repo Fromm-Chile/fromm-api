@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateInvoiceDto } from '../controllers/dto/create-invoice.dto';
-import { UpdateInvoiceDto } from '../controllers/dto/update-invoice.dto';
 import {
   CreateInvoiceByCountryDto,
   IInvoicesService,
@@ -8,11 +6,10 @@ import {
 import { InvoicesRepository } from '../repositories/invoices.repository';
 import { UsersService } from 'src/users/services/users.service';
 import { EmailService } from 'src/emails/emails.service';
-import { ProductsService } from 'src/products/services/products.service';
 import { Invoice } from '@prisma/client';
 import { FilterInvoicesDto } from '../controllers/dto/filter-invoice.dto';
 import { InvoiceHistoryService } from 'src/invoiceHistory/services/invoiceHistory.service';
-import { FilesService } from 'src/files/files.service';
+import { FilesService } from 'src/files/services/files.service';
 import { ContactsService } from 'src/contacts/services/contacts.service';
 
 @Injectable()
@@ -26,7 +23,7 @@ export class InvoicesService implements IInvoicesService {
     private readonly contactsService: ContactsService,
   ) {}
 
-  async create(createInvoiceDto: CreateInvoiceByCountryDto) {
+  async create(createInvoiceDto: CreateInvoiceByCountryDto): Promise<Invoice> {
     let user = await this.usersService.findOneByEmail(
       createInvoiceDto.email,
       createInvoiceDto.countryId,
@@ -145,7 +142,7 @@ export class InvoicesService implements IInvoicesService {
     return newInvoice;
   }
 
-  async getInvoices(code: string): Promise<any> {
+  async getInvoices(code: string) {
     const totalCount = await this.invoiceRepository.totalCount(code);
     const pendingInvoices = await this.invoiceRepository.statusCount(
       code,
@@ -167,7 +164,6 @@ export class InvoicesService implements IInvoicesService {
     totalPages: number;
   }> {
     const invoices = await this.invoiceRepository.findAllAdmin(filter);
-
     const totalPages = await this.invoiceRepository.findCountPages(filter);
 
     return { cotizaciones: invoices, totalPages };
