@@ -96,3 +96,9 @@ jobs:
           app-name: 'fromm-api-dev'
           slot-name: 'Production'
           package: .
+
+      - name: Install dependencies on Azure
+        run: npm install
+
+      - name: Generate Prisma Client on Azure
+        run: npx prisma generate
