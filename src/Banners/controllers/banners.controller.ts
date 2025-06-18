@@ -17,13 +17,13 @@ import { Public } from 'src/auth/decorators/public.decorator';
 export class BannersController {
   constructor(private readonly bannersService: BannersService) {}
 
-  @Public()
+  @Roles('AdminChile')
   @Get()
   async getAllBanners() {
     return await this.bannersService.findAllBanners();
   }
 
-  @Roles('AdminChile')
+  @Public()
   @Get('active')
   async getAllActiveBanners() {
     return await this.bannersService.findAllActiveBanners();
