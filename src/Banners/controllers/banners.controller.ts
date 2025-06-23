@@ -10,6 +10,7 @@ import {
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { BannersService } from '../services/banners.service';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @UseGuards(AuthGuard)
 @Controller('banners')
@@ -22,7 +23,7 @@ export class BannersController {
     return await this.bannersService.findAllBanners();
   }
 
-  @Roles('AdminChile')
+  @Public()
   @Get('active')
   async getAllActiveBanners() {
     return await this.bannersService.findAllActiveBanners();
