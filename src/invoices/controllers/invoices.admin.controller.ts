@@ -16,7 +16,10 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Country } from 'src/assets/enums';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateInvoiceByCountryDto } from '../services/interfaces/invoice.service.interface';
+import {
+  CreateInvoiceByCountryDto,
+  CreateInvoiceByCountryDtoForAdmin,
+} from '../services/interfaces/invoice.service.interface';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { FileSizeValidationPipe } from 'src/files/pipes/fileSizeValidationPipe';
 import { FileTypeValidationPipe } from 'src/files/pipes/fileTypeValidationPipe';
@@ -78,7 +81,10 @@ export class InvoicesAdminController {
 
   @Roles('AdminChile', 'AdminPeru')
   @Post()
-  create(@Body() createInvoiceDto: CreateInvoiceDto, @Req() req: any) {
+  create(
+    @Body() createInvoiceDto: CreateInvoiceByCountryDtoForAdmin,
+    @Req() req: any,
+  ) {
     const adminUserId = req.user.sub;
     return this.invoicesService.createByAdmin(
       {

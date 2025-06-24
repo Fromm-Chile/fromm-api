@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   CreateInvoiceByCountryDto,
+  CreateInvoiceByCountryDtoForAdmin,
   IInvoicesService,
 } from './interfaces/invoice.service.interface';
 import { InvoicesRepository } from '../repositories/invoices.repository';
@@ -68,7 +69,7 @@ export class InvoicesService implements IInvoicesService {
   }
 
   async createByAdmin(
-    createInvoiceDto: CreateInvoiceByCountryDto,
+    createInvoiceDto: CreateInvoiceByCountryDtoForAdmin,
     adminUserId: number,
   ) {
     let user = await this.usersService.findOneByEmail(
