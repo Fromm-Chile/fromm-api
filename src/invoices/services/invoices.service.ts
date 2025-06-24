@@ -105,7 +105,7 @@ export class InvoicesService implements IInvoicesService {
   }
 
   async createInvoiceFromContact(
-    createInvoiceDto: CreateInvoiceByCountryDto,
+    createInvoiceDto: CreateInvoiceByCountryDtoForAdmin,
     contactId: number,
     adminUserId: number,
   ) {
