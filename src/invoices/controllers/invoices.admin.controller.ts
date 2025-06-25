@@ -98,7 +98,7 @@ export class InvoicesAdminController {
   @Roles('AdminChile', 'AdminPeru')
   @Post('invoice-from-contact')
   createFromInvoice(
-    @Body('data') data: CreateInvoiceByCountryDto,
+    @Body('data') data: CreateInvoiceByCountryDtoForAdmin,
     @Body('contactId') contactId: number,
     @Req() req: any,
   ) {
