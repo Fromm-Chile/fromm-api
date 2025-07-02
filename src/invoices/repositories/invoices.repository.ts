@@ -191,6 +191,7 @@ export class InvoicesRepository implements IInvoiceRepository {
       data: {
         statusId,
         updatedAt: new Date(),
+        totalAmount: statusId === 6 ? 0 : undefined,
       },
     });
   }
