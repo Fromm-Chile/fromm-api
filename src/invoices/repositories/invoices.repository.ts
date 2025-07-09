@@ -212,24 +212,36 @@ export class InvoicesRepository implements IInvoiceRepository {
     });
   }
 
+  async updateAmount(id: number, totalAmount: number): Promise<Invoice> {
+    await this.prisma.$executeRaw`
+    UPDATE Invoice 
+    SET totalAmount = ${totalAmount}
+    WHERE id = ${id}
+  `;
+
+    return await this.prisma.invoice.findUnique({
+      where: { id },
+    });
+  }
+
   async invoiceGruopByDate(
     code: string,
     startDate: Date,
     endDate: Date,
   ): Promise<any> {
     return await this.prisma.$queryRaw`
-  SELECT 
-    CAST(createdAt AS DATE) AS createdAt, 
-    SUM(totalAmount) AS totalAmountSum,
-    COUNT(*) AS totalCount
-  FROM Invoice
-  WHERE 
-    createdAt BETWEEN ${startDate} AND ${endDate}
-    AND userId IN (
-      SELECT id FROM [User] WHERE countryId = (SELECT id FROM Country WHERE code = ${code})
-    )
-  GROUP BY CAST(createdAt AS DATE) 
-  ORDER BY CAST(createdAt AS DATE) ASC;
+SELECT 
+  CAST(updatedAt AS DATE) AS updatedAt, 
+  SUM(totalAmount) AS totalAmountSum,
+  COUNT(*) AS totalCount
+FROM Invoice
+WHERE 
+  updatedAt BETWEEN ${startDate} AND ${endDate}
+  AND userId IN (
+    SELECT id FROM [User] WHERE countryId = (SELECT id FROM Country WHERE code = ${code})
+  )
+GROUP BY CAST(updatedAt AS DATE) 
+ORDER BY CAST(updatedAt AS DATE) ASC;
 `;
   }
 
@@ -239,19 +251,19 @@ export class InvoicesRepository implements IInvoiceRepository {
     endDate: Date,
   ): Promise<any> {
     return await this.prisma.$queryRaw`
-    SELECT 
-      CAST(createdAt AS DATE) AS createdAt, -- Extract only the date part
-      COUNT(*) AS totalCount -- Count the number of invoices
-    FROM Invoice
-    WHERE 
-      createdAt BETWEEN ${startDate} AND ${endDate}
-      AND statusId = (SELECT id FROM Status WHERE name = 'VENDIDO') -- Filter by VENDIDO status
-      AND userId IN (
-        SELECT id FROM [User] WHERE countryId = (SELECT id FROM Country WHERE code = ${code})
-      )
-    GROUP BY CAST(createdAt AS DATE) -- Group by the date part only
-    ORDER BY CAST(createdAt AS DATE) ASC; -- Order by date
-  `;
+  SELECT 
+    CAST(updatedAt AS DATE) AS updatedAt, -- Extract only the date part
+    COUNT(*) AS totalCount -- Count the number of invoices
+  FROM Invoice
+  WHERE 
+    updatedAt BETWEEN ${startDate} AND ${endDate}
+    AND statusId = (SELECT id FROM Status WHERE name = 'VENDIDO') -- Filter by VENDIDO status
+    AND userId IN (
+      SELECT id FROM [User] WHERE countryId = (SELECT id FROM Country WHERE code = ${code})
+    )
+  GROUP BY CAST(updatedAt AS DATE) -- Group by the date part only
+  ORDER BY CAST(updatedAt AS DATE) ASC; -- Order by date
+`;
   }
 
   remove(id: number) {

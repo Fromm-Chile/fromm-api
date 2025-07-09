@@ -180,6 +180,23 @@ export class InvoicesAdminController {
   }
 
   @Roles('AdminChile', 'AdminPeru')
+  @Put('new/amount')
+  updateAmount(
+    @Body('id') id: number,
+    @Req() req: any,
+    @Body('comment') comment: string,
+    @Body('totalAmount') totalAmount: number,
+  ) {
+    const adminUserId = req.user.sub;
+    return this.invoicesService.updateAmount(
+      +id,
+      adminUserId,
+      comment,
+      totalAmount,
+    );
+  }
+
+  @Roles('AdminChile', 'AdminPeru')
   @Put('derivado')
   updateStatusDerivado(
     @Body('id') id: number,

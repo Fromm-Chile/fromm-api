@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BannersController } from './controllers/banners.controller';
+import { BannersAdminController } from './controllers/banners.admin.controller';
 import { BannersService } from './services/banners.service';
 import { BannerRepository } from './repositories/banners.repository';
 import { APP_GUARD } from '@nestjs/core';
@@ -8,7 +8,7 @@ import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [AuthModule],
-  controllers: [BannersController],
+  controllers: [BannersAdminController],
   providers: [
     BannersService,
     BannerRepository,

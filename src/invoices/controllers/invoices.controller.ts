@@ -28,19 +28,4 @@ export class InvoicesController {
       countryId: Country.CL,
     });
   }
-
-  // @Get(':id')
-  // getOneInvoice(@Param('id') id: string) {
-  //   return this.invoicesService.getOneInvoice(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateInvoiceDto: UpdateInvoiceDto) {
-  //   return this.invoicesService.update(+id, updateInvoiceDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.invoicesService.remove(+id);
-  // }
 }
