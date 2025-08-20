@@ -89,7 +89,6 @@ export class InvoicesAdminController {
     return this.invoicesService.createByAdmin(
       {
         ...createInvoiceDto,
-        countryId: Country.CL,
       },
       adminUserId,
     );
