@@ -229,6 +229,22 @@ export class InvoicesService implements IInvoicesService {
       totalAmount,
     );
   }
+
+  async updateAmount(
+    id: number,
+    adminUserId: number,
+    comment: string,
+    totalAmount: number,
+  ) {
+    await this.invoiceHistoryService.create({
+      invoiceId: id,
+      adminUserId,
+      status: 'VENDIDO',
+      comment: comment || 'Monto actualizado por el administrador',
+    });
+    return await this.invoiceRepository.updateAmount(id, totalAmount);
+  }
+
   async updateStatusPerdido(id: number, adminUserId: number, comment: string) {
     await this.invoiceHistoryService.create({
       invoiceId: id,

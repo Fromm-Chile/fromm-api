@@ -89,7 +89,6 @@ export class InvoicesAdminController {
     return this.invoicesService.createByAdmin(
       {
         ...createInvoiceDto,
-        countryId: Country.CL,
       },
       adminUserId,
     );
@@ -172,6 +171,23 @@ export class InvoicesAdminController {
   ) {
     const adminUserId = req.user.sub;
     return this.invoicesService.updateStatusVendido(
+      +id,
+      adminUserId,
+      comment,
+      totalAmount,
+    );
+  }
+
+  @Roles('AdminChile', 'AdminPeru')
+  @Put('new/amount')
+  updateAmount(
+    @Body('id') id: number,
+    @Req() req: any,
+    @Body('comment') comment: string,
+    @Body('totalAmount') totalAmount: number,
+  ) {
+    const adminUserId = req.user.sub;
+    return this.invoicesService.updateAmount(
       +id,
       adminUserId,
       comment,
