@@ -28,6 +28,7 @@ model Country {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   users     User[]
+  banners   Banner[]
 }
 
 model User {
@@ -38,6 +39,7 @@ model User {
   country   Country   @relation(fields: [countryId], references: [id])
   email     String
   company   String?
+  rucPeru   String?
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   invoice   Invoice[]
@@ -169,10 +171,12 @@ model Status {
 
 model Banner {
   id        Int       @id @default(autoincrement())
+  countryId Int?
   name      String
   url       String
   order     Int
   isActive  Boolean   @default(true)
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+  country   Country?  @relation(fields: [countryId], references: [id])
 }

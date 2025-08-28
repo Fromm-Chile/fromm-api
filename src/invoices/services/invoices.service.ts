@@ -25,6 +25,7 @@ export class InvoicesService implements IInvoicesService {
   ) {}
 
   async create(createInvoiceDto: CreateInvoiceByCountryDto): Promise<Invoice> {
+    console.log(createInvoiceDto);
     let user = await this.usersService.findOneByEmail(
       createInvoiceDto.email,
       createInvoiceDto.countryId,
@@ -36,6 +37,7 @@ export class InvoicesService implements IInvoicesService {
         email: createInvoiceDto.email,
         phone: createInvoiceDto.phone,
         company: createInvoiceDto.company,
+        rucPeru: createInvoiceDto.rucPeru,
         countryId: createInvoiceDto.countryId,
       });
     }

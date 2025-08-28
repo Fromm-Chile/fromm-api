@@ -13,15 +13,16 @@ export class BannerRepository {
     });
   }
 
-  async findAllBanners(): Promise<Banner[]> {
+  async findAllBanners(countryId: number): Promise<Banner[]> {
     return await this.prisma.banner.findMany({
+      where: { countryId },
       orderBy: [{ isActive: 'desc' }, { order: 'asc' }],
     });
   }
 
-  async findAllActiveBanners(): Promise<Banner[]> {
+  async findAllActiveBanners(countryId: number): Promise<Banner[]> {
     return await this.prisma.banner.findMany({
-      where: { isActive: true },
+      where: { isActive: true, countryId },
       orderBy: {
         order: 'asc',
       },

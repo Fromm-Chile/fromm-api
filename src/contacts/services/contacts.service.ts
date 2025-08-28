@@ -15,7 +15,7 @@ export class ContactsService {
   ) {}
 
   async create(createContactDto: CreateContactByCountryDto) {
-    const { countryId, ...contactData } = createContactDto;
+    const { countryId, rucPeru, ...contactData } = createContactDto;
     let user = await this.usersService.findOneByEmail(
       createContactDto.email,
       countryId,
@@ -27,7 +27,8 @@ export class ContactsService {
         name: createContactDto.name,
         phone: createContactDto.phone,
         company: createContactDto.company,
-        countryId: createContactDto.countryId,
+        rucPeru,
+        countryId,
       });
     }
     const newContact = await this.contactsRepository.create(

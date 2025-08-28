@@ -9,16 +9,16 @@ import {
 import { FilesService } from '../services/files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { Public } from 'src/auth/decorators/public.decorator';
 import { FileSizeValidationPipe } from '../pipes/fileSizeValidationPipe';
 import { FileTypeValidationPipe } from '../pipes/fileTypeValidationPipe';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @UseGuards(AuthGuard)
 @Controller('files')
 export class FilesController {
   constructor(private filesService: FilesService) {}
 
-  @Public()
+  @Roles('AdminChile', 'AdminPeru')
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadBannerImage(
@@ -28,7 +28,8 @@ export class FilesController {
     )
     file: Express.Multer.File,
     @Body('order') order: number,
+    @Body('countryId') countryId: number,
   ) {
-    await this.filesService.uploadImage(file, +order);
+    await this.filesService.uploadImage(file, +order, +countryId);
   }
 }
