@@ -19,11 +19,7 @@ export class BannersAdminController {
   @Roles('AdminChile', 'AdminPeru')
   @Get()
   async getAllBanners(@Query('countryId') countryId: number) {
-    try {
-      return await this.bannersService.findAllBanners(+countryId);
-    } catch (error) {
-      return { error: 'Error fetching banners', details: error };
-    }
+    return await this.bannersService.findAllBanners(+countryId);
   }
 
   @Roles('AdminChile', 'AdminPeru')

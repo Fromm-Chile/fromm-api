@@ -65,6 +65,15 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_812E43022BCB42C1B93200EAAD15F905 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A231B51DE1A34E799DEA6B477543AB60 }}
 
+      - name: 'Clean up wwwroot directory with Bash'
+        uses: azure/cli@v2
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            echo "Conectando al contenedor y limpiando el directorio wwwroot..."
+            az webapp ssh --name 'frommchile' --resource-group 'nestjsapps' --command "rm -rf /home/site/wwwroot/*"
+            echo "Directorio wwwroot limpiado."
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3

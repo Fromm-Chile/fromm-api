@@ -14,10 +14,14 @@ export class BannerRepository {
   }
 
   async findAllBanners(countryId: number): Promise<Banner[]> {
-    return await this.prisma.banner.findMany({
-      where: { countryId },
-      orderBy: [{ isActive: 'desc' }, { order: 'asc' }],
-    });
+    try {
+      return await this.prisma.banner.findMany({
+        where: { countryId },
+        orderBy: [{ isActive: 'desc' }, { order: 'asc' }],
+      });
+    } catch (error) {
+      throw new Error(`Error fetching banners: ${error.message}`);
+    }
   }
 
   async findAllActiveBanners(countryId: number): Promise<Banner[]> {
