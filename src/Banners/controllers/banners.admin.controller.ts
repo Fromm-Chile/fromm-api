@@ -4,7 +4,7 @@ import {
   Get,
   Param,
   Put,
-  Query,
+  // Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
@@ -16,11 +16,11 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 export class BannersAdminController {
   constructor(private readonly bannersService: BannersService) {}
 
-  @Roles('AdminChile', 'AdminPeru')
-  @Get()
-  async getAllBanners(@Query('countryId') countryId: number) {
-    return await this.bannersService.findAllBanners(+countryId);
-  }
+  // @Roles('AdminChile', 'AdminPeru')
+  // @Get()
+  // async getAllBanners(@Query('countryId') countryId: number) {
+  //   return await this.bannersService.findAllBanners(+countryId);
+  // }
 
   @Roles('AdminChile', 'AdminPeru')
   @Get(':id')
