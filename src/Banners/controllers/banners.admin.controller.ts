@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Param,
-  Patch,
   Put,
   Query,
   UseGuards,
@@ -17,19 +16,19 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 export class BannersAdminController {
   constructor(private readonly bannersService: BannersService) {}
 
-  @Roles('AdminChile')
+  @Roles('AdminChile', 'AdminPeru')
   @Get()
   async getAllBanners(@Query('countryId') countryId: number) {
     return await this.bannersService.findAllBanners(+countryId);
   }
 
-  @Roles('AdminChile')
+  @Roles('AdminChile', 'AdminPeru')
   @Get(':id')
   async getBannerById(@Param('id') id: number) {
     return await this.bannersService.findBannerById(+id);
   }
 
-  @Roles('AdminChile')
+  @Roles('AdminChile', 'AdminPeru')
   @Put('order')
   async updateBannerOrder(
     @Body('id') id: number,
@@ -39,14 +38,14 @@ export class BannersAdminController {
     return { message: 'Banner order updated successfully' };
   }
 
-  @Roles('AdminChile')
+  @Roles('AdminChile', 'AdminPeru')
   @Put('remove')
   async removeBanner(@Body('id') id: number) {
     await this.bannersService.removeBanner(+id);
     return { message: 'Banner removed successfully' };
   }
 
-  @Roles('AdminChile')
+  @Roles('AdminChile', 'AdminPeru')
   @Put('activate')
   async activateBanner(@Body('id') id: number) {
     await this.bannersService.activateBanner(+id);
