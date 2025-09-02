@@ -40,6 +40,10 @@ export class CreateInvoiceDto {
 
   @IsOptional()
   @IsString()
+  readonly rucPeru: string;
+
+  @IsOptional()
+  @IsString()
   readonly message: string;
 
   @IsArray()

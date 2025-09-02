@@ -6,10 +6,15 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { AuthModule } from 'src/auth/auth.module';
 import { BannersController } from './controllers/banners.controller';
+import { BannersControllerPeru } from './controllers/banners.pe.controller';
 
 @Module({
   imports: [AuthModule],
-  controllers: [BannersAdminController, BannersController],
+  controllers: [
+    BannersAdminController,
+    BannersController,
+    BannersControllerPeru,
+  ],
   providers: [
     BannersService,
     BannerRepository,

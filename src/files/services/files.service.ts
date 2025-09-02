@@ -60,7 +60,11 @@ export class FilesService {
     }
   }
 
-  async uploadImage(@UploadedFile() file: Express.Multer.File, order: number) {
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    order: number,
+    countryId: number,
+  ) {
     if (!file) {
       throw new Error('File is missing');
     }
@@ -92,6 +96,7 @@ export class FilesService {
         name: file.originalname,
         url,
         order: order,
+        countryId,
       });
 
       return uploadedImage;

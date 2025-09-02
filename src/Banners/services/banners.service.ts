@@ -11,12 +11,12 @@ export class BannersService {
     return await this.bannerRepository.createBanner(data);
   }
 
-  async findAllBanners(): Promise<Banner[]> {
-    return await this.bannerRepository.findAllBanners();
+  async findAllBanners(countryId: number): Promise<Banner[]> {
+    return await this.bannerRepository.findAllBanners(countryId);
   }
 
-  async findAllActiveBanners(): Promise<Banner[]> {
-    return await this.bannerRepository.findAllActiveBanners();
+  async findAllActiveBanners(countryId: number): Promise<Banner[]> {
+    return await this.bannerRepository.findAllActiveBanners(countryId);
   }
 
   async findBannerById(id: number): Promise<Banner> {

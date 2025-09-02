@@ -16,6 +16,7 @@ export class UsersRepository implements IUserRepository {
         email: user.email,
         phone: user.phone,
         company: user.company,
+        rucPeru: user.rucPeru,
         country: user.country,
       },
     });

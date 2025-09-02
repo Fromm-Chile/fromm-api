@@ -4,13 +4,13 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { Public } from 'src/auth/decorators/public.decorator';
 
 @UseGuards(AuthGuard)
-@Controller('banners')
-export class BannersController {
+@Controller('pe/banners')
+export class BannersControllerPeru {
   constructor(private readonly bannersService: BannersService) {}
 
   @Public()
   @Get('active')
   async getAllActiveBanners() {
-    return await this.bannersService.findAllActiveBanners(1);
+    return await this.bannersService.findAllActiveBanners(2);
   }
 }

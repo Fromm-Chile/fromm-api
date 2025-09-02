@@ -3,5 +3,6 @@ export class CreateUserDto {
   readonly email: string;
   readonly phone?: string;
   readonly company?: string;
+  readonly rucPeru?: string;
   readonly address?: string;
 }
