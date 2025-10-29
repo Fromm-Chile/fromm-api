@@ -1,0 +1,34 @@
+// jest.config.ts
+import type { Config } from '@jest/types';
+
+const config: Config.InitialOptions = {
+  preset: 'ts-jest',
+  testEnvironment: 'node', // Change from 'jsdom' to 'node' for NestJS
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+
+  // Add module name mapping for prisma folder
+  moduleNameMapper: {
+    '^prisma/(.*)$': '<rootDir>/prisma/$1',
+    '^config/(.*)$': '<rootDir>/config/$1', // Map config/* to config folder
+    '^src/(.*)$': '<rootDir>/src/$1', // Map src/* to src folder
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/__mocks__/fileMock.js',
+  },
+
+  // Add roots to include both src and prisma
+  roots: ['<rootDir>/src', '<rootDir>/prisma'],
+
+  // Update module directories
+  moduleDirectories: ['node_modules', '<rootDir>/src', '<rootDir>/prisma'],
+
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+  },
+
+  testMatch: ['<rootDir>/src/**/*.{spec,test}.{ts,tsx}'],
+  collectCoverage: false,
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts'],
+  coverageDirectory: 'coverage',
+};
+
+export default config;
