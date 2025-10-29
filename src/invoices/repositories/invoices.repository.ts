@@ -266,7 +266,42 @@ ORDER BY CAST(updatedAt AS DATE) ASC;
 `;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} invoice`;
+  async excelData() {
+    return await this.prisma.invoice.findMany({
+      include: {
+        invoiceDetails: true,
+        statusR: true,
+        user: true,
+      },
+      where: {
+        user: {
+          country: {
+            code: 'CL',
+          },
+        },
+      },
+    });
+  }
+
+  async excelDataProducts() {
+    return await this.prisma.invoiceDetail.findMany({
+      include: {
+        product: {
+          include: {
+            category: true,
+            invoiceDetails: true,
+          },
+        },
+      },
+      where: {
+        invoice: {
+          user: {
+            country: {
+              code: 'CL',
+            },
+          },
+        },
+      },
+    });
   }
 }

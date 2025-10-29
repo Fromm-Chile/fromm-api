@@ -13,13 +13,8 @@ import {
 } from '@nestjs/common';
 import { InvoicesService } from '../services/invoices.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { CreateInvoiceDto } from './dto/create-invoice.dto';
-import { Country } from 'src/assets/enums';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  CreateInvoiceByCountryDto,
-  CreateInvoiceByCountryDtoForAdmin,
-} from '../services/interfaces/invoice.service.interface';
+import { CreateInvoiceByCountryDtoForAdmin } from '../services/interfaces/invoice.service.interface';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { FileSizeValidationPipe } from 'src/files/pipes/fileSizeValidationPipe';
 import { FileTypeValidationPipe } from 'src/files/pipes/fileTypeValidationPipe';
@@ -239,5 +234,17 @@ export class InvoicesAdminController {
       startDate,
       endDate,
     );
+  }
+
+  @Roles('AdminChile')
+  @Get('excel/data')
+  getExcelData() {
+    return this.invoicesService.dataExcel();
+  }
+
+  @Roles('AdminChile')
+  @Get('excel/data/products')
+  getExcelDataProducts() {
+    return this.invoicesService.dataExcelProducts();
   }
 }
