@@ -316,7 +316,13 @@ export class InvoicesService implements IInvoicesService {
     return cotizacionesVendidas;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} invoice`;
+  async dataExcel() {
+    const data = await this.invoiceRepository.excelData();
+    return data;
+  }
+
+  async dataExcelProducts() {
+    const data = await this.invoiceRepository.excelDataProducts();
+    return data;
   }
 }

@@ -32,5 +32,4 @@ export interface IInvoicesService {
     adminUserId: number,
     comment: string,
   ): Promise<Invoice>;
-  remove(id: number): string;
 }
