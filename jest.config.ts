@@ -1,7 +1,7 @@
 // jest.config.ts
-import type { Config } from '@jest/types';
+import type { JestConfigWithTsJest } from 'ts-jest';
 
-const config: Config.InitialOptions = {
+const config: JestConfigWithTsJest = {
   preset: 'ts-jest',
   testEnvironment: 'node', // Change from 'jsdom' to 'node' for NestJS
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
