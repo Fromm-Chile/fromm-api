@@ -71,12 +71,4 @@ export class ProductsService implements IProductsService {
     const products = await this.productRepository.findMany(ids);
     return products;
   }
-
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} product`;
-  }
 }

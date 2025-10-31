@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { CreateBannerDto } from '../controllers/dto/create-banner.dto';
 import { BannerRepository } from '../repositories/banners.repository';
 import { Banner } from '@prisma/client';
+import { IBannersService } from './interfaces/banners.service.interface';
 
 @Injectable()
-export class BannersService {
+export class BannersService implements IBannersService {
   constructor(private readonly bannerRepository: BannerRepository) {}
 
   async createBanner(data: CreateBannerDto): Promise<Banner> {

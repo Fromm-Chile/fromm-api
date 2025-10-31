@@ -22,6 +22,4 @@ export interface IProductsService {
     filter: FilterProductsDto,
   ): Promise<{ products: ProductType[]; totalPages: number }>;
   findOne(id: number): Promise<ProductType>;
-  update(id: number, updateProductDto: UpdateProductDto): string;
-  remove(id: number): string;
 }

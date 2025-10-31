@@ -9,10 +9,6 @@ import { FilterProductsDto } from '../controllers/dto/filter-product.dto';
 export class ProductsRepository implements IProductsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
-  }
-
   async findAll(filter: FilterProductsDto) {
     const products = await this.prisma.product.findMany({
       skip: filter.page * 9 || 0,
@@ -85,13 +81,5 @@ export class ProductsRepository implements IProductsRepository {
       },
     });
     return products;
-  }
-
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} product`;
   }
 }
