@@ -1,5 +1,5 @@
 import { Contact, Prisma } from '@prisma/client';
-import { CreateContactDto } from 'src/contacts/dto/create-dto';
+import { CreateContactDto } from 'src/contacts/dto/create-contact-dto';
 import { FilterContactDto } from 'src/contacts/dto/filter-contact-dto';
 import { UpdateContactDto } from 'src/contacts/dto/update-dto';
 

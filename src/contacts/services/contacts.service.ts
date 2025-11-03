@@ -3,14 +3,15 @@ import { ContactsRepository } from '../repositories/contacts.repository';
 import { UpdateContactDto } from '../dto/update-dto';
 import { UsersService } from '../../users/services/users.service';
 import { EmailService } from 'src/emails/emails.service';
-import { CreateContactByCountryDto } from '../interfaces/contact.repository.interfaces';
+import { CreateContactByCountryDto } from '../interfaces/contact.repository.interface';
 import { FilterContactDto } from '../dto/filter-contact-dto';
 import { Contact } from '@prisma/client';
 import { ContactsCountResponseDto } from '../dto/contactsCount-response.dto';
 import { GetContactsResponseDto } from '../dto/getContacts-response.dto';
+import { IContactsService } from '../interfaces/contact.service.interface';
 
 @Injectable()
-export class ContactsService {
+export class ContactsService implements IContactsService {
   constructor(
     private readonly contactsRepository: ContactsRepository,
     private readonly usersService: UsersService,

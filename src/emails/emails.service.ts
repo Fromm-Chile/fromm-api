@@ -4,8 +4,8 @@ import { ConfigService } from '@nestjs/config';
 import { SendEmailDto, SendEmailDtoByCountry } from './dto/emails.dto';
 import { User } from '@prisma/client';
 import { CreateInvoiceDto } from 'src/invoices/controllers/dto/create-invoice.dto';
-import { CreateContactDto } from 'src/contacts/dto/create-dto';
-import { CreateContactByCountryDto } from 'src/contacts/interfaces/contact.repository.interfaces';
+import { CreateContactDto } from 'src/contacts/dto/create-contact-dto';
+import { CreateContactByCountryDto } from 'src/contacts/interfaces/contact.repository.interface';
 import { CreateInvoiceByCountryDto } from 'src/invoices/services/interfaces/invoice.service.interface';
 
 @Injectable()

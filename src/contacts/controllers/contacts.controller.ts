@@ -1,6 +1,6 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { ContactsService } from '../services/contacts.service';
-import { CreateContactDto } from '../dto/create-dto';
+import { CreateContactDto } from '../dto/create-contact-dto';
 import { Country } from 'src/assets/enums';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { Public } from 'src/auth/decorators/public.decorator';

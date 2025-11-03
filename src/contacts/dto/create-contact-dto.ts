@@ -15,15 +15,14 @@ export class CreateContactDto {
   readonly email: string;
 
   @IsString()
-  @IsOptional()
-  readonly company?: string;
+  readonly company: string;
 
   @IsString()
   @IsOptional()
   readonly rucPeru?: string;
 
   @IsString()
-  readonly equipment?: string;
+  readonly equipment: string;
 
   @IsString()
   readonly contactType?: string;

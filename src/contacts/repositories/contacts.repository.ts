@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
-import { IContactsRepository } from '../interfaces/contact.repository.interfaces';
+import { IContactsRepository } from '../interfaces/contact.repository.interface';
 import { UpdateContactDto } from '../dto/update-dto';
 import { Contact, Prisma } from '@prisma/client';
 import { FilterContactDto } from '../dto/filter-contact-dto';
