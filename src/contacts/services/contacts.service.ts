@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ContactsRepository } from '../repositories/contacts.repository';
-import { UpdateContactDto } from '../controllers/dto/update-dto';
+import { UpdateContactDto } from '../dto/update-dto';
 import { UsersService } from '../../users/services/users.service';
 import { EmailService } from 'src/emails/emails.service';
-import { CreateContactByCountryDto } from '../repositories/interfaces/contact.repository.interfaces';
-import { FilterContactDto } from '../controllers/dto/filter-contact-dto';
+import { CreateContactByCountryDto } from '../interfaces/contact.repository.interfaces';
+import { FilterContactDto } from '../dto/filter-contact-dto';
+import { Contact } from '@prisma/client';
+import { ContactsCountResponseDto } from '../dto/contactsCount-response.dto';
+import { GetContactsResponseDto } from '../dto/getContacts-response.dto';
 
 @Injectable()
 export class ContactsService {
@@ -14,7 +17,7 @@ export class ContactsService {
     private readonly emailService: EmailService,
   ) {}
 
-  async create(createContactDto: CreateContactByCountryDto) {
+  async create(createContactDto: CreateContactByCountryDto): Promise<Contact> {
     const { countryId, rucPeru, ...contactData } = createContactDto;
     let user = await this.usersService.findOneByEmail(
       createContactDto.email,
@@ -39,16 +42,14 @@ export class ContactsService {
     await this.emailService.sendContactEmail(createContactDto, newContact.id);
 
     await this.emailService.sendContactConfirmationUser(user, newContact.id);
-    // await this.emailService.sendEmailTest(
-    //   'davidguzman1500@gmail.com',
-    //   'Prueba',
-    //   'Hola, esto es una prueba de envio de correo desde el backend',
-    // );
 
     return newContact;
   }
 
-  async getContactCount(code: string, connectType: string) {
+  async getContactCount(
+    code: string,
+    connectType: string,
+  ): Promise<ContactsCountResponseDto> {
     const totalCount = await this.contactsRepository.totalCount(
       code,
       connectType,
@@ -76,7 +77,9 @@ export class ContactsService {
     };
   }
 
-  async getAllContacts(filter: FilterContactDto) {
+  async getAllContacts(
+    filter: FilterContactDto,
+  ): Promise<GetContactsResponseDto> {
     const contactos = await this.contactsRepository.findAllContacts(filter);
 
     const totalPages = await this.contactsRepository.findCountPages(filter);
@@ -87,31 +90,27 @@ export class ContactsService {
     };
   }
 
-  async getAllContactsByUserId(id: number, code: string) {
-    const messages = await this.contactsRepository.findContactsByUserId(
-      +id,
-      code,
-    );
-    return messages;
+  getAllContactsByUserId(id: number, code: string): Promise<Contact[]> {
+    return this.contactsRepository.findContactsByUserId(+id, code);
   }
 
-  async findOneContact(id: number) {
-    return await this.contactsRepository.findOneContact(id);
+  findOneContact(id: number): Promise<Contact> {
+    return this.contactsRepository.findOneContact(id);
   }
 
-  async update(id: number, updateContactDto: UpdateContactDto) {
-    return await this.contactsRepository.update(id, updateContactDto);
+  update(id: number, updateContactDto: UpdateContactDto): Promise<Contact> {
+    return this.contactsRepository.update(id, updateContactDto);
   }
 
-  async updateStatus(id: number, statusId: number) {
-    return await this.contactsRepository.updateStatus(id, statusId);
+  updateStatus(id: number, statusId: number): Promise<Contact> {
+    return this.contactsRepository.updateStatus(id, statusId);
   }
 
-  async updateContactType(id: number) {
-    return await this.contactsRepository.updateContactType(+id);
+  updateContactType(id: number): Promise<Contact> {
+    return this.contactsRepository.updateContactType(+id);
   }
 
-  async updateStatusDerivado(id: number, department: string) {
+  async updateStatusDerivado(id: number, department: string): Promise<Contact> {
     const contact = await this.contactsRepository.findOneContact(id);
     const departmentMessage = `${contact.message} - Derivado a ${department}`;
     return await this.contactsRepository.updateStatusDerivado(
@@ -120,7 +119,7 @@ export class ContactsService {
     );
   }
 
-  remove(id: number) {
+  remove(id: number): Promise<Contact> {
     return this.contactsRepository.remove(id);
   }
 }

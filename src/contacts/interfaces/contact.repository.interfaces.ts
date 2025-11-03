@@ -1,7 +1,7 @@
 import { Contact, Prisma } from '@prisma/client';
-import { CreateContactDto } from 'src/contacts/controllers/dto/create-dto';
-import { FilterContactDto } from 'src/contacts/controllers/dto/filter-contact-dto';
-import { UpdateContactDto } from 'src/contacts/controllers/dto/update-dto';
+import { CreateContactDto } from 'src/contacts/dto/create-dto';
+import { FilterContactDto } from 'src/contacts/dto/filter-contact-dto';
+import { UpdateContactDto } from 'src/contacts/dto/update-dto';
 
 export class CreateContactByCountryDto extends CreateContactDto {
   countryId: number;
