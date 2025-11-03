@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BannersService } from '../banners.service';
 import { BannerRepository } from '../../repositories/banners.repository';
-import { CreateBannerDto } from '../../controllers/dto/create-banner.dto';
+import { CreateBannerDto } from '../../dto/create-banner.dto';
 import { Banner } from '@prisma/client';
 
 const mockBannerRepository = {
@@ -13,6 +13,29 @@ const mockBannerRepository = {
   removeBanner: jest.fn(),
   activateBanner: jest.fn(),
 };
+
+const expectedBanners: Banner[] = [
+  {
+    id: 1,
+    name: 'Banner 1',
+    url: 'http://example1.com',
+    order: 1,
+    countryId: 1,
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 2,
+    name: 'Banner 2',
+    url: 'http://example2.com',
+    order: 2,
+    countryId: 1,
+    isActive: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
 
 describe('BannersService', () => {
   let service: BannersService;
@@ -64,28 +87,6 @@ describe('BannersService', () => {
   describe('findAllBanners', () => {
     it('should return all banners for a country', async () => {
       const countryId = 1;
-      const expectedBanners: Banner[] = [
-        {
-          id: 1,
-          name: 'Banner 1',
-          url: 'http://example1.com',
-          order: 1,
-          countryId: 1,
-          isActive: true,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: 2,
-          name: 'Banner 2',
-          url: 'http://example2.com',
-          order: 2,
-          countryId: 1,
-          isActive: false,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ];
 
       mockBannerRepository.findAllBanners.mockResolvedValue(expectedBanners);
 
@@ -100,25 +101,15 @@ describe('BannersService', () => {
   describe('findAllActiveBanners', () => {
     it('should return only active banners for a country', async () => {
       const countryId = 1;
-      const expectedBanners: Banner[] = [
-        {
-          id: 1,
-          name: 'Active Banner',
-          url: 'http://example1.com',
-          order: 1,
-          countryId: 1,
-          isActive: true,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ];
 
       mockBannerRepository.findAllActiveBanners.mockResolvedValue(
-        expectedBanners,
+        expectedBanners.filter((banner) => banner.isActive),
       );
 
       const result = await service.findAllActiveBanners(countryId);
-      expect(result).toEqual(expectedBanners);
+      expect(result).toEqual(
+        expectedBanners.filter((banner) => banner.isActive),
+      );
       expect(mockBannerRepository.findAllActiveBanners).toHaveBeenCalledWith(
         countryId,
       );

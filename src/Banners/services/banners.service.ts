@@ -28,11 +28,11 @@ export class BannersService implements IBannersService {
     return this.bannerRepository.updateBannerOrder(id, order);
   }
 
-  async removeBanner(id: number): Promise<void> {
-    await this.bannerRepository.removeBanner(id);
+  removeBanner(id: number): Promise<void> {
+    return this.bannerRepository.removeBanner(id);
   }
 
-  async activateBanner(id: number): Promise<void> {
-    await this.bannerRepository.activateBanner(id);
+  activateBanner(id: number): Promise<void> {
+    return this.bannerRepository.activateBanner(id);
   }
 }
