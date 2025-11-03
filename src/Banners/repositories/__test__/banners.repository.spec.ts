@@ -2,12 +2,52 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BannerRepository } from '../banners.repository';
 import { PrismaService } from 'prisma/prisma.service';
 
+const mockPrismaService = {
+  banner: {
+    create: jest.fn(),
+    findMany: jest.fn(),
+    findUnique: jest.fn(),
+    update: jest.fn(),
+  },
+};
+
+const countryId = 1;
+
+const expectedBanners = [
+  {
+    id: 1,
+    name: 'Test Banner 1',
+    url: 'http://example.com/1',
+    order: 1,
+    countryId: countryId,
+    isActive: true,
+    createdAt: new Date('2023-01-01T00:00:00.000Z'),
+    updatedAt: new Date('2023-01-01T00:00:00.000Z'),
+  },
+  {
+    id: 2,
+    name: 'Test Banner 2',
+    url: 'http://example.com/2',
+    order: 2,
+    countryId: countryId,
+    isActive: false,
+    createdAt: new Date('2023-01-02T00:00:00.000Z'),
+    updatedAt: new Date('2023-01-02T00:00:00.000Z'),
+  },
+];
+
 describe('BannersRepository', () => {
   let repository: BannerRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [BannerRepository, PrismaService],
+      providers: [
+        BannerRepository,
+        {
+          provide: PrismaService,
+          useValue: mockPrismaService,
+        },
+      ],
     }).compile();
 
     repository = module.get<BannerRepository>(BannerRepository);
@@ -26,30 +66,48 @@ describe('BannersRepository', () => {
         order: 1,
         countryId: 1,
       };
+      const createdBanner = {
+        id: 1,
+        ...dto,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      mockPrismaService.banner.create.mockResolvedValue(createdBanner);
+
       const result = await repository.createBanner(dto);
-      expect(result).toEqual(expect.objectContaining(dto));
+
+      expect(mockPrismaService.banner.create).toHaveBeenCalledWith({
+        data: dto,
+      });
+      expect(result).toEqual(createdBanner);
     });
   });
 
   describe('findAllBanners', () => {
     it('should return all banners for a country', async () => {
-      const countryId = 1;
+      mockPrismaService.banner.findMany.mockResolvedValue(expectedBanners);
+
       const result = await repository.findAllBanners(countryId);
-      expect(Array.isArray(result)).toBe(true);
-      result.forEach((banner) => {
-        expect(banner.countryId).toBe(countryId);
+      expect(result).toEqual(expectedBanners);
+      expect(mockPrismaService.banner.findMany).toHaveBeenCalledWith({
+        where: { countryId },
+        orderBy: [{ isActive: 'desc' }, { order: 'asc' }],
       });
     });
   });
 
   describe('findAllActiveBanners', () => {
     it('should return all active banners for a country', async () => {
-      const countryId = 1;
+      mockPrismaService.banner.findMany.mockResolvedValue(expectedBanners);
+
       const result = await repository.findAllActiveBanners(countryId);
-      expect(Array.isArray(result)).toBe(true);
-      result.forEach((banner) => {
-        expect(banner.countryId).toBe(countryId);
-        expect(banner.isActive).toBe(true);
+      expect(result).toEqual(expectedBanners);
+      expect(mockPrismaService.banner.findMany).toHaveBeenCalledWith({
+        where: { isActive: true, countryId },
+        orderBy: {
+          order: 'asc',
+        },
       });
     });
   });
@@ -62,9 +120,13 @@ describe('BannersRepository', () => {
         order: 1,
         countryId: 1,
       };
-      const createdBanner = await repository.createBanner(dto);
-      const result = await repository.findBannerById(createdBanner.id);
-      expect(result).toEqual(createdBanner);
+      mockPrismaService.banner.findUnique.mockResolvedValue(expectedBanners[0]);
+
+      const result = await repository.findBannerById(1);
+      expect(result).toEqual(expectedBanners[0]);
+      expect(mockPrismaService.banner.findUnique).toHaveBeenCalledWith({
+        where: { id: 1 },
+      });
     });
   });
 
@@ -77,10 +139,11 @@ describe('BannersRepository', () => {
         countryId: 1,
       };
       const createdBanner = await repository.createBanner(dto);
-      const newOrder = 5;
-      await repository.updateBannerOrder(createdBanner.id, newOrder);
-      const updatedBanner = await repository.findBannerById(createdBanner.id);
-      expect(updatedBanner.order).toBe(newOrder);
+      await repository.updateBannerOrder(createdBanner.id, 5);
+      expect(mockPrismaService.banner.update).toHaveBeenCalledWith({
+        where: { id: createdBanner.id },
+        data: { order: 5, updatedAt: expect.any(Date) },
+      });
     });
   });
 
@@ -94,8 +157,10 @@ describe('BannersRepository', () => {
       };
       const createdBanner = await repository.createBanner(dto);
       await repository.removeBanner(createdBanner.id);
-      const updatedBanner = await repository.findBannerById(createdBanner.id);
-      expect(updatedBanner.isActive).toBe(false);
+      expect(mockPrismaService.banner.update).toHaveBeenCalledWith({
+        where: { id: createdBanner.id },
+        data: { isActive: false, updatedAt: expect.any(Date) },
+      });
     });
   });
 
@@ -108,10 +173,11 @@ describe('BannersRepository', () => {
         countryId: 1,
       };
       const createdBanner = await repository.createBanner(dto);
-      await repository.removeBanner(createdBanner.id);
       await repository.activateBanner(createdBanner.id);
-      const updatedBanner = await repository.findBannerById(createdBanner.id);
-      expect(updatedBanner.isActive).toBe(true);
+      expect(mockPrismaService.banner.update).toHaveBeenCalledWith({
+        where: { id: createdBanner.id },
+        data: { isActive: true, updatedAt: expect.any(Date) },
+      });
     });
   });
 });
