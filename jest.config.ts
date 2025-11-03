@@ -26,9 +26,10 @@ const config: JestConfigWithTsJest = {
   },
 
   testMatch: ['<rootDir>/src/**/*.{spec,test}.{ts,tsx}'],
-  collectCoverage: false,
+  collectCoverage: false, // Explicitly disable coverage by default
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts'],
   coverageDirectory: 'coverage',
+  coverageReporters: ['text'], // Only show text output when coverage is enabled
 };
 
 export default config;
