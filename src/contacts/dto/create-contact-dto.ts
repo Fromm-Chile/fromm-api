@@ -1,9 +1,6 @@
 import { IsString, IsNumber, IsEmail, IsOptional } from 'class-validator';
 
 export class CreateContactDto {
-  @IsNumber()
-  readonly userId: number;
-
   @IsString()
   readonly name: string;
 
@@ -22,7 +19,8 @@ export class CreateContactDto {
   readonly rucPeru?: string;
 
   @IsString()
-  readonly equipment: string;
+  @IsOptional()
+  readonly equipment?: string;
 
   @IsString()
   readonly contactType?: string;

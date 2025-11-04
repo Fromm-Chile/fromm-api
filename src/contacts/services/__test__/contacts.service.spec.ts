@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ContactsService } from '../contacts.service';
 import { ContactsRepository } from '../../repositories/contacts.repository';
+import { EmailService } from 'src/emails/services/emails.service';
 import { UsersService } from '../../../users/services/users.service';
-import { EmailService } from '../../../emails/emails.service';
 import { Contact, User } from '@prisma/client';
 import { CreateContactByCountryDto } from '../../interfaces/contact.repository.interface';
 import { FilterContactDto } from '../../dto/filter-contact-dto';
@@ -103,7 +103,6 @@ describe('ContactsService', () => {
 
   describe('create', () => {
     const createContactDto: CreateContactByCountryDto = {
-      userId: 1,
       name: 'Test Contact',
       phone: '+1234567890',
       email: 'test@example.com',
@@ -134,7 +133,6 @@ describe('ContactsService', () => {
           company: createContactDto.company,
           equipment: createContactDto.equipment,
           message: createContactDto.message,
-          userId: 1,
         },
         1,
       );

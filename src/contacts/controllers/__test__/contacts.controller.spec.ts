@@ -66,7 +66,6 @@ describe('ContactsController', () => {
   describe('create', () => {
     it('should create a contact for Chile', async () => {
       const createContactDto: CreateContactDto = {
-        userId: 1,
         name: 'Test Contact',
         phone: '+1234567890',
         email: 'test@example.com',

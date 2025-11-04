@@ -66,7 +66,6 @@ describe('ContactsControllerPeru', () => {
   describe('create', () => {
     it('should handle contact creation with RUC Peru', async () => {
       const createContactDto: CreateContactDto = {
-        userId: 1,
         name: 'Test Contact Peru',
         phone: '+51123456789',
         email: 'test@example.pe',
