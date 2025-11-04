@@ -5,8 +5,8 @@ import {
   IInvoicesService,
 } from './interfaces/invoice.service.interface';
 import { InvoicesRepository } from '../repositories/invoices.repository';
+import { EmailService } from 'src/emails/services/emails.service';
 import { UsersService } from 'src/users/services/users.service';
-import { EmailService } from 'src/emails/emails.service';
 import { Invoice } from '@prisma/client';
 import { FilterInvoicesDto } from '../controllers/dto/filter-invoice.dto';
 import { InvoiceHistoryService } from 'src/invoiceHistory/services/invoiceHistory.service';
