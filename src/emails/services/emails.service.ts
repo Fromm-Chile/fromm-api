@@ -132,7 +132,6 @@ export class EmailService {
       dto;
     await this.sendEmail({
       recipients: [this.configService.get<string>(`RECIPIENTS_${countryId}`)],
-      // recipients: ['contacto@fromm-pack.cl'],
       subject: `Nueva Solicitud de Cotización, Nro: ${Id}`,
       html: `
           <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.5;">
