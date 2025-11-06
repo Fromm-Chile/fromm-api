@@ -36,19 +36,22 @@ export class FilesService {
     order: number,
     countryId: number,
   ) {
-    const uploadResult = await this.#uploadS3Client(file.originalname, file);
+    const uploadUrl = await this.#uploadS3Client(file.originalname, file);
 
     await this.bannersService.createBanner({
       name: file.originalname,
-      url: uploadResult.url,
+      url: uploadUrl,
       order,
       countryId,
     });
 
-    return uploadResult;
+    return uploadUrl;
   }
 
-  async #uploadS3Client(key: string, file: Express.Multer.File) {
+  async #uploadS3Client(
+    key: string,
+    file: Express.Multer.File,
+  ): Promise<string> {
     if (!file) {
       throw new Error('File is missing');
     }
@@ -68,11 +71,7 @@ export class FilesService {
 
       const url = `${publicBucketUrl}/${key}`;
 
-      return {
-        message: 'File uploaded successfully',
-        key: key,
-        url: url,
-      };
+      return url;
     } catch (error) {
       console.error('Error uploading file:', error);
       throw new Error('Failed to upload file');

@@ -4,7 +4,6 @@ import { FilesService } from '../files.service';
 import { BannersService } from '../../../Banners/services/banners.service';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
-// Mock AWS S3 Client
 const mockSend = jest.fn();
 const mockS3Client = {
   send: mockSend,
@@ -110,11 +109,7 @@ describe('FilesService', () => {
         }),
       );
 
-      expect(result).toEqual({
-        message: 'File uploaded successfully',
-        key: expectedKey,
-        url: expectedUrl,
-      });
+      expect(result).toBe(expectedUrl);
     });
 
     it('should throw error when S3 upload fails', async () => {
@@ -143,6 +138,7 @@ describe('FilesService', () => {
 
       const invoiceId = 789;
       const expectedKey = `${invoiceId}-document.pdf`;
+      const expectedUrl = `https://pub-test.r2.dev/${expectedKey}`;
 
       mockSend.mockResolvedValue({
         $metadata: { httpStatusCode: 200 },
@@ -161,8 +157,7 @@ describe('FilesService', () => {
         }),
       );
 
-      expect(result.key).toBe(expectedKey);
-      expect(result.url).toBe(`https://pub-test.r2.dev/${expectedKey}`);
+      expect(result).toBe(expectedUrl);
     });
   });
 
@@ -203,11 +198,7 @@ describe('FilesService', () => {
         countryId,
       });
 
-      expect(result).toEqual({
-        message: 'File uploaded successfully',
-        key: mockImageFile.originalname,
-        url: expectedUrl,
-      });
+      expect(result).toBe(expectedUrl);
     });
 
     it('should throw error when S3 image upload fails', async () => {
@@ -236,6 +227,7 @@ describe('FilesService', () => {
 
       const order = 2;
       const countryId = 2;
+      const expectedUrl = 'https://pub-test.r2.dev/test-banner.jpeg';
 
       mockSend.mockResolvedValue({
         $metadata: { httpStatusCode: 200 },
@@ -257,10 +249,12 @@ describe('FilesService', () => {
 
       expect(mockBannersService.createBanner).toHaveBeenCalledWith({
         name: 'test-banner.jpeg',
-        url: 'https://pub-test.r2.dev/test-banner.jpeg',
+        url: expectedUrl,
         order,
         countryId,
       });
+
+      expect(result).toBe(expectedUrl);
     });
 
     it('should use correct file key without prefix for images', async () => {
