@@ -198,7 +198,7 @@ export class InvoicesService implements IInvoicesService {
       status: 'ENVIADA',
       comment: comment || 'Cotización enviada por el administrador',
     });
-    return await this.invoiceRepository.updateStatusEviada(invoiceUrl.url, id);
+    return await this.invoiceRepository.updateStatusEviada(invoiceUrl, id);
   }
 
   async updateStatusSeguimiento(
