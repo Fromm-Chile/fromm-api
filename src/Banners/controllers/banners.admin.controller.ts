@@ -17,19 +17,19 @@ import { Banner } from '@prisma/client';
 export class BannersAdminController {
   constructor(private readonly bannersService: BannersService) {}
 
-  @Roles('AdminChile')
+  @Roles('AdminChile', 'AdminPeru')
   @Get()
   getAllBanners(@Query('countryId') countryId: number): Promise<Banner[]> {
     return this.bannersService.findAllBanners(+countryId);
   }
 
-  @Roles('AdminChile')
+  @Roles('AdminChile', 'AdminPeru')
   @Get(':id')
   getBannerById(@Param('id') id: number): Promise<Banner> {
     return this.bannersService.findBannerById(+id);
   }
 
-  @Roles('AdminChile')
+  @Roles('AdminChile', 'AdminPeru')
   @Put('order')
   async updateBannerOrder(
     @Body('id') id: number,
@@ -39,14 +39,14 @@ export class BannersAdminController {
     return { message: 'Banner order updated successfully' };
   }
 
-  @Roles('AdminChile')
+  @Roles('AdminChile', 'AdminPeru')
   @Put('remove')
   async removeBanner(@Body('id') id: number): Promise<{ message: string }> {
     await this.bannersService.removeBanner(+id);
     return { message: 'Banner removed successfully' };
   }
 
-  @Roles('AdminChile')
+  @Roles('AdminChile', 'AdminPeru')
   @Put('activate')
   async activateBanner(@Body('id') id: number): Promise<{ message: string }> {
     await this.bannersService.activateBanner(+id);
