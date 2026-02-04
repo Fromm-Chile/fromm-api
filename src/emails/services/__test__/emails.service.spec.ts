@@ -4,8 +4,8 @@ import { EmailService } from '../emails.service';
 import { User } from '@prisma/client';
 import { SendEmailDto } from '../../dto/send-emails.dto';
 import { CreateContactByCountryDto } from '../../../contacts/interfaces/contact.repository.interface';
-import { CreateInvoiceByCountryDto } from '../../../invoices/services/interfaces/invoice.service.interface';
-import { CreateInvoiceDto } from '../../../invoices/controllers/dto/create-invoice.dto';
+import { CreateInvoiceByCountryDto } from '../../../invoices/interfaces/invoice.service.interface';
+import { CreateInvoiceDto } from '../../../invoices/dto/create-invoice.dto';
 import * as nodemailer from 'nodemailer';
 
 // Mock nodemailer

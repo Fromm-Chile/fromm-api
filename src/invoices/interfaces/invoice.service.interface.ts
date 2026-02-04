@@ -1,7 +1,7 @@
 import { OmitType } from '@nestjs/mapped-types';
 import { Invoice } from '@prisma/client';
-import { CreateInvoiceDto } from 'src/invoices/controllers/dto/create-invoice.dto';
-import { FilterInvoicesDto } from 'src/invoices/controllers/dto/filter-invoice.dto';
+import { CreateInvoiceDto } from 'src/invoices/dto/create-invoice.dto';
+import { FilterInvoicesDto } from 'src/invoices/dto/filter-invoice.dto';
 
 export class CreateInvoiceByCountryDto extends CreateInvoiceDto {
   countryId: number;

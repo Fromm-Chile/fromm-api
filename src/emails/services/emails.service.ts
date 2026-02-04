@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
-import { CreateInvoiceDto } from 'src/invoices/controllers/dto/create-invoice.dto';
+import { CreateInvoiceDto } from 'src/invoices/dto/create-invoice.dto';
 import { CreateContactByCountryDto } from 'src/contacts/interfaces/contact.repository.interface';
-import { CreateInvoiceByCountryDto } from 'src/invoices/services/interfaces/invoice.service.interface';
+import { CreateInvoiceByCountryDto } from 'src/invoices/interfaces/invoice.service.interface';
 import { SendEmailDto } from '../dto/send-emails.dto';
 
 @Injectable()

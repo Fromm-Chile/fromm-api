@@ -3,15 +3,25 @@ import {
   CreateInvoiceByCountryDto,
   CreateInvoiceByCountryDtoForAdmin,
   IInvoicesService,
-} from './interfaces/invoice.service.interface';
+} from '../interfaces/invoice.service.interface';
 import { InvoicesRepository } from '../repositories/invoices.repository';
 import { EmailService } from 'src/emails/services/emails.service';
 import { UsersService } from 'src/users/services/users.service';
 import { Invoice } from '@prisma/client';
-import { FilterInvoicesDto } from '../controllers/dto/filter-invoice.dto';
+import { FilterInvoicesDto } from '../dto/filter-invoice.dto';
 import { InvoiceHistoryService } from 'src/invoiceHistory/services/invoiceHistory.service';
 import { FilesService } from 'src/files/services/files.service';
 import { ContactsService } from 'src/contacts/services/contacts.service';
+import { Status } from 'src/assets/enums';
+
+const statusNames = {
+  PENDIENTE: 'PENDIENTE',
+  ENVIADA: 'ENVIADA',
+  SEGUIMIENTO: 'SEGUIMIENTO',
+  VENDIDO: 'VENDIDO',
+  PERDIDO: 'PERDIDO',
+  DERIVADO: 'DERIVADO',
+};
 
 @Injectable()
 export class InvoicesService implements IInvoicesService {
@@ -25,7 +35,6 @@ export class InvoicesService implements IInvoicesService {
   ) {}
 
   async create(createInvoiceDto: CreateInvoiceByCountryDto): Promise<Invoice> {
-    console.log(createInvoiceDto);
     let user = await this.usersService.findOneByEmail(
       createInvoiceDto.email,
       createInvoiceDto.countryId,
@@ -55,7 +64,7 @@ export class InvoicesService implements IInvoicesService {
     await this.invoiceHistoryService.create({
       invoiceId: newInvoice.id,
       adminUserId: null,
-      status: 'PENDIENTE',
+      status: statusNames.PENDIENTE,
       comment: 'Cotización creada por el usuario',
     });
 
@@ -85,6 +94,7 @@ export class InvoicesService implements IInvoicesService {
         email: createInvoiceDto.email,
         phone: createInvoiceDto.phone,
         company: createInvoiceDto.company,
+        rucPeru: createInvoiceDto.rucPeru,
         countryId: createInvoiceDto.countryId,
       });
     }
@@ -99,7 +109,7 @@ export class InvoicesService implements IInvoicesService {
     await this.invoiceHistoryService.create({
       invoiceId: newInvoice.id,
       adminUserId,
-      status: 'PENDIENTE',
+      status: statusNames.PENDIENTE,
       comment: 'Cotización creada por el administrador',
     });
 
@@ -138,7 +148,7 @@ export class InvoicesService implements IInvoicesService {
     await this.invoiceHistoryService.create({
       invoiceId: newInvoice.id,
       adminUserId,
-      status: 'PENDIENTE',
+      status: statusNames.PENDIENTE,
       comment: 'Cotización creada por el administrador',
     });
 
@@ -149,11 +159,11 @@ export class InvoicesService implements IInvoicesService {
     const totalCount = await this.invoiceRepository.totalCount(code);
     const pendingInvoices = await this.invoiceRepository.statusCount(
       code,
-      'PENDIENTE',
+      statusNames.PENDIENTE,
     );
     const sendInvoices = await this.invoiceRepository.statusCount(
       code,
-      'ENVIADA',
+      statusNames.ENVIADA,
     );
     return {
       totalCount,
@@ -172,7 +182,7 @@ export class InvoicesService implements IInvoicesService {
     return { cotizaciones: invoices, totalPages };
   }
 
-  async getInvoicesByUserId(id: number, code: string) {
+  async getInvoicesAndContactsByUserId(id: number, code: string) {
     const invoices = await this.invoiceRepository.findAllByUser(+id, code);
     const contacts = await this.contactsService.getAllContactsByUserId(
       +id,
@@ -181,8 +191,8 @@ export class InvoicesService implements IInvoicesService {
     return { invoices, contacts };
   }
 
-  async getOneInvoice(id: number) {
-    return await this.invoiceRepository.findOne(id);
+  getOneInvoice(id: number) {
+    return this.invoiceRepository.findOne(id);
   }
 
   async updateStatusEnviada(
@@ -195,7 +205,7 @@ export class InvoicesService implements IInvoicesService {
     await this.invoiceHistoryService.create({
       invoiceId: id,
       adminUserId,
-      status: 'ENVIADA',
+      status: statusNames.ENVIADA,
       comment: comment || 'Cotización enviada por el administrador',
     });
     return await this.invoiceRepository.updateStatusEviada(invoiceUrl, id);
@@ -209,10 +219,13 @@ export class InvoicesService implements IInvoicesService {
     await this.invoiceHistoryService.create({
       invoiceId: id,
       adminUserId,
-      status: 'SEGUIMIENTO',
+      status: statusNames.SEGUIMIENTO,
       comment: comment,
     });
-    return await this.invoiceRepository.updateOtherStatus(id, 3);
+    return await this.invoiceRepository.updateOtherStatus(
+      id,
+      Status.SEGUIMIENTO,
+    );
   }
   async updateStatusVendido(
     id: number,
@@ -223,7 +236,7 @@ export class InvoicesService implements IInvoicesService {
     await this.invoiceHistoryService.create({
       invoiceId: id,
       adminUserId,
-      status: 'VENDIDO',
+      status: statusNames.VENDIDO,
       comment: comment || 'Cotización vendida por el administrador',
     });
     return await this.invoiceRepository.updateOtherStatusVendido(
@@ -241,38 +254,46 @@ export class InvoicesService implements IInvoicesService {
     await this.invoiceHistoryService.create({
       invoiceId: id,
       adminUserId,
-      status: 'VENDIDO',
+      status: statusNames.VENDIDO,
       comment: comment || 'Monto actualizado por el administrador',
     });
     return await this.invoiceRepository.updateAmount(id, totalAmount);
   }
 
-  async updateStatusPerdido(id: number, adminUserId: number, comment: string) {
+  async updateStatusPerdido(
+    id: number,
+    adminUserId: number,
+    comment: string,
+  ): Promise<Invoice> {
     await this.invoiceHistoryService.create({
       invoiceId: id,
       adminUserId,
-      status: 'PERDIDO',
+      status: statusNames.PERDIDO,
       comment: comment,
     });
     return await this.invoiceRepository.updateOtherStatus(id, 6);
   }
 
-  async updateStatusDerivado(id: number, adminUserId: number, comment: string) {
+  async updateStatusDerivado(
+    id: number,
+    adminUserId: number,
+    comment: string,
+  ): Promise<Invoice> {
     await this.invoiceHistoryService.create({
       invoiceId: id,
       adminUserId,
-      status: 'DERIVADO',
+      status: statusNames.DERIVADO,
       comment: comment || 'Cotización derivada a la Gerencia Comercial',
     });
     return await this.invoiceRepository.updateOtherStatus(id, 5);
   }
 
-  async invoceGruopByDate(
+  async invoceGroupByDate(
     code: string,
     startDate: Date,
     endDate: Date,
   ): Promise<any> {
-    const invoices = await this.invoiceRepository.invoiceGruopByDate(
+    const invoices = await this.invoiceRepository.invoiceGroupByDate(
       code,
       startDate,
       endDate,

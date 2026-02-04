@@ -1,0 +1,13 @@
+export const FILE_FORMATS = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'image/png',
+  'image/jpeg',
+  'image/gif',
+  'image/bmp',
+  'image/webp',
+  'image/*',
+];
