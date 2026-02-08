@@ -32,8 +32,4 @@ export class UsersAdminService {
   async enableOrDisable(id: number, isActive: boolean) {
     return await this.usersAdminRepository.enableUser(id, isActive);
   }
-
-  // remove(id: number) {
-  //   return this.usersAdminRepository.remove(id);
-  // }
 }

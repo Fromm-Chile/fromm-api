@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { IInvoiceRepository } from './interfaces/invoice.repository.interface';
+import { IInvoiceRepository } from '../interfaces/invoice.repository.interface';
 import { PrismaService } from 'prisma/prisma.service';
 import { Prisma, Invoice } from '@prisma/client';
-import { FilterInvoicesDto } from '../controllers/dto/filter-invoice.dto';
-import { UpdateInvoiceDto } from '../controllers/dto/update-invoice.dto';
+import { FilterInvoicesDto } from '../dto/filter-invoice.dto';
+import { UpdateInvoiceDto } from '../dto/update-invoice.dto';
 
 @Injectable()
 export class InvoicesRepository implements IInvoiceRepository {
@@ -224,7 +224,7 @@ export class InvoicesRepository implements IInvoiceRepository {
     });
   }
 
-  async invoiceGruopByDate(
+  async invoiceGroupByDate(
     code: string,
     startDate: Date,
     endDate: Date,
@@ -266,7 +266,42 @@ ORDER BY CAST(updatedAt AS DATE) ASC;
 `;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} invoice`;
+  async excelData() {
+    return await this.prisma.invoice.findMany({
+      include: {
+        invoiceDetails: true,
+        statusR: true,
+        user: true,
+      },
+      where: {
+        user: {
+          country: {
+            code: 'CL',
+          },
+        },
+      },
+    });
+  }
+
+  async excelDataProducts() {
+    return await this.prisma.invoiceDetail.findMany({
+      include: {
+        product: {
+          include: {
+            category: true,
+            invoiceDetails: true,
+          },
+        },
+      },
+      where: {
+        invoice: {
+          user: {
+            country: {
+              code: 'CL',
+            },
+          },
+        },
+      },
+    });
   }
 }

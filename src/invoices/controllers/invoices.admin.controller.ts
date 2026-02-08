@@ -13,18 +13,17 @@ import {
 } from '@nestjs/common';
 import { InvoicesService } from '../services/invoices.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { CreateInvoiceDto } from './dto/create-invoice.dto';
-import { Country } from 'src/assets/enums';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  CreateInvoiceByCountryDto,
-  CreateInvoiceByCountryDtoForAdmin,
-} from '../services/interfaces/invoice.service.interface';
+import { CreateInvoiceByCountryDtoForAdmin } from '../interfaces/invoice.service.interface';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { FileSizeValidationPipe } from 'src/files/pipes/fileSizeValidationPipe';
 import { FileTypeValidationPipe } from 'src/files/pipes/fileTypeValidationPipe';
-import { GetInvoicesResponseDto } from './dto/response.dto';
+import { GetInvoicesResponseDto } from '../dto/get-invoices-response.dto';
 import { instanceToPlain } from 'class-transformer';
+import { FILE_FORMATS } from 'src/assets/constants';
+import { GetInvoicesAndCountResponseDto } from '../dto/get-invoices-and-count-response.dto';
+import { Contact, Invoice } from '@prisma/client';
+import { GetInvoicesAndContactsResponseDto } from '../dto/get-user-invoices-contacts.dto';
 
 @UseGuards(AuthGuard)
 @Controller('admin/invoices')
@@ -40,7 +39,7 @@ export class InvoicesAdminController {
     @Query('name') name: string,
     @Query('limit') limit: number,
     @Query('idOrder') idOrder: string,
-  ): Promise<{ cotizaciones: GetInvoicesResponseDto[]; totalCount: number }> {
+  ): Promise<GetInvoicesAndCountResponseDto> {
     const result = await this.invoicesService.getInvoicesAdmin({
       code,
       page,
@@ -63,19 +62,22 @@ export class InvoicesAdminController {
 
   @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
   @Get(':id')
-  getOneInvoice(@Param('id') id: string) {
+  getOneInvoice(@Param('id') id: string): Promise<Invoice> {
     return this.invoicesService.getOneInvoice(+id);
   }
 
   @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
   @Get('user/:id')
-  getUserInvoices(@Param('id') id: string, @Query('countryCode') code: string) {
-    return this.invoicesService.getInvoicesByUserId(+id, code);
+  getUserInvoicesAndContacts(
+    @Param('id') id: string,
+    @Query('countryCode') code: string,
+  ): Promise<GetInvoicesAndContactsResponseDto> {
+    return this.invoicesService.getInvoicesAndContactsByUserId(+id, code);
   }
 
   @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
   @Get('datos/numeros')
-  getData(@Query('countryCode') code: string) {
+  getData(@Query('countryCode') code: string): Promise<any> {
     return this.invoicesService.getInvoices(code);
   }
 
@@ -115,28 +117,13 @@ export class InvoicesAdminController {
   updateStatusEnviado(
     @UploadedFile(
       new FileSizeValidationPipe(),
-      new FileTypeValidationPipe([
-        // Documents
-        'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        // Images
-        'image/png',
-        'image/jpeg',
-        'image/gif',
-        'image/bmp',
-        'image/webp',
-        // Accept all images
-        'image/*',
-      ]),
+      new FileTypeValidationPipe(FILE_FORMATS),
     )
     file: Express.Multer.File,
     @Body('id') id: number,
     @Req() req: any,
     @Body('comment') comment: string,
-  ) {
+  ): Promise<Invoice> {
     const adminUserId = req.user.sub;
     return this.invoicesService.updateStatusEnviada(
       file,
@@ -224,7 +211,7 @@ export class InvoicesAdminController {
     @Query('startDate') startDate: Date,
     @Query('endDate') endDate: Date,
   ) {
-    return this.invoicesService.invoceGruopByDate(code, startDate, endDate);
+    return this.invoicesService.invoceGroupByDate(code, startDate, endDate);
   }
 
   @Roles('AdminChile', 'AdminPeru', 'UserChile', 'UserPeru')
@@ -239,5 +226,17 @@ export class InvoicesAdminController {
       startDate,
       endDate,
     );
+  }
+
+  @Roles('AdminChile')
+  @Get('excel/data')
+  getExcelData() {
+    return this.invoicesService.dataExcel();
+  }
+
+  @Roles('AdminChile')
+  @Get('excel/data/products')
+  getExcelDataProducts() {
+    return this.invoicesService.dataExcelProducts();
   }
 }

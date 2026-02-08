@@ -1,34 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCategoryDto } from '../controllers/dto/create-category.dto';
-import { UpdateCategoryDto } from '../controllers/dto/update-category.dto';
 import { CategoriesRepository } from '../repositories/categories.repository';
+import { Category } from '@prisma/client';
+import { ICategoriesService } from '../interfaces/categories.service.interface';
 
 @Injectable()
-export class CategoriesService {
+export class CategoriesService implements ICategoriesService {
   constructor(private categoriesRepository: CategoriesRepository) {}
 
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
-  }
-
-  findAll() {
+  findAll(): Promise<Category[]> {
     return this.categoriesRepository.findAll();
   }
 
-  async findAllWithChildren() {
+  async findAllWithChildren(): Promise<Category[]> {
     return await this.categoriesRepository.findAllWithChildren();
   }
 
-
-  findOne(id: number) {
+  findOne(id: number): Promise<Category | null> {
     return this.categoriesRepository.findOne(id);
-  }
-
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a category with id ${id}`;
-  }
-
-  remove(id: number) {
-    return `This action removes a category with id ${id}`;
   }
 }

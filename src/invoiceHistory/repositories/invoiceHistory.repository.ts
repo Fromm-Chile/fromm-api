@@ -1,28 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
-import { CreateInvoiceHistoryDto } from '../services/dto/create-invoiceHistory.dto';
+import { CreateInvoiceHistoryDto } from '../dto/create-invoiceHistory.dto';
+import { InvoiceEventHistory } from '@prisma/client';
 
 @Injectable()
 export class InvoiceHistoryRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createInvoiceHistoryDto: CreateInvoiceHistoryDto) {
+  create(
+    createInvoiceHistoryDto: CreateInvoiceHistoryDto,
+  ): Promise<InvoiceEventHistory> {
     return this.prisma.invoiceEventHistory.create({
       data: createInvoiceHistoryDto,
     });
   }
 
-  async findAll() {
+  findAll(): Promise<InvoiceEventHistory[]> {
     return this.prisma.invoiceEventHistory.findMany();
   }
 
-  async findOne(id: number) {
+  findOne(id: number): Promise<InvoiceEventHistory | null> {
     return this.prisma.invoiceEventHistory.findUnique({
       where: { id },
     });
   }
 
-  async remove(id: number) {
+  remove(id: number): Promise<InvoiceEventHistory> {
     return this.prisma.invoiceEventHistory.delete({
       where: { id },
     });

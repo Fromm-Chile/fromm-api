@@ -79,9 +79,4 @@ export class UsersAdminRepository implements IUserAdminRepository {
       },
     });
   }
-  // async remove(id: number) {
-  //   return await this.prisma.userAdmin.delete({
-  //     where: { id },
-  //   });
-  // }
 }

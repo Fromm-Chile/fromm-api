@@ -1,31 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
-import { CreateBannerDto } from '../controllers/dto/create-banner.dto';
+import { CreateBannerDto } from '../dto/create-banner.dto';
 import { Banner } from '@prisma/client';
+import { IBannersRepository } from '../interfaces/banners.repository.interface';
 
 @Injectable()
-export class BannerRepository {
+export class BannerRepository implements IBannersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createBanner(data: CreateBannerDto): Promise<Banner> {
-    return await this.prisma.banner.create({
+  createBanner(data: CreateBannerDto): Promise<Banner> {
+    return this.prisma.banner.create({
       data,
     });
   }
 
-  async findAllBanners(countryId: number): Promise<Banner[]> {
-    try {
-      return await this.prisma.banner.findMany({
-        where: { countryId },
-        orderBy: [{ isActive: 'desc' }, { order: 'asc' }],
-      });
-    } catch (error) {
-      throw new Error(`Error fetching banners: ${error.message}`);
-    }
+  findAllBanners(countryId: number): Promise<Banner[]> {
+    return this.prisma.banner.findMany({
+      where: { countryId },
+      orderBy: [{ isActive: 'desc' }, { order: 'asc' }],
+    });
   }
 
-  async findAllActiveBanners(countryId: number): Promise<Banner[]> {
-    return await this.prisma.banner.findMany({
+  findAllActiveBanners(countryId: number): Promise<Banner[]> {
+    return this.prisma.banner.findMany({
       where: { isActive: true, countryId },
       orderBy: {
         order: 'asc',
@@ -33,8 +30,8 @@ export class BannerRepository {
     });
   }
 
-  async findBannerById(id: number): Promise<Banner> {
-    return await this.prisma.banner.findUnique({
+  findBannerById(id: number): Promise<Banner> {
+    return this.prisma.banner.findUnique({
       where: { id },
     });
   }
@@ -45,6 +42,7 @@ export class BannerRepository {
       data: { order, updatedAt: new Date() },
     });
   }
+
   async removeBanner(id: number): Promise<void> {
     await this.prisma.banner.update({
       where: { id },

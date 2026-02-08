@@ -8,8 +8,8 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { CreateInvoiceDto } from './dto/create-invoice.dto';
-import { UpdateInvoiceDto } from './dto/update-invoice.dto';
+import { CreateInvoiceDto } from '../dto/create-invoice.dto';
+import { UpdateInvoiceDto } from '../dto/update-invoice.dto';
 import { InvoicesService } from '../services/invoices.service';
 import { Country } from 'src/assets/enums';
 import { AuthGuard } from 'src/auth/guards/auth.guard';

@@ -1,6 +1,5 @@
 import { Invoice, Prisma } from '@prisma/client';
-import { FilterInvoicesDto } from 'src/invoices/controllers/dto/filter-invoice.dto';
-import { UpdateInvoiceDto } from 'src/invoices/controllers/dto/update-invoice.dto';
+import { FilterInvoicesDto } from 'src/invoices/dto/filter-invoice.dto';
 
 export interface IInvoiceRepository {
   create(invoice: Prisma.InvoiceCreateInput, userId: number): Promise<Invoice>;
@@ -9,5 +8,4 @@ export interface IInvoiceRepository {
   findAllAdmin(filter: FilterInvoicesDto): Promise<Invoice[]>;
   findOne(id: number): Promise<Invoice>;
   updateStatusEviada(invoiceURL: string, id: number): Promise<Invoice>;
-  remove(id: number): string;
 }

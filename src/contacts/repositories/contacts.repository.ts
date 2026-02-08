@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
-import { IContactsRepository } from './interfaces/contact.repository.interfaces';
-import { UpdateContactDto } from '../controllers/dto/update-dto';
+import { IContactsRepository } from '../interfaces/contact.repository.interface';
+import { UpdateContactDto } from '../dto/update-dto';
 import { Contact, Prisma } from '@prisma/client';
-import { FilterContactDto } from '../controllers/dto/filter-contact-dto';
+import { FilterContactDto } from '../dto/filter-contact-dto';
 
 @Injectable()
 export class ContactsRepository implements IContactsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(
+  create(
     contact: Prisma.ContactCreateWithoutUserInput,
     userId: number,
   ): Promise<Contact> {
-    return await this.prisma.contact.create({
+    return this.prisma.contact.create({
       data: {
         ...contact,
         status: {
@@ -30,12 +30,12 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  async statusCount(
+  statusCount(
     code: string,
     status: string,
     contactType: string,
   ): Promise<number> {
-    return await this.prisma.contact.count({
+    return this.prisma.contact.count({
       where: {
         contactType,
         user: {
@@ -50,8 +50,8 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  async totalCount(code: string, contactType: string): Promise<number> {
-    return await this.prisma.contact.count({
+  totalCount(code: string, contactType: string): Promise<number> {
+    return this.prisma.contact.count({
       where: {
         contactType,
         user: {
@@ -63,8 +63,8 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  async findAllContacts(filter: FilterContactDto): Promise<Contact[]> {
-    return await this.prisma.contact.findMany({
+  findAllContacts(filter: FilterContactDto): Promise<Contact[]> {
+    return this.prisma.contact.findMany({
       skip: filter.page * 10 || 0,
       take: Number(filter.limit) || 10,
       orderBy: {
@@ -109,8 +109,8 @@ export class ContactsRepository implements IContactsRepository {
     return Math.ceil(count / 10);
   }
 
-  async findOneContact(id: number) {
-    return await this.prisma.contact.findUnique({
+  findOneContact(id: number) {
+    return this.prisma.contact.findUnique({
       where: { id },
       include: {
         status: true,
@@ -123,8 +123,8 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  async findContactsByUserId(userId: number, code: string): Promise<Contact[]> {
-    return await this.prisma.contact.findMany({
+  findContactsByUserId(userId: number, code: string): Promise<Contact[]> {
+    return this.prisma.contact.findMany({
       where: {
         userId,
         user: {
@@ -144,8 +144,8 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  async update(id: number, updateContactDto: UpdateContactDto) {
-    return await this.prisma.contact.update({
+  update(id: number, updateContactDto: UpdateContactDto): Promise<Contact> {
+    return this.prisma.contact.update({
       where: { id },
       data: {
         ...updateContactDto,
@@ -154,8 +154,8 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  async updateStatus(id: number, statusId: number) {
-    return await this.prisma.contact.update({
+  updateStatus(id: number, statusId: number): Promise<Contact> {
+    return this.prisma.contact.update({
       where: { id },
       data: {
         status: {
@@ -168,8 +168,8 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  async updateContactType(id: number) {
-    return await this.prisma.contact.update({
+  updateContactType(id: number): Promise<Contact> {
+    return this.prisma.contact.update({
       where: { id },
       data: {
         contactType: 'SERVICE',
@@ -178,8 +178,8 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  async updateStatusDerivado(id: number, message: string) {
-    return await this.prisma.contact.update({
+  updateStatusDerivado(id: number, message: string): Promise<Contact> {
+    return this.prisma.contact.update({
       where: { id },
       data: {
         status: {
@@ -193,7 +193,7 @@ export class ContactsRepository implements IContactsRepository {
     });
   }
 
-  remove(id: number) {
+  remove(id: number): Promise<Contact> {
     return this.prisma.contact.delete({
       where: { id },
     });

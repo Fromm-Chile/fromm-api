@@ -10,6 +10,10 @@ import {
 import { ContactsService } from '../services/contacts.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Contact } from '@prisma/client';
+import { ContactsCountResponseDto } from '../dto/contactsCount-response.dto';
+import { Status } from 'src/assets/enums';
+import { GetContactsResponseDto } from '../dto/getContacts-response.dto';
 
 @UseGuards(AuthGuard)
 @Controller('admin/contacts')
@@ -25,7 +29,7 @@ export class ContactsAdminController {
     'UserPeru',
   )
   @Get('/messages')
-  async getContacts(
+  getContacts(
     @Query('contactType') contactType: string,
     @Query('countryCode') code: string,
     @Query('page') page: number,
@@ -33,8 +37,8 @@ export class ContactsAdminController {
     @Query('name') name: string,
     @Query('limit') limit: number,
     @Query('idOrder') idOrder: string,
-  ) {
-    return await this.contactsService.getAllContacts({
+  ): Promise<GetContactsResponseDto> {
+    return this.contactsService.getAllContacts({
       contactType,
       code,
       page,
@@ -50,7 +54,7 @@ export class ContactsAdminController {
   async getContactsByUserId(
     @Param('id') id: number,
     @Query('countryCode') code: string,
-  ) {
+  ): Promise<Contact[]> {
     return await this.contactsService.getAllContactsByUserId(+id, code);
   }
 
@@ -63,11 +67,11 @@ export class ContactsAdminController {
     'UserPeru',
   )
   @Get('/messages/count')
-  async getContactsCount(
+  getContactsCount(
     @Query('countryCode') code: string,
     @Query('contactType') contactType: string,
-  ) {
-    return await this.contactsService.getContactCount(code, contactType);
+  ): Promise<ContactsCountResponseDto> {
+    return this.contactsService.getContactCount(code, contactType);
   }
 
   @Roles(
@@ -79,28 +83,28 @@ export class ContactsAdminController {
     'UserPeru',
   )
   @Get(':id')
-  async findOneContact(@Param('id') id: string) {
-    return await this.contactsService.findOneContact(+id);
+  findOneContact(@Param('id') id: string): Promise<Contact> {
+    return this.contactsService.findOneContact(+id);
   }
 
   @Roles('AdminChile', 'AdminPeru')
   @Put()
-  async updateContactType(@Body('id') id: number) {
-    return await this.contactsService.updateContactType(+id);
+  updateContactType(@Body('id') id: number): Promise<Contact> {
+    return this.contactsService.updateContactType(+id);
   }
 
   @Roles('AdminChile', 'AdminPeru')
   @Put('/derivado')
-  async updateStatusDerivado(
+  updateStatusDerivado(
     @Body('id') id: number,
     @Body('department') department: string,
-  ) {
-    return await this.contactsService.updateStatusDerivado(+id, department);
+  ): Promise<Contact> {
+    return this.contactsService.updateStatusDerivado(+id, department);
   }
 
   @Roles('AdminChile', 'AdminPeru', 'ServicioChile')
   @Put('/finalizado')
-  async updateStatusFinalizado(@Body('id') id: number) {
-    return await this.contactsService.updateStatus(+id, 9);
+  updateStatusFinalizado(@Body('id') id: number): Promise<Contact> {
+    return this.contactsService.updateStatus(+id, Status.FINALIZADO);
   }
 }

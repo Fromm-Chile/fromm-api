@@ -28,36 +28,7 @@ export class FilesService {
     @UploadedFile() file: Express.Multer.File,
     InvoiceId: number,
   ) {
-    if (!file) {
-      throw new Error('File is missing');
-    }
-
-    const key = `${InvoiceId}-${file.originalname}`;
-    const publicBucketUrl = this.configService.get<string>(
-      'R2_PUBLIC_BUCKET_URL',
-    );
-
-    try {
-      const command = new PutObjectCommand({
-        Bucket: this.configService.get<string>('R2_BUCKET_NAME'),
-        Key: key,
-        Body: file.buffer,
-        ContentType: file.mimetype,
-      });
-
-      await this.s3Client.send(command);
-
-      const url = `${publicBucketUrl}/${key}`;
-
-      return {
-        message: 'File uploaded successfully',
-        key: key,
-        url: url,
-      };
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      throw new Error('Failed to upload file');
-    }
+    return this.#uploadS3Client(`${InvoiceId}-${file.originalname}`, file);
   }
 
   async uploadImage(
@@ -65,11 +36,25 @@ export class FilesService {
     order: number,
     countryId: number,
   ) {
+    const uploadUrl = await this.#uploadS3Client(file.originalname, file);
+
+    await this.bannersService.createBanner({
+      name: file.originalname,
+      url: uploadUrl,
+      order,
+      countryId,
+    });
+
+    return uploadUrl;
+  }
+
+  async #uploadS3Client(
+    key: string,
+    file: Express.Multer.File,
+  ): Promise<string> {
     if (!file) {
       throw new Error('File is missing');
     }
-
-    const key = file.originalname;
     const publicBucketUrl = this.configService.get<string>(
       'R2_PUBLIC_BUCKET_URL',
     );
@@ -86,20 +71,7 @@ export class FilesService {
 
       const url = `${publicBucketUrl}/${key}`;
 
-      const uploadedImage = {
-        message: 'File uploaded successfully',
-        key: key,
-        url: url,
-      };
-
-      await this.bannersService.createBanner({
-        name: file.originalname,
-        url,
-        order: order,
-        countryId,
-      });
-
-      return uploadedImage;
+      return url;
     } catch (error) {
       console.error('Error uploading file:', error);
       throw new Error('Failed to upload file');
